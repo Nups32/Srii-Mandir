@@ -2,12 +2,13 @@ import { Link, NavLink } from "react-router-dom";
 
 const menu = [
   { name: "Home", path: "/" },
-  { name: "Pooja", path: "/pooja" },
+  { name: "Puja", path: "/puja" },
   { name: "Chadhava", path: "/chadhava" },
   { name: "Instant Solutions", path: "/instant-solutions" },
   { name: "Mandir", path: "/mandir" },
-  { name: "Media", path: "/media" },
+  // { name: "Media", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
+  { name: "Shakti Sanyans", path: "/shakti-sanyans" },
 ];
 
 const Navbar = () => {

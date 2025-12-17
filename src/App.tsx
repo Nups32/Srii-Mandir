@@ -1,10 +1,21 @@
-import { useContext, useEffect, type PropsWithChildren } from 'react'
+import { useEffect, useState, type PropsWithChildren } from 'react'
 import './App.css'
-import { useNavigate } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
 // import { getPublicIP } from './utils/API';
-import { message } from 'antd';
 
 function App({ children }: PropsWithChildren) {
+    const [showButton, setShowButton] = useState(false);
+
+
+useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setShowButton(scrollTop > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
 
   // const token = authData.token;
@@ -30,6 +41,16 @@ function App({ children }: PropsWithChildren) {
   return (
     <>
       {children}
+
+      {/* Scroll to top button */}
+        {showButton && (
+          <button
+            className="fixed bottom-6 right-6 z-50 border flex items-center justify-center w-12 h-12 rounded-full border-white bg-orange-300 shadow-lg transition hover:bg-yellow-500 cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <ArrowUp className="text-white w-6 h-6" />
+          </button>
+        )}
     </>
   )
 }

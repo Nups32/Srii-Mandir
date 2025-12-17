@@ -1,0 +1,35 @@
+/* marquee aniamtion */
+
+.marquee-container {
+  background-color: #f8a13d;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 1.5rem 1rem;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 500;
+  animation: marquee 80s linear alternate;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  50% {
+    transform: translateX(0%); /* stops at center */
+  }
+  100% {
+    transform: translateX(100%); /* returns to start */
+  }
+}
+
+/* 
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+} */

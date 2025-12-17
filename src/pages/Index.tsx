@@ -1,167 +1,248 @@
 import { Link } from "react-router-dom";
+import HeroSlider from "../components/HeroSlider";
 
-const poojas = [
-  { title: "Ganesh Pooja", desc: "For success & new beginnings" },
-  { title: "Maha Mrityunjaya", desc: "Health & long life" },
-  { title: "Navgraha Shanti", desc: "Peace & prosperity" },
-  { title: "Lakshmi Pooja", desc: "Wealth & abundance" },
+import slide1 from "../assets/Home/1.jpg";
+import slide2 from "../assets/Home/2.jpg";
+import slide3 from "../assets/Home/3.jpg";
+import slide4 from "../assets/Home/4.jpg";
+
+import puja1 from "../assets/Home/1.jpg";
+import puja2 from "../assets/Home/1.jpg";
+import puja3 from "../assets/Home/1.jpg";
+import ReviewsRatings from "@/components/Reviews";
+import StatsGrid from "@/components/StatsGrid";
+
+const pujas = [
+  {
+    title: "Ganesh Pooja",
+    desc: "For success & new beginnings",
+    image: puja1,
+    label: "Ganesh Special",
+    temple: "Shri Ganesh Mandir, Pune, Maharashtra",
+    date: "12 January, Friday, Magha Krishna",
+  },
+  {
+    title: "Maha Mrityunjaya",
+    desc: "Health & long life",
+    image: puja2,
+    label: "Maha Mrityunjaya Special",
+    temple: "Shri Mahadev Temple, Ujjain, Madhya Pradesh",
+    date: "20 December, Saturday, Pausha Krishna",
+  },
+  {
+    title: "Navgraha Shanti",
+    desc: "Peace & prosperity",
+    image: puja3,
+    label: "Navgraha Special",
+    temple: "Shri Navgrah Shani Temple, Ujjain, Madhya Pradesh",
+    date: "25 December, Monday, Pausha Krishna",
+  },
 ];
 
 const Index = () => {
-  return (
-    <div className="space-y-20">
+  // const images = [slide1, slide2, slide3, slide4];
 
-      {/* HERO SECTION */}
-      <section className="bg-orange-50">
-        <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+  const slides = [
+    {
+      image: slide1,
+      title: "Special Puja with Dev Puja",
+      description:
+        "Worship your deities at home and receive their divine blessings — only on Dev Puja.",
+      buttonText: "Explore Now",
+      buttonLink: "/pooja",
+    },
+    {
+      image: slide2,
+      title: "Dev Puja",
+      description:
+        "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Dev Puja.",
+      buttonText: "Explore",
+      buttonLink: "/pooja",
+    },
+    {
+      image: slide3,
+      title: "Dev Puja Special Chadhava",
+      description:
+        "Now offer your prayers and sacred offerings to your beloved deities at renowned temples across India — from your home. Seek divine blessings on Dev Puja.",
+      buttonText: "Offer Chadhava",
+      buttonLink: "/chadhava",
+    },
+    {
+      image: slide4,
+      title: "Dev Puja Special Puja",
+      description:
+        "Invoke peace, prosperity, and happiness for your family through online pujas at India’s sacred temples — from the comfort of your home.",
+      buttonText: "Book Puja",
+      buttonLink: "/pooja",
+    },
+  ];
+
+  return (
+    <>
+      <main className="">
+        {/* HERO SLIDER */}
+        <section className="relative">
+          <HeroSlider slides={slides} />
+        </section>
+
+        {/* marquee section */}
+        <div className="marquee-container">
+          <div className="marquee-content">
+            <span>Faith of 30 million+ devotees</span>
+            <span>•</span>
+            <span>100% Secure</span>
+            <span>•</span>
+            <span>India's Largest place for Hindu Devotees</span>
+          </div>
+        </div>
+
+        {/* POPULAR POOJAS */}
+        <section className="max-w-7xl mx-auto px-4 mt-10">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="text-4xl text-purple-400 flex justify-center items-center font-semibold text-center sm:text-left">
+              Special Poojas
+            </h2>
+            <Link
+              to="/pooja"
+              className="text-orange-600 text-sm font-medium hover:underline"
+            >
+              View All →
+            </Link>
+          </div>
+
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 leading-tight">
-              Perform Sacred Poojas &  
-              <span className="text-orange-600"> Receive Divine Blessings</span>
-            </h1>
-            <p className="mt-4 text-gray-600">
-              Authentic Vedic rituals performed by experienced Sanyasis
-              for peace, prosperity, and spiritual growth.
+            <p className="my-4 text-black/70 text-2xl">
+              Close 2025 with faith - get special year-end pujas performed in
+              your name at India's powerful temples and begin 2026 with peace
+              and protection.
+            </p>
+          </div>
+
+          {/* Pooja Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {pujas.map((pooja) => (
+              <div
+                key={pooja.title}
+                className="bg-white rounded-2xl p-4 border hover:shadow-lg transition"
+              >
+                {/* Image Banner */}
+                <div className="relative">
+                  <img
+                    src={pooja.image}
+                    alt={pooja.title}
+                    className="w-full h-60 object-cover rounded-lg"
+                  />
+                  <span className="absolute top-2 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded">
+                    {pooja.label}
+                  </span>
+                </div>
+
+                {/* Title & Description */}
+                <h3 className="font-semibold text-lg mt-3">{pooja.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{pooja.desc}</p>
+
+                {/* Temple & Date */}
+                <div className="mt-3 flex flex-col gap-1 text-gray-500 text-xs">
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4 text-orange-500"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 2L2 7l10 5 10-5-10-5zm0 7v13l-10-5V9l10 5 10-5v8l-10 5z" />
+                    </svg>
+                    <span>{pooja.temple}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4 text-orange-500"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M7 10h5v5H7zM3 4h18v18H3V4zm2 2v14h14V6H5z" />
+                    </svg>
+                    <span>{pooja.date}</span>
+                  </div>
+                </div>
+
+                {/* Participate Button */}
+                <Link
+                  to="/pooja"
+                  className="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition"
+                >
+                  PARTICIPATE →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* INSTANT SOLUTIONS */}
+        <section className="bg-gray-50 py-16">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <h2 className="text-2xl font-semibold">Instant Vedic Solutions</h2>
+            <p className="text-gray-600 mt-2">
+              Simple remedies for daily life problems
             </p>
 
-            <div className="mt-6 flex gap-4">
-              <Link
-                to="/pooja"
-                className="bg-orange-500 text-white px-6 py-3 rounded-full text-sm hover:bg-orange-600"
-              >
-                Book Pooja
-              </Link>
-              <Link
-                to="/vedic-science"
-                className="border border-orange-500 text-orange-600 px-6 py-3 rounded-full text-sm hover:bg-orange-100"
-              >
-                Get Guidance
-              </Link>
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              {["Career", "Marriage", "Health", "Finance", "Education"].map(
+                (item) => (
+                  <span
+                    key={item}
+                    className="px-6 py-3 bg-white rounded-full shadow-sm text-sm font-medium"
+                  >
+                    {item}
+                  </span>
+                )
+              )}
             </div>
           </div>
+        </section>
 
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1603625953951-8f6b39d90b5f"
-              alt="Mandir"
-              className="rounded-xl shadow-md"
-            />
-          </div>
-        </div>
-      </section>
+        {/* MEDIA */}
+        <section className="bg-orange-50 py-16">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <h2 className="text-2xl font-semibold">
+              Bhajans, Aarti & Live Katha
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Audio & Video devotional content
+            </p>
 
-      {/* POPULAR POOJA */}
-      <section className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-semibold">Popular Poojas</h2>
-          <Link to="/pooja" className="text-orange-600 text-sm">
-            View All →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {poojas.map((p) => (
-            <div
-              key={p.title}
-              className="border rounded-xl p-5 hover:shadow-md transition"
+            <Link
+              to="/media"
+              className="inline-block mt-6 bg-orange-400 text-white px-8 py-3 rounded-full text-sm font-medium"
             >
-              <h3 className="font-semibold text-lg">{p.title}</h3>
-              <p className="text-sm text-gray-600 mt-2">{p.desc}</p>
-              <button className="mt-4 text-orange-600 text-sm font-medium">
-                Book Now →
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* INSTANT SOLUTIONS */}
-      <section className="bg-gray-50 py-14">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-semibold">
-            Instant Vedic Solutions
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Simple remedies for daily life problems
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            {["Career", "Marriage", "Health", "Finance", "Education"].map(
-              (item) => (
-                <span
-                  key={item}
-                  className="px-6 py-3 bg-white rounded-full shadow-sm text-sm"
-                >
-                  {item}
-                </span>
-              )
-            )}
+              Explore Media
+            </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* GURU / MANDIR */}
-      <section className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
-        <img
-          src="https://images.unsplash.com/photo-1588081741555-3a95f2c1bba0"
-          alt="Guru"
-          className="rounded-xl"
-        />
-        <div>
-          <h2 className="text-2xl font-semibold">
-            Shakti Sanyas
-          </h2>
-          <p className="mt-4 text-gray-600">
-            Portfolio of Siddha Sanyasi with 50+ years of experience
-            in Vedic Sadhna, guiding devotees on the righteous path.
-          </p>
-          <Link
-            to="/mandir"
-            className="inline-block mt-5 text-orange-600 font-medium"
-          >
-            Know More →
-          </Link>
-        </div>
-      </section>
+        {/* CTA */}
+        <section className="max-w-7xl mx-auto px-4 pb-24">
+          <div className="bg-gradient-to-r from-orange-400 to-orange-400 rounded-3xl text-white p-12 text-center">
+            <h2 className="text-2xl font-semibold">
+              Get Your Personalized Vedic Report
+            </h2>
+            <p className="mt-3 text-orange-100">
+              Share your details and receive guidance prepared by experts
+            </p>
 
-      {/* MEDIA */}
-      <section className="bg-orange-50 py-14">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-semibold">
-            Bhajans, Aarti & Live Katha
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Audio & Video devotional content
-          </p>
+            <Link
+              to="/vedic-science"
+              className="inline-block mt-8 bg-white text-orange-400 px-8 py-3 rounded-full text-sm font-semibold"
+            >
+              Start Now
+            </Link>
+          </div>
+        </section>
 
-          <Link
-            to="/media"
-            className="inline-block mt-6 bg-orange-500 text-white px-6 py-3 rounded-full text-sm"
-          >
-            Explore Media
-          </Link>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl text-white p-10 text-center">
-          <h2 className="text-2xl font-semibold">
-            Get Your Personalized Vedic Report
-          </h2>
-          <p className="mt-2 text-orange-100">
-            Share your details and receive guidance prepared by experts
-          </p>
-          <Link
-            to="/vedic-science"
-            className="inline-block mt-6 bg-white text-orange-600 px-6 py-3 rounded-full text-sm font-medium"
-          >
-            Start Now
-          </Link>
-        </div>
-      </section>
-
-    </div>
+        <ReviewsRatings />
+        <StatsGrid />
+      </main>
+    </>
   );
 };
 

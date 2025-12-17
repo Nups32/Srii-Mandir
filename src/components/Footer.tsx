@@ -1,25 +1,27 @@
+import { Github, Linkedin, Twitter } from "lucide-react";
+
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 mt-20">
+    <footer className="bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         <div>
           <h3 className="font-semibold text-orange-600 mb-2">
-            Shri Mandir
+            Dev Puja
           </h3>
           <p className="text-sm text-gray-600">
-            Connecting devotees with divine rituals, pooja services,
-            and Vedic guidance.
+            Dev Puja has brought religious services to the masses in India by connecting devotees, pandits and temples. Partnering with over 100 renowned temples, we provide exclusive pujas and offerings performed by expert pandits and share videos of the completed puja rituals.
           </p>
         </div>
 
         <div>
           <h4 className="font-semibold mb-3">Services</h4>
           <ul className="space-y-2 text-sm text-gray-600">
-            <li>Pooja Services</li>
+            <li>Puja Services</li>
             <li>Chadhava</li>
             <li>Instant Solutions</li>
             <li>Vedic Science</li>
+            <li>Contact Us</li>
           </ul>
         </div>
 
@@ -36,13 +38,37 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold mb-3">Contact</h4>
           <p className="text-sm text-gray-600">
-            Email: support@shrismandir.com
+            Email: support@devpuja.com
           </p>
+
+           <div className="flex flex-row gap-3 mt-5">
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Linkedin className="mr-2 hover:text-blue-500" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Twitter className="mr-2 hover:text-blue-500" />
+              </a>
+              <a
+                href="https://github.com/theintellect218"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-2 hover:text-blue-500" />
+              </a>
+            </div>
         </div>
       </div>
 
       <div className="border-t text-center text-sm py-4 text-gray-500">
-        © {new Date().getFullYear()} Shri Mandir. All rights reserved.
+        © {new Date().getFullYear()} Dev Puja. All rights reserved.
       </div>
     </footer>
   );
