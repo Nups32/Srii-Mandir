@@ -2,7 +2,7 @@
 // import { MenuOutlined } from "@ant-design/icons";
 import { Col, Layout, Row } from "antd";
 import { NavLink } from "react-router-dom";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.jpg";
 
 const { Header } = Layout;
 
