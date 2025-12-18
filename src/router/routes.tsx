@@ -1,5 +1,7 @@
 import ChadhavaOffering from "@/components/ChadhavaOffering";
+import Login from "@/components/Login";
 import PujaDetail from "@/components/PujaDetails";
+import Register from "@/components/Register";
 import Chadhava from "@/pages/Chadhava";
 import PageNotFound from "@/pages/PagenotFound";
 import Puja from "@/pages/Puja";
@@ -11,6 +13,16 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/",
     element: <Index />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    layout: "blank"
+  },
+  {
+    path: "/register",
+    element: <Register />,
+    layout: "blank"
   },
   {
     path: "/puja",
@@ -25,7 +37,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <Chadhava />,
   },
   {
-    path: "/offering",
+    path: "/chadhava-detail",
     element: <ChadhavaOffering />,
   },
   {

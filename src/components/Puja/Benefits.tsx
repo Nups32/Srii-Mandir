@@ -25,11 +25,11 @@ export default function Benefits() {
           >
             {/* Icon */}
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+              <div className="rounded-full bg-orange-100 flex items-center justify-center">
                 <img
                   src={pujaBenefitsLogo}
                   alt="Benefit Icon"
-                  className="w-5 h-5"
+                  className="w-10 h-10"
                 />
               </div>
             </div>

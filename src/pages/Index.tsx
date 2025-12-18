@@ -14,7 +14,7 @@ import StatsGrid from "@/components/StatsGrid";
 
 const pujas = [
   {
-    title: "Ganesh Pooja",
+    title: "Ganesh Puja",
     desc: "For success & new beginnings",
     image: puja1,
     label: "Ganesh Special",
@@ -49,7 +49,7 @@ const Index = () => {
       description:
         "Worship your deities at home and receive their divine blessings — only on Dev Puja.",
       buttonText: "Explore Now",
-      buttonLink: "/pooja",
+      buttonLink: "/puja",
     },
     {
       image: slide2,
@@ -57,7 +57,7 @@ const Index = () => {
       description:
         "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Dev Puja.",
       buttonText: "Explore",
-      buttonLink: "/pooja",
+      buttonLink: "/puja",
     },
     {
       image: slide3,
@@ -73,14 +73,14 @@ const Index = () => {
       description:
         "Invoke peace, prosperity, and happiness for your family through online pujas at India’s sacred temples — from the comfort of your home.",
       buttonText: "Book Puja",
-      buttonLink: "/pooja",
+      buttonLink: "/puja",
     },
   ];
 
   return (
     <>
       <main className="">
-        {/* HERO SLIDER */}
+        {/* hero image slider */}
         <section className="relative">
           <HeroSlider slides={slides} />
         </section>
@@ -96,7 +96,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* POPULAR POOJAS */}
+        {/* popular pujas */}
         <section className="max-w-7xl mx-auto px-4 mt-10">
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
@@ -119,28 +119,28 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Pooja Cards */}
+          {/* Puja Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {pujas.map((pooja) => (
+            {pujas.map((puja) => (
               <div
-                key={pooja.title}
+                key={puja.title}
                 className="bg-white rounded-2xl p-4 border hover:shadow-lg transition"
               >
                 {/* Image Banner */}
                 <div className="relative">
                   <img
-                    src={pooja.image}
-                    alt={pooja.title}
+                    src={puja.image}
+                    alt={puja.title}
                     className="w-full h-60 object-cover rounded-lg"
                   />
                   <span className="absolute top-2 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded">
-                    {pooja.label}
+                    {puja.label}
                   </span>
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="font-semibold text-lg mt-3">{pooja.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{pooja.desc}</p>
+                <h3 className="font-semibold text-lg mt-3">{puja.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{puja.desc}</p>
 
                 {/* Temple & Date */}
                 <div className="mt-3 flex flex-col gap-1 text-gray-500 text-xs">
@@ -152,7 +152,7 @@ const Index = () => {
                     >
                       <path d="M12 2L2 7l10 5 10-5-10-5zm0 7v13l-10-5V9l10 5 10-5v8l-10 5z" />
                     </svg>
-                    <span>{pooja.temple}</span>
+                    <span>{puja.temple}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg
@@ -162,13 +162,13 @@ const Index = () => {
                     >
                       <path d="M7 10h5v5H7zM3 4h18v18H3V4zm2 2v14h14V6H5z" />
                     </svg>
-                    <span>{pooja.date}</span>
+                    <span>{puja.date}</span>
                   </div>
                 </div>
 
                 {/* Participate Button */}
                 <Link
-                  to="/pooja"
+                  to="/puja"
                   className="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition"
                 >
                   PARTICIPATE →
@@ -178,7 +178,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* INSTANT SOLUTIONS */}
+        {/* instant solutions */}
         <section className="bg-gray-50 py-16">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h2 className="text-2xl font-semibold">Instant Vedic Solutions</h2>
@@ -201,7 +201,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* MEDIA */}
+        {/* media */}
         <section className="bg-orange-50 py-16">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h2 className="text-2xl font-semibold">

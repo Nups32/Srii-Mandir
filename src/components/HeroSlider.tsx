@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -37,8 +38,8 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[85vh] overflow-hidden group">
-      {/* Slides */}
+    <div className="relative w-full h-[60vh] md:h-[85vh] overflow-hidden group">
+      {/* slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -49,13 +50,13 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
           <img
             src={slide.image}
             alt={`slide-${index}`}
-            className="h-w-full h-full object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
       ))}
 
-      {/* Overlay Text */}
-      <div className="absolute inset-0 bg-black/50 flex items-center z-10">
+      {/* overlay text */}
+      <div className="absolute inset-0 flex items-center z-10">
         <div className="max-w-7xl mx-auto px-4 text-white">
           <h1 className="text-4xl md:text-5xl font-bold max-w-3xl leading-tight">
             {slides[current].title}
@@ -73,7 +74,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         </div>
       </div>
 
-      {/* Left Arrow */}
+      {/* left arrow */}
       <button
         onClick={prevSlide}
         className="absolute left-6 top-1/2 -translate-y-1/2 z-20
@@ -81,10 +82,10 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                    w-12 h-12 rounded-full flex items-center justify-center
                    opacity-0 group-hover:opacity-100 transition"
       >
-        ‹
+        <ChevronLeft className="w-4 h-4" />
       </button>
 
-      {/* Right Arrow */}
+      {/* right arrow */}
       <button
         onClick={nextSlide}
         className="absolute right-6 top-1/2 -translate-y-1/2 z-20
@@ -92,10 +93,10 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                    w-12 h-12 rounded-full flex items-center justify-center
                    opacity-0 group-hover:opacity-100 transition"
       >
-        ›
+        <ChevronRight className="w-4 h-4"/>
       </button>
 
-      {/* Dots */}
+      {/* dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         {slides.map((_, index) => (
           <button

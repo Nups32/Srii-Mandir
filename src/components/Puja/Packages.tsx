@@ -37,7 +37,7 @@ export default function Packages() {
               </ul>
 
               {/* Participate Button */}
-              <button className="mt-auto bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300">
+              <button className="mt-auto bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer">
                 Participate
                 <ArrowRightIcon className="w-5 h-5" />
               </button>

@@ -15,17 +15,17 @@
   color: #ffffff;
   font-size: 1.4rem;
   font-weight: 500;
-  animation: marquee 80s linear alternate;
+  animation: marquee 30s linear infinite;
 }
 @keyframes marquee {
   0% {
-    transform: translateX(100%);
+    transform: translateX(70%);
   }
-  50% {
-    transform: translateX(0%); /* stops at center */
-  }
+  /* 50% {
+    transform: translateX(-50%); 
+  } */
   100% {
-    transform: translateX(100%); /* returns to start */
+    transform: translateX(-40%); /* returns to start */
   }
 }
 
