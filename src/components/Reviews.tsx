@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Review {
@@ -10,8 +10,9 @@ interface Review {
   //   videoThumbnail?: string;
 }
 
-const ReviewsRatings: React.FC = () => {
+const ReviewsRatings = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
 
   const reviews: Review[] = [
     {
@@ -46,25 +47,101 @@ const ReviewsRatings: React.FC = () => {
       text: "The service provided was exceptional and the puja was conducted with utmost devotion. Highly recommended for anyone seeking spiritual guidance.",
       //   videoThumbnail: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=400&h=300&fit=crop"
     },
+    {
+      id: 5,
+      name: "Ramchandra Bhatt",
+      //   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+      rating: 5,
+      text: "I might not be the eager drivers of most of the chanting and celebrate respect in favour of god Almighty and yet I can bring changes and witness miracles in my life, wonderful.",
+      //   videoThumbnail: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=400&h=300&fit=crop"
+    },
   ];
 
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      let count = 3;
+
+      if (window.innerWidth < 768) {
+        count = 1;
+      } else if (window.innerWidth < 1024) {
+        count = 2;
+      }
+
+      setVisibleCount((prev) => {
+        if (prev !== count) {
+          setCurrentIndex(0);
+        }
+        return count;
+      });
+    };
+
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
+
+  // const nextReview = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex + 3 >= reviews.length ? 0 : prevIndex + 1
+  //   );
+  // };
+
   const nextReview = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 3 >= reviews.length ? 0 : prevIndex + 1
+    setCurrentIndex((prev) =>
+      prev + visibleCount >= reviews.length ? 0 : prev + visibleCount
     );
   };
+
+  // const prevReview = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex === 0 ? Math.max(0, reviews.length - 3) : prevIndex - 1
+  //   );
+  // };
 
   const prevReview = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? Math.max(0, reviews.length - 3) : prevIndex - 1
+    setCurrentIndex((prev) =>
+      prev === 0
+        ? Math.max(0, reviews.length - visibleCount)
+        : prev - visibleCount
     );
   };
 
-  const visibleReviews = reviews.slice(currentIndex, currentIndex + 3);
+  // useEffect(() => {
+  //   const updateVisibleCount = () => {
+  //     if (window.innerWidth < 768) {
+  //       setVisibleCount(1); // mobile
+  //     } else if (window.innerWidth < 1024) {
+  //       setVisibleCount(2); // tablet
+  //     } else {
+  //       setVisibleCount(3); // desktop
+  //     }
+  //   };
+
+  //   updateVisibleCount();
+  //   window.addEventListener("resize", updateVisibleCount);
+
+  //   return () => window.removeEventListener("resize", updateVisibleCount);
+  // }, []);
+
+  // const visibleReviews = reviews.slice(currentIndex, currentIndex + 3);
+
+  // const visibleReviews = reviews.slice(
+  //   currentIndex,
+  //   currentIndex + visibleCount
+  // );
+
+  const visibleReviews = reviews.slice(
+    Math.min(currentIndex, reviews.length - visibleCount),
+    Math.min(currentIndex, reviews.length - visibleCount) + visibleCount
+  );
 
   return (
     <>
-      <section id="reviews" className="w-full bg-gray-50 rounded-2xl py-16 px-3">
+      <section
+        id="reviews"
+        className="w-full bg-gray-50 rounded-2xl py-16 my-6 px-3"
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -140,7 +217,7 @@ const ReviewsRatings: React.FC = () => {
               </button>
 
               {/* Dots Indicator */}
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 {Array.from({ length: Math.ceil(reviews.length / 3) }).map(
                   (_, idx) => (
                     <button
@@ -154,11 +231,27 @@ const ReviewsRatings: React.FC = () => {
                     />
                   )
                 )}
+              </div> */}
+
+              <div className="flex gap-2">
+                {Array.from({
+                  length: Math.ceil(reviews.length / visibleCount),
+                }).map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentIndex(idx * visibleCount)}
+                    className={`h-2 rounded-full transition-all ${
+                      Math.floor(currentIndex / visibleCount) === idx
+                        ? "bg-orange-500 w-8"
+                        : "bg-gray-300 w-2"
+                    }`}
+                  />
+                ))}
               </div>
 
               <button
                 onClick={nextReview}
-                disabled={currentIndex + 3 >= reviews.length}
+                disabled={currentIndex + visibleCount >= reviews.length}
                 className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-orange-500 hover:text-white hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight className="w-5 h-5" />

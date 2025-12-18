@@ -144,6 +144,34 @@ export const pujaData = [
   },
 ];
 
+export const reviews = [
+  {
+    name: "Riya Das",
+    date: "23 July, 2025",
+    rating: 5,
+    profile: "profile.jpg",
+    comment:
+      "Thank you so much Dev Puja for conducting the puja for those who can not go to the temple from so far. I am Happy to heard my name and gotra sankalp in the puja video. Jai Sri Gouri Kedareswar Mahadev.",
+  },
+  {
+    name: "Suvomoy Bhowmick samarpitaa Bhowmick",
+    date: "22 July, 2025",
+    profile: "profile.jpg",
+    rating: 5,
+    comment:
+      "Thank you for your support and devotion in this spiritual journey. 🙏",
+  },
+  {
+    name: "Nita Inamdar",
+    date: "22 July, 2025",
+    profile: "profile.jpg",
+    rating: 5,
+    comment:
+      "Gratitude to all the pandit ji's for conducting puja on our behalf.",
+  },
+];
+
+
 export const data = [
   {
     _id: "6942aaa57f01f307476e1e43",
@@ -226,7 +254,7 @@ export const chadhavaData = {
     {
       "name": "Modak Offering",
       "description": "Freshly prepared modaks offered to Lord Ganesh.",
-      "image": "https://example.com/images/modak.jpg",
+      "image": "temple.jpg",
       "price": 251,
       "isSpecialCombo": false,
       "isPrasadForHome": true
@@ -234,9 +262,17 @@ export const chadhavaData = {
     {
       "name": "Special Puja Combo",
       "description": "Includes flowers, modaks, coconut, and incense sticks.",
-      "image": "https://example.com/images/puja-combo.jpg",
+      "image": "temple.jpg",
       "price": 751,
       "isSpecialCombo": true,
+      "isPrasadForHome": false
+    },
+    {
+      "name": "Special Puja Combo",
+      "description": "Includes flowers, modaks, coconut, and incense sticks.",
+      "image": "temple.jpg",
+      "price": 751,
+      "isSpecialCombo": false,
       "isPrasadForHome": false
     }
   ],

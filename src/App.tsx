@@ -1,6 +1,7 @@
 import { useEffect, useState, type PropsWithChildren } from 'react'
 import './App.css'
 import { ArrowUp } from 'lucide-react';
+import ScrollToTop from './components/ScrollToTop';
 // import { getPublicIP } from './utils/API';
 
 function App({ children }: PropsWithChildren) {
@@ -41,7 +42,7 @@ useEffect(() => {
   return (
     <>
       {children}
-
+      <ScrollToTop />
       {/* Scroll to top button */}
         {showButton && (
           <button

@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import { MapPin, Clock, Calendar, Star } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  MapPin,
+  Clock,
+  Calendar,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import ReviewsRatings from "./Reviews";
 import slide1 from "../assets/Home/1.jpg";
 import { pujaData } from "../../details";
@@ -10,8 +17,9 @@ import Benefits from "./Puja/Benefits";
 import Process from "./Puja/Process";
 import Temple from "./Puja/Temple";
 import Packages from "./Puja/Packages";
+import UserReviews from "./UserReview";
 
-const PujaDetail: React.FC = () => {
+const PujaDetail = () => {
   const [activeTab, setActiveTab] = useState("about-puja");
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = [slide1, slide1, slide1, slide1];
@@ -33,6 +41,43 @@ const PujaDetail: React.FC = () => {
     { name: "Reviews", id: "reviews" },
     { name: "FAQs", id: "faqs" },
   ];
+
+  // const ScrollTabs = ({ tabs }: Props) => {
+  //   const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-50% 0px -50% 0px",
+        threshold: 0,
+      }
+    );
+
+    tabs.forEach((tab) => {
+      const el = document.getElementById(tab.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClick = (tabId: string) => {
+    setActiveTab(tabId);
+    document.getElementById(tabId)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  // }
 
   // const heroSlides = [
   //   {
@@ -155,7 +200,7 @@ const PujaDetail: React.FC = () => {
         <div className="">
           <div className="max-w-7xl mx-auto px-4 my-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-105">
-              {/* LEFT : Image slider */}
+              {/* left image slider part */}
               <div className="relative rounded-2xl overflow-hidden shadow-lg h-full">
                 <img
                   src={images[currentIndex]}
@@ -167,14 +212,16 @@ const PujaDetail: React.FC = () => {
                   onClick={prevSlide}
                   className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full"
                 >
-                  ‹
+                  {/* ‹ */}
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
 
                 <button
                   onClick={nextSlide}
                   className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full"
                 >
-                  ›
+                  {/* › */}
+                  <ChevronRight className="w-4 h-4" />
                 </button>
 
                 <div className="absolute bottom-4 right-4 flex gap-2">
@@ -339,7 +386,13 @@ const PujaDetail: React.FC = () => {
                     </div>
 
                     {/* CTA */}
-                    <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-xl">
+                    <button
+                      onClick={() => {
+                        const el = document.getElementById("packages");
+                        el?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-xl rounded-xl cursor-pointer"
+                    >
                       Select puja package →
                     </button>
                   </div>
@@ -370,7 +423,7 @@ const PujaDetail: React.FC = () => {
           </nav> */}
 
           {/* Tab Content */}
-          <div className="sticky top-16 z-40 bg-white border-b border-gray-200">
+          {/* <div className="sticky top-16 z-40 bg-white border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4">
               <div className="flex justify-center gap-10 px-4 overflow-x-auto no-scrollbar">
                 {tabs.map((tab) => (
@@ -384,6 +437,25 @@ const PujaDetail: React.FC = () => {
                       });
                     }}
                     className={`pb-4 pt-4 border-b-2 text-sm transition-colors ${
+                      activeTab === tab.id
+                        ? "border-orange-500 text-orange-500 font-semibold"
+                        : "border-transparent text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    {tab.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div> */}
+          <div className="sticky top-20 z-40 bg-white border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="flex justify-center gap-10 px-4 overflow-x-auto no-scrollbar">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleClick(tab.id)}
+                    className={`py-4 border-b-2 text-md transition-colors ${
                       activeTab === tab.id
                         ? "border-orange-500 text-orange-500 font-semibold"
                         : "border-transparent text-gray-600 hover:text-gray-900"
@@ -527,6 +599,7 @@ const PujaDetail: React.FC = () => {
 
           {/* Reviews & Ratings */}
           <ReviewsRatings />
+          <UserReviews />
 
           {/* FAQs */}
           <FAQs />
