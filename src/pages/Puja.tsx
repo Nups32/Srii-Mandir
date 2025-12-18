@@ -13,6 +13,8 @@ import slide3 from "../assets/Puja/1/3.webp";
 import slide4 from "../assets/Puja/1/4.webp";
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
+// import { getPooja } from "@/utils/API";
+// import { message } from "antd";
 
 interface PujaCard {
   id: number;
@@ -30,6 +32,9 @@ const Puja: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentWorkSlide, setCurrentWorkSlide] = useState(0);
   const navigate = useNavigate();
+  // const [loading, setLoading] = useState(false);
+  // const [poojas, setPoojas] = useState<any[]>([]);
+
 
   const heroSlides = [
     {
@@ -218,6 +223,26 @@ const Puja: React.FC = () => {
     },
   ];
 
+  // const fetchPooja = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response: any = await getPooja();
+  //     if (response?.data?.status) {
+  //       setPoojas(response);
+  //     } else {
+  //       message.error("failed to fetch poojas");
+  //     }
+  //   } catch (error) {
+  //     message.error("Network error. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchPooja();
+  // }, []);
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
@@ -254,7 +279,7 @@ const Puja: React.FC = () => {
               alt={heroSlides[currentSlide].title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
               <div className="h-full flex flex-col justify-center px-8 md:px-16">
                 <span className="inline-block w-fit bg-red-600 text-white text-xs font-bold px-3 py-1 rounded mb-4">
                   {heroSlides[currentSlide].badge}
@@ -269,7 +294,7 @@ const Puja: React.FC = () => {
                   {heroSlides[currentSlide].buttonText}
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Slider Controls */}
@@ -292,9 +317,8 @@ const Puja: React.FC = () => {
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  currentSlide === idx ? "bg-white w-8" : "bg-white/50"
-                }`}
+                className={`w-2 h-2 rounded-full transition-all ${currentSlide === idx ? "bg-white w-8" : "bg-white/50"
+                  }`}
               />
             ))}
           </div>
