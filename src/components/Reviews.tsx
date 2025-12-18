@@ -64,7 +64,7 @@ const ReviewsRatings: React.FC = () => {
 
   return (
     <>
-      <section id="reviews" className="w-full bg-gray-50 py-16">
+      <section id="reviews" className="w-full bg-gray-50 rounded-2xl py-16 px-3">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -72,7 +72,7 @@ const ReviewsRatings: React.FC = () => {
               Reviews & Ratings
             </h2>
             <p className="text-gray-600 text-lg">
-              Read to what our believers devotees have to say about Sri Mandir.
+              Read to what our believers devotees have to say about Dev Puja.
             </p>
           </div>
 

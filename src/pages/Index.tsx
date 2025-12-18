@@ -101,10 +101,10 @@ const Index = () => {
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-4xl text-purple-400 flex justify-center items-center font-semibold text-center sm:text-left">
-              Special Poojas
+              Special Pujas
             </h2>
             <Link
-              to="/pooja"
+              to="/puja"
               className="text-orange-600 text-sm font-medium hover:underline"
             >
               View All →

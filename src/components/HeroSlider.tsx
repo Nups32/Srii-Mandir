@@ -49,7 +49,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
           <img
             src={slide.image}
             alt={`slide-${index}`}
-            className="w-full h-full object-cover"
+            className="h-w-full h-full object-cover"
           />
         </div>
       ))}

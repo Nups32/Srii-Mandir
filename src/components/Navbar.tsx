@@ -21,7 +21,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Logo" className="h-10" />
             <span className="font-semibold text-orange-600">
-              Shri Mandir
+              Dev Puja
             </span>
           </Link>
 

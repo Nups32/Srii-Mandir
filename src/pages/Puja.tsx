@@ -8,7 +8,11 @@ import {
 } from "lucide-react";
 
 import slide1 from "../assets/Puja/1/1.webp";
+import slide2 from "../assets/Puja/1/2.webp";
+import slide3 from "../assets/Puja/1/3.webp";
+import slide4 from "../assets/Puja/1/4.webp";
 import { useNavigate } from "react-router-dom";
+import ReviewsRatings from "@/components/Reviews";
 
 interface PujaCard {
   id: number;
@@ -24,6 +28,7 @@ interface PujaCard {
 
 const Puja: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentWorkSlide, setCurrentWorkSlide] = useState(0);
   const navigate = useNavigate();
 
   const heroSlides = [
@@ -155,6 +160,64 @@ const Puja: React.FC = () => {
     },
   ];
 
+  const pujaWorkSlides = [slide1, slide2, slide3, slide4];
+
+  const pujaWork = [
+    {
+      step: 1,
+      title: "Choose Your Puja",
+      desc: "Select your Puja from the List",
+    },
+    {
+      step: 2,
+      title: "Your Information",
+      desc: "After selecting the Puja, fill in the information of your Name and Gotra in the provided form.",
+    },
+    {
+      step: 3,
+      title: "Puja video",
+      desc: "The video of your Puja completed with your name and Gotra will be shared on WhatsApp.",
+    },
+    {
+      step: 4,
+      title: "Aashirwad Box",
+      desc: "Aashirwad Box will be sent to your registered address.",
+    },
+  ];
+
+  const purohits = [
+    {
+      name: "Acharya Ramjoo Dwivedi",
+      place: "Prayagraj",
+      exp: 15,
+      image: slide1,
+    },
+    {
+      name: "Pandit Ashish Bhatt",
+      place: "Haridwar",
+      exp: 5,
+      image: slide1,
+    },
+    {
+      name: "Pandit Hanshul Dutt",
+      place: "Haridwar",
+      exp: 5,
+      image: slide1,
+    },
+    {
+      name: "Pandit Ravi Dubey",
+      place: "Ujjain",
+      exp: 5,
+      image: slide1,
+    },
+    {
+      name: "Pandit Saurabh Gautam",
+      place: "Varanasi",
+      exp: 4,
+      image: slide1,
+    },
+  ];
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
@@ -162,6 +225,15 @@ const Puja: React.FC = () => {
   const prevSlide = () => {
     setCurrentSlide(
       (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+    );
+  };
+
+  const nextWorkSlide = () => {
+    setCurrentWorkSlide((prev) => (prev + 1) % pujaWorkSlides.length);
+  };
+  const prevWorkSlide = () => {
+    setCurrentWorkSlide(
+      (prev) => (prev - 1 + pujaWorkSlides.length) % pujaWorkSlides.length
     );
   };
 
@@ -234,7 +306,7 @@ const Puja: React.FC = () => {
             Upcoming Pujas
           </h2>
           <p className="text-gray-600 mb-8">
-            Book your{" "}
+            Book puja{" "}
             <span className="text-orange-500 font-semibold">Online</span> with
             your name and gotra, receive the puja video along with the
             Aashirvad/ Fal, and get blessings from the divine.
@@ -304,6 +376,130 @@ const Puja: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Reviews section */}
+        {/* <h2 className="text-3xl md:text-4xl font-bold text-gray-800">What devotees Say about Dev Puja ?</h2> */}
+        <ReviewsRatings />
+
+        <div className="space-y-24">
+          {/*Puja Stats Section */}
+          <section className="max-w-7xl mx-auto px-4 pt-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
+              Start your Sacred Journey with Dev Puja Service
+            </h2>
+            <p className="text-xl mb-8 text-center">
+              Why book Dev Puja Online Puja?{" "}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="bg-purple-100 rounded-xl p-6 text-center">
+                <h3 className="text-2xl font-bold text-indigo-600">
+                  10,00,000 +
+                </h3>
+                <p className="text-indigo-600 mt-2">Puja's Done</p>
+              </div>
+              <div className="bg-orange-100 rounded-xl p-6 text-center">
+                <h3 className="text-2xl font-bold text-orange-600">
+                  300,000 +
+                </h3>
+                <p className="text-orange-600 mt-2">Happy Devotees</p>
+              </div>
+              <div className="bg-pink-100 rounded-xl p-6 text-center">
+                <h3 className="text-2xl font-bold text-pink-600">100 +</h3>
+                <p className="text-pink-600 mt-2">Famous Temples in India</p>
+              </div>
+              <div className="bg-blue-100 rounded-xl p-6 text-center">
+                <h3 className="text-2xl font-bold text-blue-600">1 Sankalp</h3>
+                <p className="text-blue-600 mt-2">Spreading Sanatan Dharma</p>
+              </div>
+            </div>
+          </section>
+
+          {/* How Puja Works */}
+          <section className="max-w-7xl mx-auto px-4 pt-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
+              How does Dev Puja Online Puja Works?
+            </h2>
+
+            <div className="lg:flex lg:items-start lg:gap-12">
+              {/* Left Steps */}
+              <div className="lg:w-1/2 space-y-6">
+                {pujaWork.map((item) => (
+                  <div key={item.step} className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">
+                      {item.step}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right Image / Video Placeholder */}
+              {/* Right Image / Video Slider */}
+              <div className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center relative">
+                <img
+                  src={pujaWorkSlides[currentWorkSlide]}
+                  alt={`Puja Work ${currentWorkSlide + 1}`}
+                  className="w-full h-80 md:h-[400px] object-cover rounded-xl"
+                />
+
+                {/* Prev / Next Buttons */}
+                <button
+                  onClick={prevWorkSlide}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/30 hover:bg-white/50 rounded-full flex items-center justify-center backdrop-blur-sm"
+                >
+                  <ChevronLeft className="w-6 h-6 text-white" />
+                </button>
+                <button
+                  onClick={nextWorkSlide}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/30 hover:bg-white/50 rounded-full flex items-center justify-center backdrop-blur-sm"
+                >
+                  <ChevronRight className="w-6 h-6 text-white" />
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Purohit Team Section */}
+          <section className="max-w-7xl mx-auto px-4 py-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
+              Meet the experienced community of Dev Puja Purohit's
+            </h2>
+            <p className="text-gray-700 text-center max-w-3xl mx-auto mb-12">
+              Our commitment is to perform pujas with true devotion towards the
+              Divine and in accordance with Vedic scriptures. We perform pujas
+              at Shaktipeeths, Jyotirlingas and other sacred temples to ensure
+              you and your family receive blessings of well-being and
+              auspiciousness in your lives.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {purohits.map((purohit, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden text-center p-4"
+                >
+                  <img
+                    src={purohit.image}
+                    alt={purohit.name}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {purohit.name}
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    {purohit.place} • Exp: {purohit.exp} years
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
     </div>

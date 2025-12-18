@@ -1,4 +1,6 @@
+import ChadhavaOffering from "@/components/ChadhavaOffering";
 import PujaDetail from "@/components/PujaDetails";
+import Chadhava from "@/pages/Chadhava";
 import PageNotFound from "@/pages/PagenotFound";
 import Puja from "@/pages/Puja";
 import type { RouteObjectWithLayout } from "@/router";
@@ -17,6 +19,14 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/puja-detail",
     element: <PujaDetail />,
+  },
+  {
+    path: "/chadhava",
+    element: <Chadhava />,
+  },
+  {
+    path: "/offering",
+    element: <ChadhavaOffering />,
   },
   {
     path: "*",
