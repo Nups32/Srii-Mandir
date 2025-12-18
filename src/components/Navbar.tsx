@@ -66,7 +66,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <img src={logo} alt="Logo" className="h-20" />
-              <span className="font-semibold text-orange-600">Shrii Mandir</span>
+              <span className="font-semibold text-orange-600">Srii Mandir</span>
             </Link>
 
             {/* Desktop Menu */}
