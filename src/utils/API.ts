@@ -104,33 +104,123 @@ export const getPooja = async () => {
   }
 };
 
+export const getPoojaById = async (id: string) => {
+  try {
+    const response = await API.get(`/backend/pooja/${id}/edit`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const storePooja = async (data: any) => {
   try {
-    const response = await API.post("/backend/contact", data);
+    const response = await API.post("/backend/pooja", data);
     return response;
   } catch (error) {
     throw error;
   }
 };
 
+export const updatePooja = async (id: string, data: any) => {
+  try {
+    const response = await API.put(`/backend/pooja/${id}/update`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 
+// Media API functions
+export const getMedias = async () => {
+  const response = await CommanAPI.get(`/media`);
+  return response;
+};
+
+export const getAllMedia = async () => {
+  const response = await API.get(`/backend/media/get-all`);
+  return response;
+};
+
+export const getMediaById = async (id: string) => {
+  const response = await API.get(`/backend/media/${id}/edit`);
+  return response;
+};
+
+export const storeMedia = async (formData: FormData) => {
+  const response = await API.post(`/backend/media`, formData);
+  return response;
+};
+
+export const updateMedia = async (id: string, formData: FormData) => {
+  const response = await API.put(`/backend/media/${id}/update`, formData);
+  return response;
+};
+
+export const deleteMedia = async (id: string) => {
+  const response = await API.delete(`/backend/media/${id}/delete`);
+  return response;
+};
+
+export const updateMediaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/media/${id}/status`, data);
+  return response;
+};
+
+// Chadhava API functions
 export const getChadhava = async () => {
-  try {
-    const response = await CommanAPI.get("/chadhava");
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await CommanAPI.get(`/chadhava`);
+  return response;
 };
 
-export const storeChadhava = async (data: any) => {
-  try {
-    const response = await API.post("/backend/chadhava/store", data);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+export const getAllChadhava = async () => {
+  const response = await API.get(`/backend/chadhava/get-all`);
+  return response;
 };
+
+export const getChadhavaById = async (id: string) => {
+  const response = await API.get(`/backend/chadhava/${id}/edit`);
+  return response;
+};
+
+export const storeChadhava = async (formData: FormData) => {
+  const response = await API.post(`/backend/chadhava`, formData);
+  return response;
+};
+
+export const updateChadhava = async (id: string, formData: FormData) => {
+  const response = await API.put(`/backend/chadhava/${id}/update`, formData);
+  return response;
+};
+
+export const deleteChadhava = async (id: string) => {
+  const response = await API.delete(`/backend/chadhava/${id}/delete`);
+  return response;
+};
+
+export const updateChadhavaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/chadhava/${id}/status`, data);
+  return response;
+};
+
+
+// export const getChadhava = async () => {
+//   try {
+//     const response = await CommanAPI.get("/chadhava");
+//     return response;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// export const storeChadhava = async (data: any) => {
+//   try {
+//     const response = await API.post("/backend/chadhava/store", data);
+//     return response;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 
 export const getPoojaPackage = async () => {
