@@ -65,8 +65,8 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <img src={logo} alt="Logo" className="h-10" />
-              <span className="font-semibold text-orange-600">Dev Puja</span>
+              <img src={logo} alt="Logo" className="h-20" />
+              <span className="font-semibold text-orange-600">Srii Mandir</span>
             </Link>
 
             {/* Desktop Menu */}
