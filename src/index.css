@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
-body {
-    font-family: "Inter", "Poppins", "Roboto", sans-serif;
+@layer base {
+  html {
+    font-family: "Inter", "Poppins", "Roboto", sans-serif !important;
+  }
 }

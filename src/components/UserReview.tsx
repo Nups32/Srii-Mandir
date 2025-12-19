@@ -16,7 +16,7 @@ export default function UserReviews() {
           <div key={index}>
             <div className="flex gap-4">
               {/* Avatar */}
-              <div className="w-12 h-12 rounded-full border border-orange-400 p-0.5 overflow-hidden">
+              <div className="w-12 h-12 rounded-full border border-orange-400 overflow-hidden">
                 <img
                   src={review.profile}
                   alt={review.name}

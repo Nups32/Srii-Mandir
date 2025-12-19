@@ -45,31 +45,31 @@ const Index = () => {
   const slides = [
     {
       image: slide1,
-      title: "Special Puja with Dev Puja",
+      title: "Special Puja with Srii Mandir",
       description:
-        "Worship your deities at home and receive their divine blessings — only on Dev Puja.",
+        "Worship your deities at home and receive their divine blessings — only on Srii Mandir.",
       buttonText: "Explore Now",
       buttonLink: "/puja",
     },
     {
       image: slide2,
-      title: "Dev Puja",
+      title: "Srii Mandir",
       description:
-        "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Dev Puja.",
+        "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Srii Mandir.",
       buttonText: "Explore",
       buttonLink: "/puja",
     },
     {
       image: slide3,
-      title: "Dev Puja Special Chadhava",
+      title: "Srii Mandir Special Chadhava",
       description:
-        "Now offer your prayers and sacred offerings to your beloved deities at renowned temples across India — from your home. Seek divine blessings on Dev Puja.",
+        "Now offer your prayers and sacred offerings to your beloved deities at renowned temples across India — from your home. Seek divine blessings on Srii Mandir.",
       buttonText: "Offer Chadhava",
       buttonLink: "/chadhava",
     },
     {
       image: slide4,
-      title: "Dev Puja Special Puja",
+      title: "Srii Mandir Special Puja",
       description:
         "Invoke peace, prosperity, and happiness for your family through online pujas at India’s sacred temples — from the comfort of your home.",
       buttonText: "Book Puja",
@@ -120,11 +120,11 @@ const Index = () => {
           </div>
 
           {/* Puja Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-4">
             {pujas.map((puja) => (
               <div
                 key={puja.title}
-                className="bg-white rounded-2xl p-4 border hover:shadow-lg transition"
+                className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-sm transition"
               >
                 {/* Image Banner */}
                 <div className="relative">
@@ -222,7 +222,7 @@ const Index = () => {
 
         {/* CTA */}
         <section className="max-w-7xl mx-auto px-4 pb-24">
-          <div className="bg-gradient-to-r from-orange-400 to-orange-400 rounded-3xl text-white p-12 text-center">
+          <div className="bg-linear-to-r from-orange-400 to-orange-400 rounded-3xl text-white p-12 text-center">
             <h2 className="text-2xl font-semibold">
               Get Your Personalized Vedic Report
             </h2>

@@ -7,8 +7,9 @@ const menu = [
   { name: "Home", path: "/" },
   { name: "Puja", path: "/puja" },
   { name: "Chadhava", path: "/chadhava" },
-  { name: "Instant Solutions", path: "/instant-solutions" },
-  { name: "Mandir", path: "/mandir" },
+  // { name: "Instant Solutions", path: "/instant-solutions" },
+  // { name: "Mandir", path: "/mandir" },
+  { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
   { name: "Shakti Sanyans", path: "/shakti-sanyans" },
 ];
@@ -59,11 +60,11 @@ const Navbar = () => {
 
   return (
     <>
-      {/* HEADER */}
+      {/* header */}
       <header className="sticky top-0 z-50 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+            {/* logo */}
             <Link to="/" className="flex items-center gap-2">
               <img src={logo} alt="Logo" className="h-20" />
               <span className="font-semibold text-orange-600">Srii Mandir</span>
@@ -102,12 +103,12 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* BACKDROP */}
+      {/* backdrop */}
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity" />
       )}
 
-      {/* MOBILE MENU */}
+      {/* mobile menu */}
       <div
         ref={menuRef}
         className={`fixed top-0 right-0 z-50 h-full w-[80%] max-w-sm bg-white shadow-xl transform transition-transform duration-300 ${
@@ -115,7 +116,7 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center justify-between p-5 border-b">
-          <span className="font-semibold text-orange-600">Dev Puja</span>
+          <span className="font-semibold text-orange-600">Srii Mandir</span>
           <button
             onClick={() => setIsOpen(false)}
             className="p-2 rounded-lg hover:bg-gray-100"

@@ -114,7 +114,7 @@ export const pujaData = [
         step: 4,
         title: "Puja Day Updates",
         description:
-          "Our experienced pandits perform the sacred puja. All Dev Puja devotees' pujas are conducted collectively on the day of the puja. You will receive real-time updates on the puja on your registered WhatsApp number.",
+          "Our experienced pandits perform the sacred puja. All Srii Mandir devotees' pujas are conducted collectively on the day of the puja. You will receive real-time updates on the puja on your registered WhatsApp number.",
       },
       {
         step: 5,
@@ -151,7 +151,7 @@ export const reviews = [
     rating: 5,
     profile: "profile.jpg",
     comment:
-      "Thank you so much Dev Puja for conducting the puja for those who can not go to the temple from so far. I am Happy to heard my name and gotra sankalp in the puja video. Jai Sri Gouri Kedareswar Mahadev.",
+      "Thank you so much Srii Mandir for conducting the puja for those who can not go to the temple from so far. I am Happy to heard my name and gotra sankalp in the puja video. Jai Sri Gouri Kedareswar Mahadev.",
   },
   {
     name: "Suvomoy Bhowmick samarpitaa Bhowmick",
@@ -211,7 +211,7 @@ export const data = [
       "Bhog consisting of fruits, sweets, and dry fruits will be offered to Maa Bagalamukhi and Maa Pratyangira at Siddhapeeth Maa Bagalamukhi Mandir along with floral tributes.",
       "Opt for additional offerings like Vastra Seva, Anna Seva, Gau Seva, or Deep Daan to be done in your name.",
       "Upon completion, a video of your puja and offering will be shared with you on your registered WhatsApp number or can be found in your booking history within 3-4 days.",
-      "After the completion of the puja, a Divine Aashirwad Box containing items such as Gangajal, Sacred Thread, etc., sourced from revered Tirth sites, will be sent to your address within 8-10 days. This box will be sent by Dev Puja along with your puja booking at no additional cost.",
+      "After the completion of the puja, a Divine Aashirwad Box containing items such as Gangajal, Sacred Thread, etc., sourced from revered Tirth sites, will be sent to your address within 8-10 days. This box will be sent by Srii Mandir along with your puja booking at no additional cost.",
     ],
     createdAt: "2025-12-18T05:01:57.594Z",
     updatedAt: "2025-12-18T05:01:57.594Z",
@@ -227,7 +227,7 @@ export const data = [
       "Bhog consisting of fruits, sweets, and dry fruits will be offered to Maa Bagalamukhi and Maa Pratyangira at Siddhapeeth Maa Bagalamukhi Mandir along with floral tributes.",
       "Opt for additional offerings like Vastra Seva, Anna Seva, Gau Seva, or Deep Daan to be done in your name.",
       "Upon completion, a video of your puja and offering will be shared with you on your registered WhatsApp number or can be found in your booking history within 3-4 days.",
-      "After the completion of the puja, a Divine Aashirwad Box containing items such as Gangajal, Sacred Thread, etc., sourced from revered Tirth sites, will be sent to your address within 8-10 days. This box will be sent by Dev Puja along with your puja booking at no additional cost.",
+      "After the completion of the puja, a Divine Aashirwad Box containing items such as Gangajal, Sacred Thread, etc., sourced from revered Tirth sites, will be sent to your address within 8-10 days. This box will be sent by Srii Mandir along with your puja booking at no additional cost.",
     ],
     createdAt: "2025-12-18T05:03:29.298Z",
     updatedAt: "2025-12-18T05:03:29.298Z",
@@ -242,38 +242,41 @@ export const chadhavaData = {
   about: "A sacred offering dedicated to Lord Ganesh for prosperity and wisdom.",
   details: [
     {
-      "question": "What is Chadhava?",
-      "answer": "Chadhava is a traditional offering made to the deity as a form of devotion."
+      question: "What is Chadhava?",
+      answer: "Chadhava is a traditional offering made to the deity as a form of devotion."
     },
     {
-      "question": "When is it performed?",
-      "answer": "It can be performed on Ganesh Chaturthi or any auspicious day."
+      question: "When is it performed?",
+      answer: "It can be performed on Ganesh Chaturthi or any auspicious day."
     }
   ],
   offering: [
     {
-      "name": "Modak Offering",
-      "description": "Freshly prepared modaks offered to Lord Ganesh.",
-      "image": "temple.jpg",
-      "price": 251,
-      "isSpecialCombo": false,
-      "isPrasadForHome": true
+      id: "1",
+      name: "Modak Offering",
+      description: "Freshly prepared modaks offered to Lord Ganesh.",
+      // "image": "temple.jpg",
+      price: 251,
+      isSpecialCombo: false,
+      isPrasadForHome: true
     },
     {
-      "name": "Special Puja Combo",
-      "description": "Includes flowers, modaks, coconut, and incense sticks.",
-      "image": "temple.jpg",
-      "price": 751,
-      "isSpecialCombo": true,
-      "isPrasadForHome": false
+      id: "2",
+      name: "Special Puja Combo",
+      description: "Includes flowers, modaks, coconut, and incense sticks.",
+      image: "temple.jpg",
+      price: 751,
+      isSpecialCombo: true,
+      isPrasadForHome: false
     },
     {
-      "name": "Special Puja Combo",
-      "description": "Includes flowers, modaks, coconut, and incense sticks.",
-      "image": "temple.jpg",
-      "price": 751,
-      "isSpecialCombo": false,
-      "isPrasadForHome": false
+      id: "3",
+      name: "Special Puja Combo",
+      description: "Includes flowers, modaks, coconut, and incense sticks.",
+      image: "temple.jpg",
+      price: 751,
+      isSpecialCombo: false,
+      isPrasadForHome: false
     }
   ],
   time: "19 December 2025, Friday, Pausha Krishna Amavasya",
