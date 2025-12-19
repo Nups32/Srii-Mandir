@@ -78,7 +78,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       <button
         onClick={prevSlide}
         className="absolute left-6 top-1/2 -translate-y-1/2 z-20
-                   bg-black/40 hover:bg-black/60 text-white
+                   bg-black/40 hover:bg-black/60 text-white!
                    w-12 h-12 rounded-full flex items-center justify-center
                    opacity-0 group-hover:opacity-100 transition"
       >
@@ -89,7 +89,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       <button
         onClick={nextSlide}
         className="absolute right-6 top-1/2 -translate-y-1/2 z-20
-                   bg-black/40 hover:bg-black/60 text-white
+                   bg-black/40 hover:bg-black/60 text-white!
                    w-12 h-12 rounded-full flex items-center justify-center
                    opacity-0 group-hover:opacity-100 transition"
       >

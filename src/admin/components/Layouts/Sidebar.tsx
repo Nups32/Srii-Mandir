@@ -114,6 +114,24 @@ const Sidebar = () => {
         {
           icon: <PackageOpen />,
           name: "Product",
+          label: t("Manage Pooja"),
+          link: "/admin/pooja",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Product",
+          label: t("Manage Media"),
+          link: "/admin/media",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Chadhava",
+          label: t("Manage Chadhava"),
+          link: "/admin/chadhava",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Product",
           label: t("Manage Product"),
           link: "/admin/product",
         },

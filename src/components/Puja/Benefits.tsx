@@ -12,7 +12,7 @@ export default function Benefits() {
       className="scroll-mt-32 py-12 max-w-7xl mx-auto px-4"
     >
       {/* Section Title */}
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8!">
         Puja Benefits
       </h2>
 
@@ -21,10 +21,10 @@ export default function Benefits() {
         {puja.benefitText.map((item, index) => (
           <div
             key={index}
-            className="flex gap-4"
+            className="flex gap-2 border rounded-2xl p-4 border-gray-300 shadow-sm"
           >
             {/* Icon */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <div className="rounded-full bg-orange-100 flex items-center justify-center">
                 <img
                   src={pujaBenefitsLogo}

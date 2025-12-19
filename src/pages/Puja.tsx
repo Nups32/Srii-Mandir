@@ -11,6 +11,10 @@ import slide1 from "../assets/Puja/1/1.webp";
 import slide2 from "../assets/Puja/1/2.webp";
 import slide3 from "../assets/Puja/1/3.webp";
 import slide4 from "../assets/Puja/1/4.webp";
+import hero1 from "../assets/Puja/hero/1.jpg";
+import hero2 from "../assets/Puja/hero/2.jpg";
+import hero3 from "../assets/Puja/hero/3.jpg";
+
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
 // import { getPooja } from "@/utils/API";
@@ -40,19 +44,22 @@ const Puja: React.FC = () => {
     {
       id: 1,
       image:
-        "https://images.unsplash.com/photo-1604608672516-f1b9b1cf62f5?w=1200&h=400&fit=crop",
-      badge: "GET 25% OFF",
+        hero1,
       title: "Join Sade Sati and Mahadasha Shanti Maha Puja",
-      subtitle: "Get the best package of Puja Ayojan on just 2025",
       buttonText: "BOOK NOW",
     },
     {
       id: 2,
       image:
-        "https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=1200&h=400&fit=crop",
-      badge: "SPECIAL OFFER",
+        hero2,
       title: "Maha Shivaratri Special Puja",
-      subtitle: "Experience divine blessings with our special rituals",
+      buttonText: "BOOK NOW",
+    },
+    {
+      id: 2,
+      image:
+        hero3,
+      title: "Maha Shivaratri Special Puja",
       buttonText: "BOOK NOW",
     },
   ];
@@ -368,19 +375,19 @@ const Puja: React.FC = () => {
                   {/* Details */}
                   <div className="space-y-2 mb-4 h-35">
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <MapPin className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                      <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span className="line-clamp-2">{puja.temple}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <Clock className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                      <Clock className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.duration}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.date}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <MapPin className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                      <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.location}</span>
                     </div>
                   </div>
@@ -391,7 +398,7 @@ const Puja: React.FC = () => {
                     // onClick={() =>
                     //   window.open(`product/${puja.slug}`, "_blank")
                     // }
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     PARTICIPATE
                     <ChevronRight className="w-4 h-4" />
@@ -403,17 +410,17 @@ const Puja: React.FC = () => {
         </div>
 
         {/* Reviews section */}
-        {/* <h2 className="text-3xl md:text-4xl font-bold text-gray-800">What devotees Say about Dev Puja ?</h2> */}
+        {/* <h2 className="text-3xl md:text-4xl font-bold text-gray-800">What devotees Say about Srii Mandir ?</h2> */}
         <ReviewsRatings />
 
         <div className="space-y-24">
           {/*Puja Stats Section */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
-              Start your Sacred Journey with Dev Puja Service
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+              Start your Sacred Journey with Srii Mandir Puja Service
             </h2>
-            <p className="text-xl mb-8 text-center">
-              Why book Dev Puja Online Puja?{" "}
+            <p className="text-gray-600 text-lg text-center">
+              Why book Srii Mandir Online Puja?{" "}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -442,8 +449,8 @@ const Puja: React.FC = () => {
 
           {/* How Puja Works */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
-              How does Dev Puja Online Puja Works?
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10! text-center">
+              How does Srii Mandir Online Puja Works?
             </h2>
 
             <div className="lg:flex lg:items-start lg:gap-12">
@@ -451,7 +458,7 @@ const Puja: React.FC = () => {
               <div className="lg:w-1/2 space-y-6">
                 {pujaWork.map((item) => (
                   <div key={item.step} className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">
                       {item.step}
                     </div>
                     <div>
@@ -464,13 +471,12 @@ const Puja: React.FC = () => {
                 ))}
               </div>
 
-              {/* Right Image / Video Placeholder */}
-              {/* Right Image / Video Slider */}
+              {/* Right Image Slider */}
               <div className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center relative">
                 <img
                   src={pujaWorkSlides[currentWorkSlide]}
                   alt={`Puja Work ${currentWorkSlide + 1}`}
-                  className="w-full h-80 md:h-[400px] object-cover rounded-xl"
+                  className="w-full h-80 md:h-100 object-cover rounded-xl"
                 />
 
                 {/* Prev / Next Buttons */}
@@ -492,10 +498,10 @@ const Puja: React.FC = () => {
 
           {/* Purohit Team Section */}
           <section className="max-w-7xl mx-auto px-4 py-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
-              Meet the experienced community of Dev Puja Purohit's
+            <h2 className="text-3xl font-bold text-gray-800 mb-10! text-center md:text-4xl">
+              Meet the experienced community of Srii Mandir Purohit's
             </h2>
-            <p className="text-gray-700 text-center max-w-3xl mx-auto mb-12">
+            <p className="text-gray-600 text-lg text-center max-w-3xl mx-auto mb-12! leading-relaxed">
               Our commitment is to perform pujas with true devotion towards the
               Divine and in accordance with Vedic scriptures. We perform pujas
               at Shaktipeeths, Jyotirlingas and other sacred temples to ensure
@@ -503,7 +509,7 @@ const Puja: React.FC = () => {
               auspiciousness in your lives.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {purohits.map((purohit, idx) => (
                 <div
                   key={idx}
