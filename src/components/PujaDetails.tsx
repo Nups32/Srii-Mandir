@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import {
   MapPin,
-  Clock,
   Calendar,
   Star,
   ChevronLeft,
@@ -11,7 +10,7 @@ import {
 import ReviewsRatings from "./Reviews";
 import slide1 from "../assets/Home/1.jpg";
 import { pujaData } from "../../details";
-import FAQs from "./Puja/FAQs";
+import FAQs from "./FAQs";
 import AboutPuja from "./Puja/AboutPuja";
 import Benefits from "./Puja/Benefits";
 import Process from "./Puja/Process";
@@ -198,7 +197,7 @@ const PujaDetail = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 pb-16">
         <div className="">
-          <div className="max-w-7xl mx-auto px-4 my-20">
+          <div className="max-w-7xl mx-auto px-4 mt-20 mb-24">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-105">
               {/* left image slider part */}
               <div className="relative rounded-2xl overflow-hidden shadow-lg h-full">
@@ -352,7 +351,7 @@ const PujaDetail = () => {
                       <p className="text-sm font-medium text-gray-700 mb-2">
                         Puja booking will close in
                       </p>
-                      {/* <div className="flex gap-3 text-center">
+                      <div className="flex gap-3 text-center">
                         {[
                           { label: "Day", value: "1" },
                           { label: "Hours", value: "4" },
@@ -366,15 +365,15 @@ const PujaDetail = () => {
                             <p className="text-xs text-gray-500">{t.label}</p>
                           </div>
                         ))}
-                      </div> */}
-                      <div className="flex gap-2">
+                      </div>
+                      {/* <div className="flex gap-2">
                         <Clock className="w-5 h-5 text-orange-500 mt-0.5" />
                         <span>{puja.time}</span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Rating */}
-                    <div className="flex items-center gap-2 mb-6">
+                    <div className="flex items-center gap-2 mb-6!">
                       <div className="flex text-yellow-400">
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} className="w-4 h-4 fill-current" />
@@ -391,7 +390,7 @@ const PujaDetail = () => {
                         const el = document.getElementById("packages");
                         el?.scrollIntoView({ behavior: "smooth" });
                       }}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-xl rounded-xl cursor-pointer"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white! font-semibold py-4 rounded-xl cursor-pointer"
                     >
                       Select puja package →
                     </button>
@@ -455,9 +454,9 @@ const PujaDetail = () => {
                   <button
                     key={tab.id}
                     onClick={() => handleClick(tab.id)}
-                    className={`py-4 border-b-2 text-md transition-colors ${
+                    className={`py-4 border-b-2 text-md transition-colors cursor-pointer ${
                       activeTab === tab.id
-                        ? "border-orange-500 text-orange-500 font-semibold"
+                        ? "border-orange-500 text-orange-500! font-semibold"
                         : "border-transparent text-gray-600 hover:text-gray-900"
                     }`}
                   >
@@ -602,7 +601,7 @@ const PujaDetail = () => {
           <UserReviews />
 
           {/* FAQs */}
-          <FAQs />
+          <FAQs type="puja" />
         </div>
       </main>
     </main>

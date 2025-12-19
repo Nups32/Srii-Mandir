@@ -1,74 +1,104 @@
-import { Github, Linkedin, Twitter } from "lucide-react";
+// import { Github, Linkedin, Twitter } from "lucide-react";
+import logo from "../assets/logo.jpg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const footerServices = [
+    { label: "Puja Services", href: "/puja-services" },
+    { label: "Chadhava", href: "/chadhava" },
+    { label: "Instant Solutions", href: "/solutions" },
+    { label: "Vedic Science", href: "/vedic-science" },
+    { label: "Contact Us", href: "/contact" },
+  ];
+
+  const footerExplore = [
+    { label: "Mandir", href: "/mandir" },
+    { label: "Media", href: "/media" },
+    { label: "Live Katha", href: "/live-katha" },
+    { label: "About Guru", href: "/about-guru" },
+  ];
+
   return (
-    <footer className="bg-orange-50">
+    <footer className="bg-linear-to-br from-orange-400 to-yellow-600">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-
         <div>
-          <h3 className="font-semibold text-orange-600 mb-2">
-            Dev Puja
-          </h3>
-          <p className="text-sm text-gray-600">
-            Dev Puja has brought religious services to the masses in India by connecting devotees, pandits and temples. Partnering with over 100 renowned temples, we provide exclusive pujas and offerings performed by expert pandits and share videos of the completed puja rituals.
+          {/* logo */}
+          <Link to="/" className="flex items-center gap-2 mb-4">
+            <img src={logo} alt="Logo" className="h-20" />
+            {/* <span className="font-semibold text-orange-600">Srii Mandir</span> */}
+          </Link>
+
+          <p className="text-sm text-gray-50 text-justify hyphens-auto">
+            Srii Mandir has brought religious services to the masses in India by
+            connecting devotees, pandits and temples. Partnering with over 100
+            renowned temples, we provide exclusive pujas and offerings performed
+            by expert pandits and share videos of the completed puja rituals.
           </p>
         </div>
 
         <div>
-          <h4 className="font-semibold mb-3">Services</h4>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li>Puja Services</li>
-            <li>Chadhava</li>
-            <li>Instant Solutions</li>
-            <li>Vedic Science</li>
-            <li>Contact Us</li>
+          <h4 className="font-bold mb-3 text-white text-xl">Services</h4>
+          <ul className="space-y-2 text-sm text-gray-50">
+            {footerServices.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="hover:underline transition font-semibold"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
-          <h4 className="font-semibold mb-3">Explore</h4>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li>Mandir</li>
-            <li>Media</li>
-            <li>Live Katha</li>
-            <li>About Guru</li>
+          <h4 className="font-bold mb-3 text-white text-xl">Explore</h4>
+          <ul className="space-y-2 text-sm text-gray-50">
+            {footerExplore.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="hover:underline transition text-gray-50 font-semibold"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
-          <h4 className="font-semibold mb-3">Contact</h4>
-          <p className="text-sm text-gray-600">
+          <h4 className="font-bold mb-3 text-white text-xl">Contact</h4>
+          <a
+            href="mailto: support@devpuja.com"
+            className="hover:underline transition text-gray-50 font-semibold"
+          >
             Email: support@devpuja.com
-          </p>
+          </a>
 
-           <div className="flex flex-row gap-3 mt-5">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="mr-2 hover:text-blue-500" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Twitter className="mr-2 hover:text-blue-500" />
-              </a>
-              <a
-                href="https://github.com/theintellect218"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="mr-2 hover:text-blue-500" />
-              </a>
-            </div>
+          {/* socials */}
+          {/* <div className="flex flex-row gap-3 mt-5">
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Linkedin className="text-white mr-2 hover:text-gray-200" />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter className="text-white mr-2 hover:text-gray-200" />
+            </a>
+          </div> */}
         </div>
       </div>
 
-      <div className="border-t text-center text-sm py-4 text-gray-500">
-        © {new Date().getFullYear()} Dev Puja. All rights reserved.
+      <div className="border-t text-center text-sm py-4 text-gray-300">
+        © {new Date().getFullYear()} Srii Mandir. All rights reserved.
       </div>
     </footer>
   );

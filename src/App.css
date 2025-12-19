@@ -1,5 +1,6 @@
-/* marquee aniamtion */
+@import "tailwindcss";
 
+/* marquee aniamtion */
 .marquee-container {
   background-color: #f8a13d;
   overflow: hidden;
@@ -33,3 +34,8 @@
 .marquee-container:hover .marquee-content {
   animation-play-state: paused;
 } */
+
+.vedic-input {
+  @apply w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-800 
+  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500;
+}
