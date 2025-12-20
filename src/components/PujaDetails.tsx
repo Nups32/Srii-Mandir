@@ -26,7 +26,7 @@ const PujaDetail = () => {
   const [activeTab, setActiveTab] = useState("about-puja");
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = [slide1, slide1, slide1, slide1];
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [pooja, setPooja] = useState<any>();
 
 
