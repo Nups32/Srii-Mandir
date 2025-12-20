@@ -1,7 +1,32 @@
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
-import { data } from "../../../details";
+// import { data } from "../../../details";
+import { useEffect, useState } from "react";
+import { getPoojaPackages } from "@/utils/API";
+import { message } from "antd";
 
-export default function Packages() {
+export default function Packages({ poojaId }: any) {
+  const [, setLoading] = useState(true);
+  const [packages, setPackage] = useState<any>();
+  console.log("poojaId", poojaId);
+
+  const fetchProduct = async () => {
+    setLoading(true);
+    try {
+      const response = await getPoojaPackages();
+      if (response.data.status) {
+        setPackage(response.data.data);
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
   return (
     <section id="packages" className=" py-14">
       <div className="max-w-7xl mx-auto px-4">
@@ -10,31 +35,31 @@ export default function Packages() {
 
         {/* Packages Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 text-left!">
-          {data.map((pkg) => (
+          {packages?.map((pkg: any) => (
             <div
-              key={pkg._id}
+              key={pkg?._id}
               className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition-shadow duration-300"
             >
               {/* Package Header */}
-              <div>
+              <div className="flex flex-col">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2!">
-                  {pkg.title}
+                  {pkg?.title}
                 </h3>
-                <p className="text-gray-500 mb-4">{pkg.person}</p>
+                <p className="text-gray-500 mb-4">{pkg?.person}</p>
                 <p className="text-2xl font-bold text-orange-600 mb-6!">
-                  ₹{pkg.price}
+                  ₹{pkg?.price}
                 </p>
-              </div>
 
-              {/* Services List */}
-              <ul className="text-gray-600 mb-6! space-y-3">
-                {pkg.services.map((service, index) => (
-                  <li key={index} className="flex items-start! justify-start! gap-3">
-                    <CheckIcon className="w-5 h-5 text-orange-600 shrink-0 mt-1" />
-                    <p className="leading-relaxed w-full text-left">{service}</p>
-                  </li>
-                ))}
-              </ul>
+                {/* Services List */}
+                <ul className="text-gray-600 mb-6! space-y-3">
+                  {pkg?.services.map((service: any, index: any) => (
+                    <li key={index} className="flex items-start! justify-start! gap-3">
+                      <CheckIcon className="w-5 h-5 text-orange-600 shrink-0 mt-1" />
+                      <p className="leading-relaxed w-full text-left">{service}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               {/* Participate Button */}
               <button className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer">

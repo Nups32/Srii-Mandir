@@ -120,7 +120,7 @@ export default function FAQs({ type = "puja" }) {
   }
 
   return (
-    <section id="faqs" className="px-4">
+    <section id="faqs" className="px-4 pt-5">
       <div className="my-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-8!">
           Frequently Asked Questions

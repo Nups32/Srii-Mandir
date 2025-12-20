@@ -1,4 +1,5 @@
-// import { chadhavaData } from "../../../details";
+import { chadhavaData } from "../../../details";
+import type { CartItem } from "./CartContext";
 
 type Offer = {
   id: string;
@@ -8,39 +9,36 @@ type Offer = {
 };
 
 type Props = {
+  cart: Record<string, CartItem>;
   onAdd: (offer: Offer) => void;
 };
 
-export default function AdditionalOffers({ onAdd }: Props) {
-  const offers = [
-    {
-      id: "1",
-      name: "Tarpan with Milk, Black Sesame & Kush",
-      price: 151,
-      image: "/assets/offer1.png",
-    },
-    {
-      id: "2",
-      name: "Pitru Stotra Mantra Chanting",
-      price: 201,
-      image: "/assets/offer2.png",
-    },
-  ];
+export default function AdditionalOffers({ cart, onAdd }: Props) {
+  const cartIds = new Set(Object.keys(cart));
+
+  const availableOffers = chadhavaData.offering
+    .filter((offer) => !cartIds.has(offer.id))
+    .slice(0, 3);
+
+  // if (availableOffers.length === 0) return null;
 
   return (
     <div>
       <h3 className="text-lg font-semibold mb-4">Add more offering items</h3>
-
       <div className="grid sm:grid-cols-2 gap-4">
-        {offers.map((offer) => (
+        {availableOffers.map((offer) => (
           <div
             key={offer.id}
             className="bg-white border rounded-xl p-4 flex gap-4"
           >
-            <img
-              src={offer.image}
-              className="w-20 h-20 rounded-lg object-cover"
-            />
+            {/* Image only if available */}
+            {offer.image && (
+              <img
+                src={offer.image}
+                alt={offer.name}
+                className="w-20 h-20 rounded-lg object-cover"
+              />
+            )}
 
             <div className="flex-1">
               <h4 className="text-sm font-semibold">{offer.name}</h4>

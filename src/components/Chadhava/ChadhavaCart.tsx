@@ -1,82 +1,37 @@
-import { useState } from "react";
 import ReviewBooking from "./ReviewBooking";
-import BillDetails from "./BillDetails";
-// import AdditionalOffers from "./AdditionalOffers";
+import AdditionalOffers from "./AdditionalOffers";
 import BottomBar from "./BottomBar";
-
-// type Offer = {
-//   id: string;
-//   name: string;
-//   price: number;
-//   image?: string;
-// };
-
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  image?: string;
-  qty: number;
-};
+import { useCart } from "./CartContext";
 
 export default function ChadhavaCart() {
-  const [cart, setCart] = useState<Record<string, CartItem>>({});
+  const { cart, addOrUpdateItem } = useCart();
 
-  // const addOffer = (offer: Offer) => {
-  //   setCart((prev) => {
-  //     const existing = prev[offer.id];
-
-  //     return {
-  //       ...prev,
-  //       [offer.id]: {
-  //         ...offer,
-  //         qty: existing ? existing.qty + 1 : 1,
-  //       },
-  //     };
-  //   });
-  // };
-
-  // function addOffer(id: string, item: CartItem) {
-  //   setCart((prev) => ({
-  //     ...prev,
-  //     [id]: prev[id]
-  //       ? { ...prev[id], qty: prev[id].qty + 1 }
-  //       : { ...item, qty: 1 },
-  //   }));
-  // }
-
-  function updateQty(id: string, delta: number) {
-    setCart((prev) => {
-      const item = prev[id];
-      if (!item) return prev;
-      const newQty = item.qty + delta;
-      if (newQty <= 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { [id]: _, ...rest } = prev; // remove item if qty <= 0
-        return rest;
-      }
-      return { ...prev, [id]: { ...item, qty: newQty } };
-    });
-  }
-
-  const totalCount = Object.values(cart).reduce(
-    (sum, item) => sum + item.qty,
-    0
-  );
-
-  const totalAmount = Object.values(cart).reduce(
-    (sum, item) => sum + item.qty * item.price,
-    0
-  );
+  const totalCount = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+  const totalAmount = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
 
   return (
     <section className="min-h-screen bg-gray-50 pb-24 px-4">
-      <div className="max-w-3xl mx-auto space-y-6 pt-6">
-        <ReviewBooking updateQty={updateQty} />
-        <BillDetails cart={cart} totalAmount={totalAmount} />
-        {/* <AdditionalOffers onAdd={(offer) => addOffer(offer.id, offer)} /> */}
-      </div>
+      {/* <div className="max-w-3xl mx-auto space-y-6 pt-6"> */}
+      <div className="max-w-7xl mx-auto pt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* <ReviewBooking updateQty={updateQty} /> */}
+        <div>
+           <ReviewBooking cart={cart} updateQty={(id, delta) => addOrUpdateItem({ ...cart[id], id }, delta)} />
+        </div>
+        {/* <BillDetails cart={cart} totalAmount={totalAmount} /> */}
+        <div>
+          {/* <AdditionalOffers onAdd={(offer) => addOffer(offer.id, offer)} /> */}
+           <AdditionalOffers cart={cart} onAdd={(offer) => addOrUpdateItem({
+          ...offer,
+          qty: 0
+        })} />
+        </div>
 
+        {/* <ReviewBooking cart={cart} updateQty={(id, delta) => addOrUpdateItem({ ...cart[id], id }, delta)} />
+        <AdditionalOffers cart={cart} onAdd={(offer) => addOrUpdateItem({
+          ...offer,
+          qty: 0
+        })} /> */}
+      </div>
       {totalCount > 0 && <BottomBar count={totalCount} amount={totalAmount} />}
     </section>
   );

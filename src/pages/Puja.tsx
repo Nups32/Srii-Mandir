@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MapPin,
   Clock,
@@ -17,27 +17,29 @@ import hero3 from "../assets/Puja/hero/3.jpg";
 
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
+import { message } from "antd";
+import { getPooja } from "@/utils/API";
 // import { getPooja } from "@/utils/API";
 // import { message } from "antd";
 
-interface PujaCard {
-  id: number;
-  badgeColor: string;
-  image: string;
-  title: string;
-  description: string;
-  temple: string;
-  duration: string;
-  date: string;
-  location: string;
-}
+// interface PujaCard {
+//   id: number;
+//   badgeColor: string;
+//   image: string;
+//   title: string;
+//   description: string;
+//   temple: string;
+//   duration: string;
+//   date: string;
+//   location: string;
+// }
 
 const Puja: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentWorkSlide, setCurrentWorkSlide] = useState(0);
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-  // const [poojas, setPoojas] = useState<any[]>([]);
+  const [, setLoading] = useState(false);
+  const [poojas, setPoojas] = useState<any[]>([]);
 
 
   const heroSlides = [
@@ -64,113 +66,113 @@ const Puja: React.FC = () => {
     },
   ];
 
-  const pujaCards: PujaCard[] = [
-    {
-      id: 1,
-      badgeColor: "bg-orange-500",
-      image: slide1,
-      title:
-        "108 Kg Lal Mirch Aarti Ahurti (Chilli Offering) and Pradnyavinay Rought Anushthan with 1,25,000 Mantra Jaap",
-      description: "Seek blessings for prosperity and success",
-      temple: "Shree Kal Avandeeshwar Ka Mandir by Lagar Puja Teldhara",
-      duration: "10 December, Sunday, Purnima Endings",
-      date: "Teldhara City, Lal Bagh Colony",
-      location: "Aamjanav Marg, West 18",
-    },
-    {
-      id: 2,
-      badgeColor: "bg-orange-500",
-      image: slide1,
-      title:
-        "Shani Sande Saati Pooja Shanti Mahayaga, Shani Til Tel Abhishek aur Mahadosha Shanti Mahayaga",
-      description: "Get relief from Shani Dosha and obstacles",
-      temple: "Shri Hanuman Mandir",
-      duration: "15 December, Tuesday, Pooja Endings",
-      date: "Ram Nagar, Batti Kuda",
-      location: "Hanuman Marg, North 22",
-    },
-    {
-      id: 3,
-      badgeColor: "bg-orange-500",
-      image: slide1,
-      title: "Panch Tilak Pitru Doodha Nivaran Puja and Ganga Maha Aarti",
-      description: "Perform ancestral rituals with sacred Ganga Aarti",
-      temple: "Ganga Ghat Maha Dham Temple",
-      duration: "20 December, Sunday, Navami Endings",
-      date: "Varanasi Ghat, UP",
-      location: "Dashashwamedh Ghat",
-    },
-    {
-      id: 4,
-      badgeColor: "bg-purple-600",
-      image: slide1,
-      title: "Shri Hanuman, Bhairav, Maha Kali Sampoornn Lakshaksha Anushthan",
-      description: "Complete ritual for protection and prosperity",
-      temple: "Mahakali Mandir Complex",
-      duration: "12 December, Friday, Pooja Endings",
-      date: "Kali Ghat, Kolkata",
-      location: "South Kolkata, West Bengal",
-    },
-    {
-      id: 5,
-      badgeColor: "bg-purple-600",
-      image: slide1,
-      title:
-        "21,000 Shani Mauli Mantra Jaap and 1008 Gorakh Mudhen Chadhava with Shanti Nivaran Puja",
-      description: "Powerful Shani remedies for obstacles removal",
-      temple: "Shri Shani Dham Mandir",
-      duration: "18 December, Saturday, Pooja Endings",
-      date: "Shani Shingnapur, Maharashtra",
-      location: "Ahmednagar District",
-    },
-    {
-      id: 6,
-      badgeColor: "bg-purple-600",
-      image: slide1,
-      title:
-        "Maa Bagalamukhi Tantra Yakta Anushthan and Shani Til Tel Abhishek",
-      description: "Tantric ritual for victory over enemies",
-      temple: "Baglamukhi Siddha Peeth",
-      duration: "25 December, Saturday, Navami Endings",
-      date: "Datia, Madhya Pradesh",
-      location: "Pitambara Peeth",
-    },
-    {
-      id: 7,
-      badgeColor: "bg-red-600",
-      image: slide1,
-      title:
-        "11,000 Mahalakshmi Mantra Jaap, Vaibhav Lakshmi Puja and Dhan Samridhi Karan",
-      description: "Attract wealth and prosperity blessings",
-      temple: "Mahalakshmi Temple",
-      duration: "22 December, Thursday, Pooja Endings",
-      date: "Mumbai, Maharashtra",
-      location: "Breach Candy",
-    },
-    {
-      id: 8,
-      badgeColor: "bg-red-600",
-      image: slide1,
-      title: "Pitru Dosh Nivutti Puja and Kashi Ganga Aarti",
-      description: "Ancestral peace and liberation ritual",
-      temple: "Kashi Vishwanath Temple",
-      duration: "28 December, Wednesday, Amavas",
-      date: "Varanasi, Uttar Pradesh",
-      location: "Kashi Ghat",
-    },
-    {
-      id: 9,
-      badgeColor: "bg-red-600",
-      image: slide1,
-      title:
-        "Navdurga Vrata Puja and Kanchi Peeth 1,25,000 Baglamukhi Shabar Mantra Jap",
-      description: "Divine mother's blessing for protection",
-      temple: "Kamakshi Amman Temple",
-      duration: "30 December, Friday, Navami",
-      date: "Kanchipuram, Tamil Nadu",
-      location: "Temple Street",
-    },
-  ];
+  // const pujaCards: PujaCard[] = [
+  //   {
+  //     id: 1,
+  //     badgeColor: "bg-orange-500",
+  //     image: slide1,
+  //     title:
+  //       "108 Kg Lal Mirch Aarti Ahurti (Chilli Offering) and Pradnyavinay Rought Anushthan with 1,25,000 Mantra Jaap",
+  //     description: "Seek blessings for prosperity and success",
+  //     temple: "Shree Kal Avandeeshwar Ka Mandir by Lagar Puja Teldhara",
+  //     duration: "10 December, Sunday, Purnima Endings",
+  //     date: "Teldhara City, Lal Bagh Colony",
+  //     location: "Aamjanav Marg, West 18",
+  //   },
+  //   {
+  //     id: 2,
+  //     badgeColor: "bg-orange-500",
+  //     image: slide1,
+  //     title:
+  //       "Shani Sande Saati Pooja Shanti Mahayaga, Shani Til Tel Abhishek aur Mahadosha Shanti Mahayaga",
+  //     description: "Get relief from Shani Dosha and obstacles",
+  //     temple: "Shri Hanuman Mandir",
+  //     duration: "15 December, Tuesday, Pooja Endings",
+  //     date: "Ram Nagar, Batti Kuda",
+  //     location: "Hanuman Marg, North 22",
+  //   },
+  //   {
+  //     id: 3,
+  //     badgeColor: "bg-orange-500",
+  //     image: slide1,
+  //     title: "Panch Tilak Pitru Doodha Nivaran Puja and Ganga Maha Aarti",
+  //     description: "Perform ancestral rituals with sacred Ganga Aarti",
+  //     temple: "Ganga Ghat Maha Dham Temple",
+  //     duration: "20 December, Sunday, Navami Endings",
+  //     date: "Varanasi Ghat, UP",
+  //     location: "Dashashwamedh Ghat",
+  //   },
+  //   {
+  //     id: 4,
+  //     badgeColor: "bg-purple-600",
+  //     image: slide1,
+  //     title: "Shri Hanuman, Bhairav, Maha Kali Sampoornn Lakshaksha Anushthan",
+  //     description: "Complete ritual for protection and prosperity",
+  //     temple: "Mahakali Mandir Complex",
+  //     duration: "12 December, Friday, Pooja Endings",
+  //     date: "Kali Ghat, Kolkata",
+  //     location: "South Kolkata, West Bengal",
+  //   },
+  //   {
+  //     id: 5,
+  //     badgeColor: "bg-purple-600",
+  //     image: slide1,
+  //     title:
+  //       "21,000 Shani Mauli Mantra Jaap and 1008 Gorakh Mudhen Chadhava with Shanti Nivaran Puja",
+  //     description: "Powerful Shani remedies for obstacles removal",
+  //     temple: "Shri Shani Dham Mandir",
+  //     duration: "18 December, Saturday, Pooja Endings",
+  //     date: "Shani Shingnapur, Maharashtra",
+  //     location: "Ahmednagar District",
+  //   },
+  //   {
+  //     id: 6,
+  //     badgeColor: "bg-purple-600",
+  //     image: slide1,
+  //     title:
+  //       "Maa Bagalamukhi Tantra Yakta Anushthan and Shani Til Tel Abhishek",
+  //     description: "Tantric ritual for victory over enemies",
+  //     temple: "Baglamukhi Siddha Peeth",
+  //     duration: "25 December, Saturday, Navami Endings",
+  //     date: "Datia, Madhya Pradesh",
+  //     location: "Pitambara Peeth",
+  //   },
+  //   {
+  //     id: 7,
+  //     badgeColor: "bg-red-600",
+  //     image: slide1,
+  //     title:
+  //       "11,000 Mahalakshmi Mantra Jaap, Vaibhav Lakshmi Puja and Dhan Samridhi Karan",
+  //     description: "Attract wealth and prosperity blessings",
+  //     temple: "Mahalakshmi Temple",
+  //     duration: "22 December, Thursday, Pooja Endings",
+  //     date: "Mumbai, Maharashtra",
+  //     location: "Breach Candy",
+  //   },
+  //   {
+  //     id: 8,
+  //     badgeColor: "bg-red-600",
+  //     image: slide1,
+  //     title: "Pitru Dosh Nivutti Puja and Kashi Ganga Aarti",
+  //     description: "Ancestral peace and liberation ritual",
+  //     temple: "Kashi Vishwanath Temple",
+  //     duration: "28 December, Wednesday, Amavas",
+  //     date: "Varanasi, Uttar Pradesh",
+  //     location: "Kashi Ghat",
+  //   },
+  //   {
+  //     id: 9,
+  //     badgeColor: "bg-red-600",
+  //     image: slide1,
+  //     title:
+  //       "Navdurga Vrata Puja and Kanchi Peeth 1,25,000 Baglamukhi Shabar Mantra Jap",
+  //     description: "Divine mother's blessing for protection",
+  //     temple: "Kamakshi Amman Temple",
+  //     duration: "30 December, Friday, Navami",
+  //     date: "Kanchipuram, Tamil Nadu",
+  //     location: "Temple Street",
+  //   },
+  // ];
 
   const pujaWorkSlides = [slide1, slide2, slide3, slide4];
 
@@ -230,25 +232,25 @@ const Puja: React.FC = () => {
     },
   ];
 
-  // const fetchPooja = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response: any = await getPooja();
-  //     if (response?.data?.status) {
-  //       setPoojas(response);
-  //     } else {
-  //       message.error("failed to fetch poojas");
-  //     }
-  //   } catch (error) {
-  //     message.error("Network error. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchPooja = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getPooja();
+      if (response?.data?.status) {
+        setPoojas(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchPooja();
-  // }, []);
+  useEffect(() => {
+    fetchPooja();
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -345,15 +347,16 @@ const Puja: React.FC = () => {
 
           {/* Puja Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pujaCards.map((puja) => (
+            {/* {pujaCards.map((puja) => ( */}
+            {poojas?.map((puja) => (
               <div
-                key={puja.id}
+                key={puja._id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Card Image */}
                 <div className="relative h-62">
                   <img
-                    src={puja.image}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${puja.images?.[0]}`}
                     alt={puja.title}
                     className="w-full h-full object-cover"
                   />
@@ -369,32 +372,32 @@ const Puja: React.FC = () => {
                     {puja.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-3">
-                    {puja.description}
+                    {puja.to}
                   </p>
 
                   {/* Details */}
                   <div className="space-y-2 mb-4 h-35">
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
-                      <span className="line-clamp-2">{puja.temple}</span>
+                      <span className="line-clamp-2">{puja.place}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <Clock className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
-                      <span>{puja.duration}</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.date}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
+                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
+                      <span>{puja.time}</span>
+                    </div>
+                    {/* <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.location}</span>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Button */}
                   <button
-                    onClick={() => navigate("/puja-detail")}
+                    onClick={() => navigate(`/puja-detail/${puja.slug}`)}
                     // onClick={() =>
                     //   window.open(`product/${puja.slug}`, "_blank")
                     // }

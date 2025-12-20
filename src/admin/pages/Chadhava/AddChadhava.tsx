@@ -48,26 +48,26 @@ const AddChadhavaForm: React.FC = () => {
   const [about, setAbout] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [btnText, setBtnText] = useState<string>("");
-  
+
   // Details Array
   const [details, setDetails] = useState<DetailItem[]>([{ question: "", answer: "" }]);
-  
+
   // Offering Array
   const [offerings, setOfferings] = useState<OfferingItem[]>([
-    { 
-      name: "", 
-      description: "", 
-      image: "", 
-      price: 0, 
-      isSpecialCombo: false, 
+    {
+      name: "",
+      description: "",
+      image: "",
+      price: 0,
+      isSpecialCombo: false,
       isPrasadForHome: false,
-      fileList: [] 
+      fileList: []
     }
   ]);
-  
+
   // Images
   const [imageList, setImageList] = useState<UploadFile[]>([]);
-  
+
   // Status
   const [isUpcoming, setIsUpcoming] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -76,17 +76,17 @@ const AddChadhavaForm: React.FC = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      
+
       // Basic Info
       formData.append("title", title);
       formData.append("name", name);
       formData.append("about", about);
       formData.append("time", time);
       formData.append("btnText", btnText);
-      
+
       // Details (as JSON string)
       formData.append("details", JSON.stringify(details));
-      
+
       // Prepare offerings data
       const offeringsData = offerings.map(offering => ({
         name: offering.name,
@@ -97,28 +97,32 @@ const AddChadhavaForm: React.FC = () => {
         // Image will be handled separately in backend
       }));
       formData.append("offering", JSON.stringify(offeringsData));
-      
+
       // Add offering images
       offerings.forEach((offering, index) => {
         if (offering.fileList[0]?.originFileObj) {
           formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
         }
       });
-      
+
       // Add chadhava images
       imageList.forEach((file) => {
         if (file.originFileObj) {
           formData.append(`images`, file.originFileObj as RcFile);
         }
       });
-      
+
       // Status
       formData.append("isUpcoming", isUpcoming.toString());
       formData.append("isActive", isActive.toString());
 
-      await storeChadhava(formData);
-      message.success("Chadhava added successfully");
-      navigate("/admin/chadhava");
+      const res = await storeChadhava(formData);
+      if (res.data.status) {
+        message.success("Chadhava added successfully");
+        navigate("/admin/chadhava");
+      }else{
+        message.error("server error");
+      }
     } catch (error) {
       console.error("Error adding chadhava:", error);
       message.error("Failed to add chadhava. Please try again.");
@@ -148,15 +152,15 @@ const AddChadhavaForm: React.FC = () => {
   // Offering Handlers
   const handleAddOffering = () => {
     setOfferings([
-      ...offerings, 
-      { 
-        name: "", 
-        description: "", 
-        image: "", 
-        price: 0, 
-        isSpecialCombo: false, 
+      ...offerings,
+      {
+        name: "",
+        description: "",
+        image: "",
+        price: 0,
+        isSpecialCombo: false,
         isPrasadForHome: false,
-        fileList: [] 
+        fileList: []
       }
     ]);
   };
@@ -212,7 +216,7 @@ const AddChadhavaForm: React.FC = () => {
       <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
         <Card className="p-1!">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Basic Information Section */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">Basic Information</h3>
@@ -418,7 +422,7 @@ const AddChadhavaForm: React.FC = () => {
                           />
                         )}
                       </div>
-                      
+
                       <Input
                         size="large"
                         className="mb-2"
@@ -426,7 +430,7 @@ const AddChadhavaForm: React.FC = () => {
                         value={offering.name}
                         onChange={(e) => handleOfferingChange(index, 'name', e.target.value)}
                       />
-                      
+
                       <TextArea
                         rows={2}
                         className="mb-2"
@@ -434,7 +438,7 @@ const AddChadhavaForm: React.FC = () => {
                         value={offering.description}
                         onChange={(e) => handleOfferingChange(index, 'description', e.target.value)}
                       />
-                      
+
                       <InputNumber
                         className="w-full mb-2"
                         placeholder="Price"
@@ -444,7 +448,7 @@ const AddChadhavaForm: React.FC = () => {
                         min={0}
                         step={100}
                       />
-                      
+
                       <div className="mb-2">
                         <Upload
                           name="offeringImage"
@@ -463,7 +467,7 @@ const AddChadhavaForm: React.FC = () => {
                           )}
                         </Upload>
                       </div>
-                      
+
                       <Space className="w-full mb-2">
                         <div className="flex items-center">
                           <Switch
@@ -473,7 +477,7 @@ const AddChadhavaForm: React.FC = () => {
                           />
                           <span className="ml-2 text-xs">Special Combo</span>
                         </div>
-                        
+
                         <div className="flex items-center">
                           <Switch
                             size="small"
@@ -559,10 +563,10 @@ const AddChadhavaForm: React.FC = () => {
             </Col>
 
             {/* Submit Button */}
-            <Col span={24} className="buttons mt-6">
+            <Col span={24} className="my-6">
               <button
                 disabled={loading}
-                className={`btn-brand py-2! px-3! cursor-pointer ${loading && 'bg-gray-800!'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (

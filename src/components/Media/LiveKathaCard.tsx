@@ -1,7 +1,10 @@
 import { Radio, Video, Clock } from "lucide-react";
+import AudioCard from "./AudioCard";
+import { getYouTubeEmbedUrl } from "@/utils/Helper";
 
 export default function LiveKathaCard({ katha }: any) {
-  const { title, type, source, isLive, schedule } = katha;
+  // const { title, type, source, isLive = true, schedule } = katha;
+  const { title, type, isLive = true, schedule } = katha;
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition">
@@ -22,9 +25,28 @@ export default function LiveKathaCard({ katha }: any) {
           </span>
         )}
       </div>
+      {katha?.media == "audio" ?
+        <AudioCard
+          key={katha?._id}
+          title={katha?.name}
+          audio={`${import.meta.env.VITE_APP_Image_URL}/media/${katha?.file}`}
+          free
+          premium={false}
+          isPaidUser={false}
+        />
+        : <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
+          <iframe
+            src={getYouTubeEmbedUrl(katha?.url)}
+            title={katha?.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        </div>}
 
       {/* Player */}
-      {type === "audio" && (
+      {/* {type === "audio" && (
         <audio controls className="w-full mb-4!">
           <source src={source} type="audio/mpeg" />
         </audio>
@@ -34,9 +56,9 @@ export default function LiveKathaCard({ katha }: any) {
         <video controls className="w-full rounded-lg mb-4!">
           <source src={source} type="video/mp4" />
         </video>
-      )}
+      )} */}
 
-      {type === "youtube" && (
+      {/* {type === "youtube" && (
         <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
           <iframe
             // src={`https://www.youtube.com/embed/${source}?rel=0&modestbranding=1`}
@@ -48,7 +70,7 @@ export default function LiveKathaCard({ katha }: any) {
             className="absolute inset-0 w-full h-full"
           />
         </div>
-      )}
+      )} */}
 
       {/* Schedule */}
       {!isLive && schedule && (

@@ -1,10 +1,10 @@
-import { pujaData } from "../../../details";
+// import { pujaData } from "../../../details";
 import pujaBenefitsLogo from "../../assets/Puja/pujaBenefits.jpg";
 
-export default function Benefits() {
-  const puja = pujaData[0];
+export default function Benefits({benifits}: any) {
+  // const puja = pujaData[0];
 
-  if (!puja || !puja.benefitText?.length) return null;
+  if (!benifits || !benifits?.length) return null;
 
   return (
     <section
@@ -18,7 +18,7 @@ export default function Benefits() {
 
       {/* Benefits Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {puja.benefitText.map((item, index) => (
+        {benifits?.map((benifit: any, index: any) => (
           <div
             key={index}
             className="flex gap-2 border rounded-2xl p-4 border-gray-300 shadow-sm"
@@ -37,11 +37,11 @@ export default function Benefits() {
             {/* Content */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                {item.title}
+                {benifit.title}
               </h3>
 
               <p className="text-sm text-gray-600 leading-relaxed mb-2">
-                {item.description}
+                {benifit.description}
               </p>
 
               {/* <button className="text-sm text-orange-500 font-medium hover:underline">

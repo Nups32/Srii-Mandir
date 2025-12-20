@@ -230,9 +230,13 @@ const EditChadhavaForm: React.FC = () => {
             formData.append("isUpcoming", isUpcoming.toString());
             formData.append("isActive", isActive.toString());
 
-            await updateChadhava(id, formData);
-            message.success("Chadhava updated successfully");
-            navigate("/admin/chadhava");
+            const res = await updateChadhava(id, formData);
+            if (res.data.status) {
+                message.success("Chadhava updated successfully");
+                navigate("/admin/chadhava");
+            }else{
+                message.error("server error")
+            }
         } catch (error) {
             console.error("Error updating chadhava:", error);
             message.error("Failed to update chadhava. Please try again.");
@@ -773,10 +777,10 @@ const EditChadhavaForm: React.FC = () => {
                         </Col>
 
                         {/* Submit Button */}
-                        <Col span={24} className="buttons mt-6">
+                        <Col span={24} className="my-6">
                             <button
                                 disabled={loading}
-                                className={`btn-brand py-2! px-3! cursor-pointer ${loading && 'bg-gray-800!'}`}
+                                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                                 type="submit"
                             >
                                 {loading ? (

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import HeroSlider from "../components/HeroSlider";
 
-import slide1 from "../assets/Home/1.jpg";
-import slide2 from "../assets/Home/2.jpg";
-import slide3 from "../assets/Home/3.jpg";
-import slide4 from "../assets/Home/4.jpg";
+// import slide1 from "../assets/Home/1.jpg";
+// import slide2 from "../assets/Home/2.jpg";
+// import slide3 from "../assets/Home/3.jpg";
+// import slide4 from "../assets/Home/4.jpg";
 
 import puja1 from "../assets/Home/1.jpg";
 import puja2 from "../assets/Home/1.jpg";
@@ -42,47 +42,47 @@ const pujas = [
 const Index = () => {
   // const images = [slide1, slide2, slide3, slide4];
 
-  const slides = [
-    {
-      image: slide1,
-      title: "Special Puja with Srii Mandir",
-      description:
-        "Worship your deities at home and receive their divine blessings — only on Srii Mandir.",
-      buttonText: "Explore Now",
-      buttonLink: "/puja",
-    },
-    {
-      image: slide2,
-      title: "Srii Mandir",
-      description:
-        "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Srii Mandir.",
-      buttonText: "Explore",
-      buttonLink: "/puja",
-    },
-    {
-      image: slide3,
-      title: "Srii Mandir Special Chadhava",
-      description:
-        "Now offer your prayers and sacred offerings to your beloved deities at renowned temples across India — from your home. Seek divine blessings on Srii Mandir.",
-      buttonText: "Offer Chadhava",
-      buttonLink: "/chadhava",
-    },
-    {
-      image: slide4,
-      title: "Srii Mandir Special Puja",
-      description:
-        "Invoke peace, prosperity, and happiness for your family through online pujas at India’s sacred temples — from the comfort of your home.",
-      buttonText: "Book Puja",
-      buttonLink: "/puja",
-    },
-  ];
+  // const slides = [
+  //   {
+  //     image: slide1,
+  //     title: "Special Puja with Srii Mandir",
+  //     description:
+  //       "Worship your deities at home and receive their divine blessings — only on Srii Mandir.",
+  //     buttonText: "Explore Now",
+  //     buttonLink: "/puja",
+  //   },
+  //   {
+  //     image: slide2,
+  //     title: "Srii Mandir",
+  //     description:
+  //       "Experience divine blessings from sacred temples of India — enjoy online darshan, horoscope, prasad, stories, mantras, and a lot more. Exclusively on Srii Mandir.",
+  //     buttonText: "Explore",
+  //     buttonLink: "/puja",
+  //   },
+  //   {
+  //     image: slide3,
+  //     title: "Srii Mandir Special Chadhava",
+  //     description:
+  //       "Now offer your prayers and sacred offerings to your beloved deities at renowned temples across India — from your home. Seek divine blessings on Srii Mandir.",
+  //     buttonText: "Offer Chadhava",
+  //     buttonLink: "/chadhava",
+  //   },
+  //   {
+  //     image: slide4,
+  //     title: "Srii Mandir Special Puja",
+  //     description:
+  //       "Invoke peace, prosperity, and happiness for your family through online pujas at India’s sacred temples — from the comfort of your home.",
+  //     buttonText: "Book Puja",
+  //     buttonLink: "/puja",
+  //   },
+  // ];
 
   return (
     <>
       <main className="">
         {/* hero image slider */}
         <section className="relative">
-          <HeroSlider slides={slides} />
+          <HeroSlider type="home" />
         </section>
 
         {/* marquee section */}

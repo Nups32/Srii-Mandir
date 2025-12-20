@@ -70,9 +70,9 @@ export const PoojaTable = () => {
         navigate(`/admin/pooja/${record._id}/edit`);
     };
 
-    const handleViewDetails = (record: Puja) => {
-        navigate(`/admin/pooja/${record._id}`);
-    };
+    // const handleViewDetails = (record: Puja) => {
+    //     navigate(`/admin/pooja/${record._id}`);
+    // };
 
     const showDeleteConfirmation = (id: string) => {
         setDeleteId(id);
@@ -236,14 +236,14 @@ export const PoojaTable = () => {
             key: "action",
             render: (_text: any, record: Puja) => (
                 <div className="flex flex-row items-center space-x-2">
-                    <Button
+                    {/* <Button
                         type="link"
                         size="small"
                         onClick={() => handleViewDetails(record)}
                         className="p-0"
                     >
                         View
-                    </Button>
+                    </Button> */}
                     <FaEdit
                         className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
                         onClick={() => handleEditRedirect(record)}

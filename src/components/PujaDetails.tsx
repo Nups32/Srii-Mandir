@@ -17,11 +17,38 @@ import Process from "./Puja/Process";
 import Temple from "./Puja/Temple";
 import Packages from "./Puja/Packages";
 import UserReviews from "./UserReview";
+import { useParams } from "react-router-dom";
+import { getPoojaBySlug } from "@/utils/API";
+import { message } from "antd";
 
 const PujaDetail = () => {
+  const { slug } = useParams<{ slug: string }>();
   const [activeTab, setActiveTab] = useState("about-puja");
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = [slide1, slide1, slide1, slide1];
+  const [, setLoading] = useState(true);
+  const [pooja, setPooja] = useState<any>();
+
+
+  const fetchProduct = async () => {
+    setLoading(true);
+    try {
+      if (slug) {
+        const response = await getPoojaBySlug(slug || "");
+        if (response.data.status) {
+          setPooja(response.data.data);
+        }
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [slug]);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -68,13 +95,29 @@ const PujaDetail = () => {
     return () => observer.disconnect();
   }, []);
 
+  // const handleClick = (tabId: string) => {
+  //   setActiveTab(tabId);
+  //   document.getElementById(tabId)?.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "start",
+  //   });
+  // };
   const handleClick = (tabId: string) => {
     setActiveTab(tabId);
-    document.getElementById(tabId)?.scrollIntoView({
+
+    const element = document.getElementById(tabId);
+    if (!element) return;
+
+    const offset = 100; // 👈 adjust this value (px)
+    const elementPosition =
+      element.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top: elementPosition - offset,
       behavior: "smooth",
-      block: "start",
     });
   };
+
 
   // }
 
@@ -228,9 +271,8 @@ const PujaDetail = () => {
                     <button
                       key={i}
                       onClick={() => setCurrentIndex(i)}
-                      className={`h-2 w-2 rounded-full ${
-                        i === currentIndex ? "bg-white" : "bg-white/40"
-                      }`}
+                      className={`h-2 w-2 rounded-full ${i === currentIndex ? "bg-white" : "bg-white/40"
+                        }`}
                     />
                   ))}
                 </div>
@@ -454,11 +496,10 @@ const PujaDetail = () => {
                   <button
                     key={tab.id}
                     onClick={() => handleClick(tab.id)}
-                    className={`py-4 border-b-2 text-md transition-colors cursor-pointer ${
-                      activeTab === tab.id
-                        ? "border-orange-500 text-orange-500! font-semibold"
-                        : "border-transparent text-gray-600 hover:text-gray-900"
-                    }`}
+                    className={`py-4 border-b-2 text-md transition-colors cursor-pointer ${activeTab === tab.id
+                      ? "border-orange-500 text-orange-500! font-semibold"
+                      : "border-transparent text-gray-600 hover:text-gray-900"
+                      }`}
                   >
                     {tab.name}
                   </button>
@@ -467,11 +508,11 @@ const PujaDetail = () => {
             </div>
           </div>
 
-          <AboutPuja />
-          <Benefits />
+          <AboutPuja about={pooja?.about} />
+          <Benefits benifits={pooja?.benefitText} />
           <Process />
-          <Temple />
-          <Packages />
+          <Temple temple={pooja?.templeDetails} />
+          <Packages poojaId={pooja?._id} />
 
           {/* {activeTab === "benefits" && (
             <div className="mb-8">

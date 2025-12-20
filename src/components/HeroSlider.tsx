@@ -1,25 +1,52 @@
+import { getHeroSectionByType } from "@/utils/API";
+import { message } from "antd";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export interface SlideItem {
-  image: string;
   title: string;
   description: string;
-  buttonText: string;
-  buttonLink: string;
+  image: string;
+  type: string;
+  btnRedirect?: string;
+  btnText?: string;
+  orderIndex?: number;
 }
 
 interface HeroSliderProps {
-  slides: SlideItem[];
+  type: 'home' | 'about';
+  // slides: SlideItem[];
   autoPlayInterval?: number;
 }
 
 const HeroSlider: React.FC<HeroSliderProps> = ({
-  slides,
+  // slides,
+  type,
   autoPlayInterval = 5000,
 }) => {
   const [current, setCurrent] = useState(0);
+  const [slides, setSlides] = useState<SlideItem[]>([]);
+  // const [loading, setLoading] = useState(false);
+
+
+  const fetchProduct = async () => {
+    // setLoading(true);
+    try {
+        const response = await getHeroSectionByType(type || "");
+        if (response.data.status) {
+          setSlides(response.data.data);
+        }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [type]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,7 +67,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
   return (
     <div className="relative w-full h-[60vh] md:h-[85vh] overflow-hidden group">
       {/* slides */}
-      {slides.map((slide, index) => (
+      {slides?.map((slide, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -48,7 +75,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
           }`}
         >
           <img
-            src={slide.image}
+            src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${slide?.image}`}
             alt={`slide-${index}`}
             className="w-full h-full object-cover"
           />
@@ -59,17 +86,17 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       <div className="absolute inset-0 flex items-center z-10">
         <div className="max-w-7xl mx-auto px-4 text-white">
           <h1 className="text-4xl md:text-5xl font-bold max-w-3xl leading-tight">
-            {slides[current].title}
+            {slides[current]?.title}
           </h1>
 
           <p className="mt-4 max-w-2xl text-white/90">
-            {slides[current].description}
+            {slides[current]?.description}
           </p>
           <Link
-            to={slides[current].buttonLink}
+            to={slides[current]?.btnRedirect || "/"}
             className="inline-block mt-6 bg-white text-black px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-100 transition"
           >
-            {slides[current].buttonText}
+            {slides[current]?.btnText}
           </Link>
         </div>
       </div>

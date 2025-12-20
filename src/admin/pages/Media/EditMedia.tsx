@@ -135,9 +135,13 @@ const EditMediaForm: React.FC = () => {
                 }
             }
 
-            await updateMedia(id, formData);
-            message.success("Media updated successfully");
-            navigate("/admin/media");
+            const res = await updateMedia(id, formData);
+            if (res.data.status) {
+                message.success("Media updated successfully");
+                navigate("/admin/media");
+            } else {
+                message.error("server error")
+            }
         } catch (error) {
             console.error("Error updating media:", error);
             message.error("Failed to update media. Please try again.");
@@ -471,10 +475,10 @@ const EditMediaForm: React.FC = () => {
                         </Col>
 
                         {/* Submit Button */}
-                        <Col span={24} className="buttons mt-6">
+                        <Col span={24} className="my-6">
                             <button
                                 disabled={loading}
-                                className={`btn-brand !py-2 !px-3 cursor-pointer ${loading && '!bg-gray-800'}`}
+                                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                                 type="submit"
                             >
                                 {loading ? (

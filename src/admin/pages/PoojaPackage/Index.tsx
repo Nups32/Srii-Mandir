@@ -8,7 +8,7 @@ import {
   Spin,
   Modal,
   Button,
-  Switch,
+  Tag,
 } from "antd";
 import { AiFillDelete } from "react-icons/ai";
 import { RiAddBoxFill } from "react-icons/ri";
@@ -16,53 +16,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { deleteChadhava, getAllChadhava, updateChadhavaStatus } from "@/utils/API";
+import { deletePoojaPackage, getPoojaPackages } from "@/utils/API";
 // import { format } from "date-fns";
 
-interface OfferingItem {
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  isSpecialCombo: boolean;
-  isPrasadForHome: boolean;
-  _id?: string;
-}
-
-interface DetailItem {
-  question: string;
-  answer: string;
-  _id?: string;
-}
-
-interface Chadhava {
+interface PujaPackage {
   _id: string;
   title: string;
-  name: string;
-  about: string;
-  details: DetailItem[];
-  offering: OfferingItem[];
-  time: string;
-  btnText: string;
-  images: string[];
-  slug: string;
-  isUpcoming: boolean;
-  isActive: boolean;
+  person: string;
+  price: number;
+  services: string[];
   createdAt: string;
   updatedAt: string;
 }
 
-export const ChadhavaTable = () => {
-  const [datasource, setDatasource] = useState<Chadhava[]>([]);
+export const PoojaPackageTable = () => {
+  const [datasource, setDatasource] = useState<PujaPackage[]>([]);
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
-  const fetchChadhavas = async () => {
+  const fetchPujaPackages = async () => {
     setLoading(true);
     try {
-      const response = await getAllChadhava();
+      const response = await getPoojaPackages();
       if(response.data.status){
           setDatasource(response.data.data);
       }
@@ -74,16 +51,12 @@ export const ChadhavaTable = () => {
   };
 
   useEffect(() => {
-    fetchChadhavas();
+    fetchPujaPackages();
   }, []);
 
-  const handleEditRedirect = (record: Chadhava) => {
-    navigate(`/admin/chadhava/${record._id}/edit`);
+  const handleEditRedirect = (record: PujaPackage) => {
+    navigate(`/admin/pooja-package/${record._id}/edit`);
   };
-
-  // const handleViewDetails = (record: Chadhava) => {
-  //   navigate(`/admin/chadhava/${record._id}`);
-  // };
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -92,26 +65,14 @@ export const ChadhavaTable = () => {
   const handleDelete = async () => {
     if (deleteId) {
       try {
-        await deleteChadhava(deleteId);
-        message.success("Chadhava deleted successfully");
-        fetchChadhavas();
+        await deletePoojaPackage(deleteId);
+        message.success("Pooja package deleted successfully");
+        fetchPujaPackages();
       } catch (error) {
-        message.error("Failed to delete chadhava");
+        message.error("Failed to delete pooja package");
       } finally {
         setDeleteId(null);
       }
-    }
-  };
-
-  const handleStatusChange = async (record: Chadhava, field: 'isActive' | 'isUpcoming') => {
-    try {
-      await updateChadhavaStatus(record._id, {
-        [field]: !record[field]
-      });
-      message.success(`Chadhava ${field === 'isActive' ? 'status' : 'upcoming status'} updated`);
-      fetchChadhavas();
-    } catch (error) {
-      message.error("Failed to update chadhava status");
     }
   };
 
@@ -120,12 +81,14 @@ export const ChadhavaTable = () => {
     setSearchText(value);
     
     if (value.trim() === "") {
-      fetchChadhavas();
+      fetchPujaPackages();
     } else {
       const filtered = datasource.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase()) ||
         item.title.toLowerCase().includes(value.toLowerCase()) ||
-        item.about.toLowerCase().includes(value.toLowerCase())
+        item.person.toLowerCase().includes(value.toLowerCase()) ||
+        item.services.some(service => 
+          service.toLowerCase().includes(value.toLowerCase())
+        )
       );
       setDatasource(filtered);
     }
@@ -139,76 +102,79 @@ export const ChadhavaTable = () => {
 //     }
 //   };
 
+  const formatPrice = (price: number) => {
+    return `₹${price.toLocaleString('en-IN')}`;
+  };
+
   const columns = [
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Chadhava Name
+          Title
         </div>
       ),
-      dataIndex: "name",
-      key: "name",
-      render: (text: string, record: Chadhava) => (
-        <div>
-          <div className="font-medium">{text}</div>
-          <div className="text-xs text-gray-500">{record.title}</div>
-        </div>
-      ),
-      sorter: (a: Chadhava, b: Chadhava) => a.name.localeCompare(b.name),
-    },
-    {
-      title: (
-        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Details
-        </div>
-      ),
-      key: "details",
-      render: (record: Chadhava) => (
-        <div>
-          <div className="text-xs">Questions: {record.details?.length || 0}</div>
-          <div className="text-xs">Offerings: {record.offering?.length || 0}</div>
-        </div>
-      ),
-    },
-    {
-      title: (
-        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Time
-        </div>
-      ),
-      dataIndex: "time",
-      key: "time",
+      dataIndex: "title",
+      key: "title",
       render: (text: string) => (
-        <div className="max-w-[150px] truncate" title={text}>
-          {text || "-"}
+        <div className="font-medium">{text || "-"}</div>
+      ),
+      sorter: (a: PujaPackage, b: PujaPackage) => a.title.localeCompare(b.title),
+    },
+    {
+      title: (
+        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
+          Person
         </div>
+      ),
+      dataIndex: "person",
+      key: "person",
+      render: (text: string) => (
+        <Tag color="blue" className="capitalize">
+          {text || "-"}
+        </Tag>
       ),
     },
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Status
+          Price
         </div>
       ),
-      key: "status",
-      render: (record: Chadhava) => (
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <span className="text-xs">Active:</span>
-            <Switch
-              size="small"
-              checked={record.isActive}
-              onChange={() => handleStatusChange(record, 'isActive')}
-            />
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-xs">Upcoming:</span>
-            <Switch
-              size="small"
-              checked={record.isUpcoming}
-              onChange={() => handleStatusChange(record, 'isUpcoming')}
-            />
-          </div>
+      dataIndex: "price",
+      key: "price",
+      render: (price: number) => (
+        <div className="font-bold text-green-600">
+          {formatPrice(price)}
+        </div>
+      ),
+      sorter: (a: PujaPackage, b: PujaPackage) => a.price - b.price,
+    },
+    {
+      title: (
+        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
+          Services
+        </div>
+      ),
+      dataIndex: "services",
+      key: "services",
+      render: (services: string[]) => (
+        <div className="max-w-[200px]">
+          {services && services.length > 0 ? (
+            <>
+              {services.slice(0, 2).map((service, index) => (
+                <div key={index} className="truncate text-xs mb-1">
+                  • {service}
+                </div>
+              ))}
+              {services.length > 2 && (
+                <div className="text-xs text-gray-500">
+                  +{services.length - 2} more
+                </div>
+              )}
+            </>
+          ) : (
+            "-"
+          )}
         </div>
       ),
     },
@@ -222,7 +188,7 @@ export const ChadhavaTable = () => {
       key: "createdAt",
     //   render: (text: string) => formatDate(text),
       render: (text: string) => (text),
-      sorter: (a: Chadhava, b: Chadhava) => 
+      sorter: (a: PujaPackage, b: PujaPackage) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
@@ -232,16 +198,8 @@ export const ChadhavaTable = () => {
         </div>
       ),
       key: "action",
-      render: (_text: any, record: Chadhava) => (
+      render: (_text: any, record: PujaPackage) => (
         <div className="flex flex-row items-center space-x-2">
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => handleViewDetails(record)}
-            className="p-0"
-          >
-            View
-          </Button> */}
           <FaEdit
             className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
             onClick={() => handleEditRedirect(record)}
@@ -260,7 +218,7 @@ export const ChadhavaTable = () => {
   return (
     <div className="">
       <Row className="m-2">
-        {/* Manage Chadhavas */}
+        {/* Manage Pooja Packages */}
         <Col
           xs={24}
           sm={10}
@@ -269,7 +227,7 @@ export const ChadhavaTable = () => {
           xxl={14}
           className="flex justify-start font-bold"
         >
-          <h2 className="text-2xl">Manage Chadhavas</h2>
+          <h2 className="text-2xl">Manage Pooja Packages</h2>
         </Col>
 
         <Col xs={24} sm={14} md={14} xl={10} xxl={10} className="">
@@ -280,19 +238,19 @@ export const ChadhavaTable = () => {
                 prefix={<SearchOutlined style={{ color: "#a6a6a6" }} />}
                 size="large"
                 className="w-full"
-                placeholder="Search by name, title or about..."
+                placeholder="Search by title, person or services..."
                 allowClear
                 value={searchText}
                 onChange={handleSearchChange}
               />
             </Col>
 
-            {/* add chadhava btn */}
+            {/* add package btn */}
             <Col xs={10} sm={8} md={8} xl={8} xxl={8} className=''>
-              <Link to={"/admin/chadhava/add"}>
+              <Link to={"/admin/pooja-package/add"}>
                 <button className="flex items-center justify-center py-3 btn-brand w-full">
                   <RiAddBoxFill style={{ fontSize: "15px" }} />
-                  <div className="ml-1">Add Chadhava</div>
+                  <div className="ml-1">Add Package</div>
                 </button>
               </Link>
             </Col>
@@ -305,7 +263,7 @@ export const ChadhavaTable = () => {
           <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
             <Spin spinning={loading}>
               <Table
-                scroll={{ x: 1000 }}
+                scroll={{ x: 800 }}
                 columns={columns}
                 dataSource={datasource}
                 rowKey="_id"
@@ -330,7 +288,7 @@ export const ChadhavaTable = () => {
         centered
       >
         <div style={{ textAlign: "start", marginBottom: "1rem" }}>
-          <p>Are you sure you want to delete this Chadhava?</p>
+          <p>Are you sure you want to delete this Pooja Package?</p>
           <p className="text-gray-500 text-sm mt-2">
             This action cannot be undone.
           </p>
@@ -360,4 +318,4 @@ export const ChadhavaTable = () => {
   );
 };
 
-export default ChadhavaTable;
+export default PoojaPackageTable;
