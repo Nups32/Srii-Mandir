@@ -1,17 +1,18 @@
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
 // import { data } from "../../../details";
 import { useEffect, useState } from "react";
-import { getPoojaPackage } from "@/utils/API";
+import { getPoojaPackages } from "@/utils/API";
 import { message } from "antd";
 
 export default function Packages({ poojaId }: any) {
   const [loading, setLoading] = useState(true);
   const [packages, setPackage] = useState<any>();
+  console.log("poojaId", poojaId);
 
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const response = await getPoojaPackage();
+      const response = await getPoojaPackages();
       if (response.data.status) {
         setPackage(response.data.data);
       }

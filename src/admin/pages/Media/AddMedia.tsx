@@ -32,7 +32,7 @@ const AddMediaForm: React.FC = () => {
   const [url, setUrl] = useState<string>("");
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(true);
-  
+
   // File upload (for audio)
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -42,7 +42,7 @@ const AddMediaForm: React.FC = () => {
       message.error("Please enter video URL");
       return;
     }
-    
+
     if (mediaType === 'audio' && fileList.length === 0) {
       message.error("Please upload an audio file");
       return;
@@ -51,22 +51,26 @@ const AddMediaForm: React.FC = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      
+
       formData.append("name", name);
       formData.append("media", mediaType);
       formData.append("type", contentType);
       formData.append("isPaid", isPaid.toString());
       formData.append("isActive", isActive.toString());
-      
+
       if (mediaType === 'video') {
         formData.append("url", url);
       } else if (mediaType === 'audio' && fileList[0]?.originFileObj) {
         formData.append("file", fileList[0].originFileObj as RcFile);
       }
 
-      await storeMedia(formData);
-      message.success("Media added successfully");
-      navigate("/admin/media");
+      const res = await storeMedia(formData);
+      if (res.data.status) {
+        message.success("Media added successfully");
+        navigate("/admin/media");
+      } else {
+        message.error("server error")
+      }
     } catch (error) {
       console.error("Error adding media:", error);
       message.error("Failed to add media. Please try again.");
@@ -88,7 +92,7 @@ const AddMediaForm: React.FC = () => {
         return Upload.LIST_IGNORE;
       }
     }
-    
+
     return false; // Prevent auto upload
   };
 
@@ -129,7 +133,7 @@ const AddMediaForm: React.FC = () => {
       <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
         <Card className="!p-1">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Basic Information Section */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">Basic Information</h3>
@@ -242,9 +246,9 @@ const AddMediaForm: React.FC = () => {
                   <Col xs={24} sm={24} md={12}>
                     <Form.Item
                       name="url"
-                      rules={[{ 
-                        required: true, 
-                        message: "Please enter video URL" 
+                      rules={[{
+                        required: true,
+                        message: "Please enter video URL"
                       }]}
                     >
                       <Input
@@ -274,9 +278,9 @@ const AddMediaForm: React.FC = () => {
                   <Col xs={24} sm={24} md={12}>
                     <Form.Item
                       name="file"
-                      rules={[{ 
-                        required: true, 
-                        message: "Please upload an audio file" 
+                      rules={[{
+                        required: true,
+                        message: "Please upload an audio file"
                       }]}
                     >
                       <Upload
@@ -328,8 +332,8 @@ const AddMediaForm: React.FC = () => {
                     <Switch checked={isPaid} onChange={setIsPaid} />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    {isPaid 
-                      ? "This media will require payment to access" 
+                    {isPaid
+                      ? "This media will require payment to access"
                       : "This media will be freely accessible"}
                   </p>
                 </Col>
@@ -350,8 +354,8 @@ const AddMediaForm: React.FC = () => {
                     <Switch checked={isActive} onChange={setIsActive} />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    {isActive 
-                      ? "This media will be visible to users" 
+                    {isActive
+                      ? "This media will be visible to users"
                       : "This media will be hidden from users"}
                   </p>
                 </Col>
@@ -359,10 +363,10 @@ const AddMediaForm: React.FC = () => {
             </Col>
 
             {/* Submit Button */}
-            <Col span={24} className="buttons mt-6">
+            <Col span={24} className="my-6">
               <button
                 disabled={loading}
-                className={`btn-brand !py-2 !px-3 cursor-pointer ${loading && '!bg-gray-800'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (

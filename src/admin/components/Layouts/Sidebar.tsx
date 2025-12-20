@@ -109,7 +109,7 @@ const Sidebar = () => {
           icon: <Boxes />,
           name: "Users",
           label: t("Manage Users"),
-          link: "/admin/manage-users",
+          link: "/admin/users",
         },
         {
           icon: <PackageOpen />,
@@ -128,6 +128,18 @@ const Sidebar = () => {
           name: "Chadhava",
           label: t("Manage Chadhava"),
           link: "/admin/chadhava",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Package",
+          label: t("Manage Pooja Package"),
+          link: "/admin/pooja-package",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Hero Section",
+          label: t("Manage Hero Section"),
+          link: "/admin/hero-section",
         },
         {
           icon: <PackageOpen />,

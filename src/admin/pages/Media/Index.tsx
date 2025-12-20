@@ -26,7 +26,7 @@ interface Media {
     _id: string;
     name: string;
     media: 'video' | 'Media';
-    Media: 'vedicMantra' | 'song';
+    type: 'vedicMantra' | 'song';
     file: string;
     isPaid: boolean;
     isActive: boolean;
@@ -82,7 +82,7 @@ export const MediaTable = () => {
 
         // Media content type filter
         if (typeFilter !== "all") {
-            filtered = filtered.filter(item => item.Media === typeFilter);
+            filtered = filtered.filter(item => item.type === typeFilter);
         }
 
         // Status filter
@@ -98,9 +98,9 @@ export const MediaTable = () => {
         navigate(`/admin/media/${record._id}/edit`);
     };
 
-    const handleViewDetails = (record: Media) => {
-        navigate(`/admin/media/${record._id}`);
-    };
+    // const handleViewDetails = (record: Media) => {
+    //     navigate(`/admin/media/${record._id}`);
+    // };
 
     const showDeleteConfirmation = (id: string) => {
         setDeleteId(id);
@@ -245,14 +245,14 @@ export const MediaTable = () => {
             key: "action",
             render: (_text: any, record: Media) => (
                 <div className="flex flex-row items-center space-x-2">
-                    <Button
+                    {/* <Button
                         type="link"
                         size="small"
                         onClick={() => handleViewDetails(record)}
                         className="p-0"
                     >
                         View
-                    </Button>
+                    </Button> */}
                     <FaEdit
                         className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
                         onClick={() => handleEditRedirect(record)}
@@ -320,7 +320,7 @@ export const MediaTable = () => {
                         placeholder="Filter by Media Type"
                         value={mediaFilter}
                         onChange={setMediaFilter}
-                        allowClear
+                        // allowClear
                     >
                         <Option value="all">All Media Types</Option>
                         <Option value="video">Video</Option>
@@ -335,7 +335,7 @@ export const MediaTable = () => {
                         placeholder="Filter by Content Type"
                         value={typeFilter}
                         onChange={setTypeFilter}
-                        allowClear
+                        // allowClear
                     >
                         <Option value="all">All Content Types</Option>
                         <Option value="vedicMantra">Vedic Mantra</Option>
@@ -350,7 +350,7 @@ export const MediaTable = () => {
                         placeholder="Filter by Status"
                         value={statusFilter}
                         onChange={setStatusFilter}
-                        allowClear
+                        // allowClear
                     >
                         <Option value="all">All Status</Option>
                         <Option value="active">Active</Option>

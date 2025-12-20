@@ -176,6 +176,42 @@ export const updateMediaStatus = async (id: string, data: { isActive?: boolean; 
   return response;
 };
 
+// Media API functions
+export const getPoojaPackages = async () => {
+  const response = await CommanAPI.get(`/pooja-package`);
+  return response;
+};
+
+// export const getAllPoojaPackage = async () => {
+//   const response = await API.get(`/backend/pooja-package/get-all`);
+//   return response;
+// };
+
+export const getPoojaPackageById = async (id: string) => {
+  const response = await API.get(`/backend/pooja-package/${id}/edit`);
+  return response;
+};
+
+export const storePoojaPackage = async (formData: any) => {
+  const response = await API.post(`/backend/pooja-package`, formData);
+  return response;
+};
+
+export const updatePoojaPackage = async (id: string, formData: any) => {
+  const response = await API.put(`/backend/pooja-package/${id}/update`, formData);
+  return response;
+};
+
+export const deletePoojaPackage = async (id: string) => {
+  const response = await API.delete(`/backend/pooja-package/${id}/delete`);
+  return response;
+};
+
+// export const updatePoojaPackageStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+//   const response = await API.patch(`/backend/pooja-package/${id}/status`, data);
+//   return response;
+// };
+
 // Chadhava API functions
 export const getChadhava = async () => {
   const response = await CommanAPI.get(`/chadhava`);
@@ -212,43 +248,47 @@ export const updateChadhavaStatus = async (id: string, data: { isActive?: boolea
   return response;
 };
 
-
-// export const getChadhava = async () => {
-//   try {
-//     const response = await CommanAPI.get("/chadhava");
-//     return response;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const storeChadhava = async (data: any) => {
-//   try {
-//     const response = await API.post("/backend/chadhava/store", data);
-//     return response;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-
-export const getPoojaPackage = async () => {
-  try {
-    const response = await CommanAPI.get("/pooja-package");
-    return response;
-  } catch (error) {
-    throw error;
-  }
+// Chadhava API functions
+export const getHomeHeroSection = async () => {
+  const response = await CommanAPI.get(`/hero-section/home`);
+  return response;
+};
+export const getAboutHeroSection = async () => {
+  const response = await CommanAPI.get(`/hero-section/about`);
+  return response;
 };
 
-export const storePoojaPackage = async (data: any) => {
-  try {
-    const response = await API.post("/backend/pooja-package/store", data);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+export const getAllHeroSection = async () => {
+  const response = await API.get(`/backend/hero-section`);
+  return response;
 };
+
+export const getHeroSectionById = async (id: string) => {
+  const response = await API.get(`/backend/hero-section/${id}/edit`);
+  return response;
+};
+
+export const storeHeroSection = async (formData: FormData) => {
+  const response = await API.post(`/backend/hero-section`, formData);
+  return response;
+};
+
+export const updateHeroSection = async (id: string, formData: FormData) => {
+  const response = await API.put(`/backend/hero-section/${id}/update`, formData);
+  return response;
+};
+
+export const deleteHeroSection = async (id: string) => {
+  const response = await API.delete(`/backend/hero-section/${id}/delete`);
+  return response;
+};
+
+export const updateHeroSectionStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/hero-section/${id}/status`, data);
+  return response;
+};
+
+// CONTACT API functions
 
 export const deleteContact = async (id: any) => {
   try {
@@ -259,6 +299,7 @@ export const deleteContact = async (id: any) => {
   }
 };
 
+// USER API functions
 export const getUserData = async (data: any) => {
   try {
     const response = await API.get("/backend/users/get", { params: data });
@@ -280,6 +321,20 @@ export const editUserData = async (id: any) => {
 export const updateUserData = async (id: any, updateUserData: any): Promise<any> => {
   try {
     const response = await API.put(`/backend/user/${id}/update`, updateUserData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/user/${id}/status`, data);
+  return response;
+};
+
+export const updateUserPassword = async (id: any, updateUserData: any): Promise<any> => {
+  try {
+    const response = await API.put(`/backend/user/${id}/password-update`, updateUserData);
     return response;
   } catch (error) {
     throw error;

@@ -1,259 +1,684 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { editUserData, updateUserData } from "@/utils/API";
-import { MoveLeft } from "lucide-react";
-import type { UserType } from "./ManageUsers";
-import { useNavigate, useParams } from "react-router-dom";
-import { message } from "antd";
-// import { toast } from "@/utils/ui/toast";
+import React, { useState, useEffect } from "react";
+import {
+  Col,
+  Row,
+  Form,
+  Input,
+  message,
+  Card,
+  Spin,
+  Button,
+  Switch,
+  Modal,
+  Radio,
+  DatePicker,
+} from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+import dayjs from "dayjs";
+import { editUserData, updateUserData, updateUserPassword } from "@/utils/API";
+import TextArea from "antd/es/input/TextArea";
 
-function EditUser() {
-  const [loading, setLoading] = useState(false);
-  const { id } = useParams();
+const { Password } = Input;
+
+interface UserData {
+  _id: string;
+  email: string;
+  username: string;
+  dob: string;
+  gender: string;
+  mobile: string;
+  role: number;
+  address: string;
+  country: string;
+  state: string;
+  city: string;
+  pincode: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const EditUserForm: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [fetching, setFetching] = useState<boolean>(true);
+  const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [countries, setCountries] = useState([]);
-  const [userFormData, setUserFormData] = useState<UserType>({
-    username: "",
-    email: "",
-    phone: 0,
-    compnay: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    pincode: 0,
-    isActive: true,
-    isDeleted: false,
-    newsletter: true,
-    fax: 0,
-    info: "",
-  });
+  const { id } = useParams<{ id: string }>();
 
-  const userDataField = [
-    { name: "firstName", label: "First Name", type: "text", required: true },
-    { name: "lastName", label: "Last Name", type: "text", required: true },
-    { name: "company", label: "Company Name", type: "text" },
-    { name: "phone", label: "Phone", type: "tel", required: true },
-    { name: "address", label: "Street Address", type: "text" },
-    { name: "city", label: "City", type: "text", required: true },
-    { name: "pincode", label: "Zip Code", type: "text" },
-    { name: "state", label: "State", type: "text" },
-    {
-      name: "country",
-      label: "Country",
-      type: "select",
-      required: true,
-    },
-    { name: "fax", label: "Fax", type: "text" },
-    {
-      name: "info",
-      label: "Please provide info on the solution you seek",
-      type: "textarea",
-    },
-    {
-      name: "isActive",
-      label: "Active",
-      type: "radio",
-      required: true,
-    },
-  ];
+  // Form states
+  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [dob, setDob] = useState<any>(null);
+  const [gender, setGender] = useState<string>("");
+  const [mobile, setMobile] = useState<string>("");
+  const [pincode, setPincode] = useState<string>("");
+  const [country, setCountry] = useState<string>("India");
+  const [state, setState] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  // const [role, setRole] = useState<number>(2);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
+  // Password reset states
+  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [resettingPassword, setResettingPassword] = useState<boolean>(false);
+
+  // // Country options
+  // const countryOptions = [
+  //   "India",
+  //   "United States",
+  //   "United Kingdom",
+  //   "Canada",
+  //   "Australia",
+  //   "Germany",
+  //   "France",
+  //   "Japan",
+  //   "China",
+  //   "Russia",
+  //   "Brazil",
+  //   "Other"
+  // ];
+
+  // Fetch existing user data
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await editUserData(id);
-      setUserFormData(response.data);
-      // setSeclectedCountry(response.data);
-    };
-    fetchUsers();
-  }, [id]);
+    const fetchUserData = async () => {
+      if (!id) return;
 
-  // fetch countries
-  useEffect(() => {
-    fetch("https://restcountries.com/v3.1/independent?status=true")
-      .then((res) => res.json())
-      .then((data) => {
-        const countryNames = data
-          .map((country: { name: { common: string } }) => country.name.common)
-          .sort((a: string, b: string) => a.localeCompare(b));
-        setCountries(countryNames);
-      })
-      .catch((err) => {
-        console.error("Error fetching countries:", err);
-        setCountries([]);
-      });
-  }, []);
+      setFetching(true);
+      try {
+        const response = await editUserData(id);
+        if (response.data.status) {
+          const data: UserData = response.data.data;
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
+          setEmail(data.email || "");
+          setUsername(data.username || "");
+          setMobile(data.mobile || "");
+          setDob(data.dob || "");
+          setGender(data.gender || "");
+          setPincode(data.pincode || "");
+          setCountry(data.country || "");
+          setState(data.state || "");
+          setCity(data.city || "");
+          setAddress(data.address || "");
+          // setRole(data.role || 2);
+          setIsActive(data.isActive !== undefined ? data.isActive : true);
+        }
 
-    try {
-      const response = await updateUserData(id, userFormData);
-
-      if (response.status == 200) {
-        message.success("User data updated successfully")
-        // toast("success").fire({
-        //   icon: "success",
-        //   title: "User data updated successfully",
-        //   timer: 2000,
-        //   showConfirmButton: false,
-        // });
-      } else {
-        message.error(response.data.error || "Something went wrong!")
-        // toast("error").fire({
-        //   icon: "error",
-        //   title: response.data.error,
-        //   timer: 2000,
-        //   showConfirmButton: false,
-        // });
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        message.error("Failed to load user data");
+        navigate("/admin/user");
+      } finally {
+        setFetching(false);
       }
+    };
 
+    fetchUserData();
+  }, [id, navigate]);
+
+  const handleSubmit = async () => {
+    if (!id) return;
+
+    // Mobile validation (optional)
+    if (mobile && !/^\d{10}$/.test(mobile.replace(/\D/g, ''))) {
+      message.error("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+
+      formData.append("email", email);
+      formData.append("username", username);
+      formData.append("dob", dob);
+      formData.append("gender", gender);
+      formData.append("mobile", mobile);
+      formData.append("pincode", pincode);
+      formData.append("country", country);
+      formData.append("state", state);
+      formData.append("city", city);
+      formData.append("address", address);
+      // formData.append("role", role.toString());
+      formData.append("isActive", isActive.toString());
+
+      await updateUserData(id, formData);
+      message.success("User updated successfully");
+      navigate("/admin/user");
+    } catch (error: any) {
+      console.error("Error updating user:", error);
+      if (error.message?.includes("email already exists")) {
+        message.error("Email already exists. Please use a different email.");
+      } else {
+        message.error("Failed to update user. Please try again.");
+      }
+    } finally {
       setLoading(false);
-      navigate("/admin/users");
-    } catch (error) {
-      message.error("Server Error!")
-      // toast("error").fire({
-      //   icon: "error",
-      //   title: error || "Something went wrong!",
-      //   timer: 2000,
-      //   showConfirmButton: false,
-      // });
-      setLoading(false);
-      throw error;
     }
   };
 
-  return (
-    <>
-      <div className="m-8">
-        {/* above section */}
-        <div className="flex flex-row justify-between">
-          <span className="flex justify-start">
-            <h2 className="text-white md:text-3xl ">Edit Users</h2>
-          </span>
+  const handlePasswordReset = async () => {
+    if (!id) return;
 
-          {/* <span className="flex flex-row justify-end"> */}
-            <button
-              onClick={() => navigate("/admin/users")}
-              className="cursor-pointer flex flex-row justify-center text-sm md:text-base items-center text-white bg-gradient-to-b from-blue-200 to-blue-600 px-2 py-1 md:px-6 md:py-2 rounded-lg hover:bg-gradient-to-t hover:from-blue-200 hover:to-blue-600"
-            >
-              <MoveLeft className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-              Back
-            </button>
-        </div>
+    // Password validation
+    if (newPassword !== confirmPassword) {
+      message.error("Passwords do not match");
+      return;
+    }
 
-        {/* below section user form */}
-        <form action="" onSubmit={handleSubmit} className="mt-4">
-          <div className="grid grid-cols-1 font-md lg:grid-cols-2  mt-2 space-x-10 text-white">
-            {userDataField.map((user, i) =>
-              user.name === "isActive" ? (
-                <div key={i} className="flex flex-row items-center my-4">
-                  <div className=" w-25 md:w-50">
-                    <label className="">{user.label}:</label>
-                  </div>
-                  <input
-                    type="radio"
-                    name={user.name}
-                    value="true"
-                    checked={userFormData.isActive}
-                    onChange={() =>
-                      setUserFormData((prev: any) => ({
-                        ...prev,
-                        isActive: true,
-                      }))
-                    }
-                    required={user.required}
-                    className="mr-2 px-3 border rounded-lg"
-                  />
-                  <label className="">Yes</label>
-                  <input
-                    type="radio"
-                    value="false"
-                    checked={userFormData.isActive == false}
-                    name={user.name}
-                    onChange={() =>
-                      setUserFormData((prev: any) => ({
-                        ...prev,
-                        isActive: false,
-                      }))
-                    }
-                    className="mx-2 px-3 border rounded-lg"
-                  />
-                  <label className="">No</label>
-                </div>
-              ) : user.name === "country" ? (
-                <div className="flex flex-col md:flex-row my-4">
-                  <div className=" w-50">
-                    <label className="">{user.label}:</label>
-                  </div>
-                  <select
-                    name={user.name}
-                    value={userFormData.country}
-                    onChange={(e) =>
-                      setUserFormData((prev) => ({
-                        ...prev,
-                        country: e.target.value,
-                      }))
-                    }
-                    required={user.required}
-                    // className="px-2 py-2 md:pl-3 md:pr-13 md:py-3 border rounded-lg cursor-pointer"
-                    className="w-3/4 md:w-2/3 xl:w-7/10 px-3 py-2 md:px-3 md:py-3 border rounded-lg cursor-pointer"
-                  >
-                    <option value="">Select {user.label}</option>
-                    {countries.map((country) => (
-                      <option key={country} value={country}>
-                        {country}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                <>
-                  <div className="flex sm:flex-row flex-col my-4">
-                    <div className="w-60 sm:my-3 my-0">
-                      <label key={user.name} className="flex">
-                        {user.label}:
-                      </label>
-                    </div>
-                    <input
-                      type={user.type}
-                      value={String(
-                        userFormData[user.name as keyof UserType] ?? ""
-                      )}
-                      // value={userFormData[user.name as keyof UserType]}
-                      onChange={(e) =>
-                        setUserFormData((prev) => ({
-                          ...prev,
-                          [user.name as keyof UserType]: e.target.value,
-                        }))
-                      }
-                      required={user.required}
-                      className="px-4 w-[75%] py-1 border rounded-lg"
-                    />
-                  </div>
-                </>
-              )
-            )}
-          </div>
+    if (newPassword.length < 6) {
+      message.error("Password must be at least 6 characters long");
+      return;
+    }
 
-          <div className="flex justify-center items-center">
-            <button
-              disabled={loading}
-              className="mt-5 px-5 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-lg hover:from-blue-600 hover:to-green-400 flex justify-center items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <div className="flex justify-center items-center">
-                  <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin justify-center align-center inline-block" />
-                </div>
-              ) : (
-                "Update User"
-              )}
-            </button>
-          </div>
-        </form>
+    setResettingPassword(true);
+    try {
+      // const formData = new FormData();
+      // formData.append("password", newPassword);
+
+      await updateUserPassword(id, { password: newPassword });
+      message.success("Password reset successfully");
+      setShowPasswordModal(false);
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      message.error("Failed to reset password. Please try again.");
+    } finally {
+      setResettingPassword(false);
+    }
+  };
+
+  if (fetching) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" />
+        <span className="ml-4">Loading user data...</span>
       </div>
-    </>
-  );
-}
+    );
+  }
 
-export default EditUser;
+  return (
+    <div className="">
+      <Row className="m-2" align="middle">
+        <Col xs={17} sm={17} md={20} xl={20} xxl={20}>
+          <h2 className="text-2xl font-bold">Edit User</h2>
+        </Col>
+        <Col xs={7} sm={7} md={4} xl={4} xxl={4} className="flex justify-end">
+          <Link to={"/admin/users"}>
+            <button className="flex justify-center !py-2 w-full btn-brand">
+              <FaArrowLeft className="mr-2" />
+              <div className="!mx-2">Back</div>
+            </button>
+          </Link>
+        </Col>
+      </Row>
+
+      <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
+        <Card className="!p-1">
+          <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
+
+            {/* Basic Information Section */}
+            <Col span={24}>
+              <h3 className="text-lg font-bold mb-4 border-b pb-2">User Information</h3>
+            </Col>
+
+            {/* Email */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Email <span className="text-danger">*</span>
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      { required: true, message: "Please enter email" },
+                      { type: 'email', message: 'Please enter a valid email' }
+                    ]}
+                    initialValue={email}
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      type="email"
+                      value={email}
+                      placeholder="user@example.com"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Username */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Username
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="username"
+                    initialValue={username}
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      value={username}
+                      placeholder="Display name"
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Gender */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Gender
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item name="gender" initialValue={'male'}>
+                    <Radio.Group size="large" onChange={(e) => setGender(e.target.value)}>
+                      <Radio value="male">Male</Radio>
+                      <Radio value="female">Female</Radio>
+                      <Radio value="other">Other</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Date of Birth */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Date of Birth
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item name="dob">
+                    <DatePicker
+                      size="large"
+                      className="w-full rounded border"
+                      placeholder="Select date of birth"
+                      format="DD-MM-YYYY"
+                      onChange={(_date, dateString) => {
+                        setDob(dateString);
+                      }}
+                      disabledDate={(current) =>
+                        current && current > dayjs().endOf("day")
+                      }
+                      defaultValue={dob ? dayjs(dob, "DD-MM-YYYY") : undefined}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+
+
+            {/* Password Reset Button */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Password
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Button
+                    type="dashed"
+                    onClick={() => setShowPasswordModal(true)}
+                    className="w-full"
+                  >
+                    Reset Password
+                  </Button>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Click to set a new password for this user
+                  </div>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Contact Information Section */}
+            <Col span={24}>
+              <h3 className="text-lg font-bold mb-4 border-b pb-2">Contact Information</h3>
+            </Col>
+
+            {/* Mobile */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Mobile Number
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="mobile"
+                    initialValue={mobile}
+                    rules={[
+                      {
+                        pattern: /^[0-9]{10}$/,
+                        message: 'Please enter a valid 10-digit mobile number',
+                      },
+                    ]}
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      value={mobile}
+                      placeholder="10-digit mobile number"
+                      onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      maxLength={10}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Country */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Country
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="country"
+                    initialValue={country}
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      value={country}
+                      placeholder="Enter Country"
+                      onChange={(e) => setCountry(e.target.value)}
+                    />
+                    {/* <Select
+                      size="large"
+                      className="rounded border"
+                      value={country}
+                      onChange={setCountry}
+                      placeholder="Select country"
+                      showSearch
+                    // filterOption={(input, option) =>
+                    //   (option?.children as string).toLowerCase().includes(input.toLowerCase())
+                    // }
+                    >
+                      {countryOptions.map(country => (
+                        <Option key={country} value={country}>{country}</Option>
+                      ))}
+                    </Select> */}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* State */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    State
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="state"
+                  // initialValue="India"
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      defaultValue={state}
+                      placeholder="Enter State"
+                      onChange={(e) => setState(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* City */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    City
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="city"
+                  // initialValue="India"
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      defaultValue={city}
+                      placeholder="Enter City"
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Address */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Address
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="address"
+                  // initialValue="India"
+                  >
+                    <TextArea
+                      rows={4}
+                      className="rounded border"
+                      defaultValue={address}
+                      placeholder={`Enter Address`}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                    {/* <Input
+                      size="large"
+                      className="rounded border"
+                      defaultValue={address}
+                      placeholder="Enter Address"
+                      onChange={(e) => setAddress(e.target.value)}
+                    /> */}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Pincode */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Pincode/ZIP
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="pincode"
+                    initialValue={pincode}
+                  >
+                    <Input
+                      size="large"
+                      className="rounded border"
+                      value={pincode}
+                      placeholder="Pincode or ZIP code"
+                      onChange={(e) => setPincode(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Settings Section */}
+            <Col span={24}>
+              <h3 className="text-lg font-bold mb-4 border-b pb-2">Settings</h3>
+            </Col>
+
+            {/* Role */}
+            {/* <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Role <span className="text-danger">*</span>
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <Form.Item
+                    name="role"
+                    rules={[{ required: true, message: "Please select user role" }]}
+                    initialValue={role}
+                  >
+                    <Select
+                      size="large"
+                      className="rounded border"
+                      value={role}
+                      onChange={setRole}
+                      placeholder="Select role"
+                    >
+                      <Option value={1}>Admin</Option>
+                      <Option value={2}>User</Option>
+                    </Select>
+                  </Form.Item>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {role === 1
+                      ? "Admin users have full access to all features"
+                      : "Regular users have limited access"}
+                  </div>
+                </Col>
+              </Row>
+            </Col> */}
+
+            {/* Active Status */}
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Account Status
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  <div className="flex items-center justify-between">
+                    <span>Active Account</span>
+                    <Switch checked={isActive} onChange={setIsActive} />
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {isActive
+                      ? "User can login and use the application"
+                      : "User account is disabled and cannot login"}
+                  </div>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* Submit Button */}
+            <Col span={24} className="my-6">
+              <button
+                disabled={loading}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
+                type="submit"
+              >
+                {loading ? (
+                  <div className="flex items-center">
+                    <Spin size="small" />
+                    <span className="ml-2!">Updating User...</span>
+                  </div>
+                ) : (
+                  "Update User"
+                )}
+              </button>
+            </Col>
+          </Row>
+        </Card>
+      </Form>
+
+      {/* Password Reset Modal */}
+      <Modal
+        title="Reset Password"
+        open={showPasswordModal}
+        onCancel={() => setShowPasswordModal(false)}
+        footer={null}
+        centered
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              New Password <span className="text-danger">*</span>
+            </label>
+            <Password
+              size="large"
+              className="w-full"
+              value={newPassword}
+              placeholder="Enter new password"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <div className="text-xs text-gray-500 mt-1">
+              Password must be at least 6 characters long
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Confirm Password <span className="text-danger">*</span>
+            </label>
+            <Password
+              size="large"
+              className="w-full"
+              value={confirmPassword}
+              placeholder="Confirm new password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+
+          <div className="flex justify-end space-x-2 mt-4">
+            <Button
+              onClick={() => setShowPasswordModal(false)}
+              className="rounded"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={handlePasswordReset}
+              loading={resettingPassword}
+              className="rounded"
+            >
+              Reset Password
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+export default EditUserForm;

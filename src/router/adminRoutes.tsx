@@ -10,6 +10,14 @@ import { lazy } from "react";
 import ChadhavaTable from "@/admin/pages/Chadhava/Index";
 import AddChadhavaForm from "@/admin/pages/Chadhava/AddChadhava";
 import EditChadhavaForm from "@/admin/pages/Chadhava/EditChadhava";
+import PoojaPackageTable from "@/admin/pages/PoojaPackage/Index";
+import AddPoojaPackageForm from "@/admin/pages/PoojaPackage/AddPoojaPackage";
+import EditPoojaPackageForm from "@/admin/pages/PoojaPackage/EditPoojaPackage";
+import EditUserForm from "@/admin/pages/Users/EditUsers";
+import AddUserForm from "@/admin/pages/Users/AddUser";
+import HeroSectionTable from "@/admin/pages/HeroSection/Index";
+import EditHeroSectionForm from "@/admin/pages/HeroSection/EditHeroSection";
+import AddHeroSectionForm from "@/admin/pages/HeroSection/AddHeroSection";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -20,9 +28,21 @@ export const adminRoutes: RouteObjectWithLayout[] = [
     layout: "admin",
   },
   {
-    path: "/admin/manage-users",
+    path: "/admin/users",
     // element: <Index />,
     element: <ManageUsers />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/user/add",
+    // element: <Index />,
+    element: <AddUserForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/user/:id/edit",
+    // element: <Index />,
+    element: <EditUserForm />,
     layout: "admin",
   },
   {
@@ -79,6 +99,42 @@ export const adminRoutes: RouteObjectWithLayout[] = [
     element: <EditChadhavaForm />,
     layout: "admin",
   },
+  {
+    path: "/admin/pooja-package",
+    // element: <Index />,
+    element: <PoojaPackageTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/pooja-package/add",
+    // element: <Index />,
+    element: <AddPoojaPackageForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/pooja-package/:id/edit",
+    // element: <Index />,
+    element: <EditPoojaPackageForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/hero-section",
+    // element: <Index />,
+    element: <HeroSectionTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/hero-section/add",
+    // element: <Index />,
+    element: <AddHeroSectionForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/hero-section/:id/edit",
+    // element: <Index />,
+    element: <EditHeroSectionForm />,
+    layout: "admin",
+  },
   // {
   //     path: 'admin/manage-user',
   //     element: <ManageUser />
@@ -92,7 +148,7 @@ export const adminRoutes: RouteObjectWithLayout[] = [
   //   element: <AdminLogin />,
   //   layout: "blank",
   // },
-  
+
 ];
 
 export default adminRoutes;

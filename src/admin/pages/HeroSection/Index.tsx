@@ -19,41 +19,38 @@ import { Link, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { getUserData, updateUserStatus } from "@/utils/API";
-// import { deleteUser, getAllUsers, updateUserStatus } from "@/utils/API";
+import { deleteHeroSection, getAllHeroSection, updateHeroSectionStatus } from "@/utils/API";
 // import { format } from "date-fns";
 
 const { Option } = Select;
 
-interface User {
+interface HeroSection {
   _id: string;
-  email: string;
-  username: string;
-  mobile: string;
-  role: number;
-  country: string;
-  pincode: string;
+  title: string;
+  description: string;
+  btnText: string;
+  btnRedirect: string;
+  type: 'home' | 'about';
+  orderIndex: number;
   isActive: boolean;
-  isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-export const ManageUsers = () => {
-  const [datasource, setDatasource] = useState<User[]>([]);
+export const HeroSectionTable = () => {
+  const [datasource, setDatasource] = useState<HeroSection[]>([]);
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
   const navigate = useNavigate();
 
-  const fetchUsers = async () => {
+  const fetchHeroSections = async () => {
     setLoading(true);
     try {
-      const response = await getUserData("");
-      if (response.data.status) {
-        setDatasource(response.data.data);
+      const response = await getAllHeroSection();
+      if(response.data.status){
+          setDatasource(response.data.data);
       }
     } catch (error) {
       message.error("Network error. Please try again.");
@@ -63,46 +60,33 @@ export const ManageUsers = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchHeroSections();
   }, []);
 
-  // Filter users based on search and filters
-  const getFilteredUsers = () => {
+  // Filter hero sections based on search and filters
+  const getFilteredHeroSections = () => {
     let filtered = datasource;
 
     // Search filter
     if (searchText) {
-      filtered = filtered.filter(user =>
-        user.username?.toLowerCase().includes(searchText.toLowerCase()) ||
-        user.email?.toLowerCase().includes(searchText.toLowerCase()) ||
-        user.mobile?.includes(searchText)
+      filtered = filtered.filter(item =>
+        item.title?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.btnText?.toLowerCase().includes(searchText.toLowerCase())
       );
     }
 
-    // Role filter
-    if (roleFilter !== "all") {
-      filtered = filtered.filter(user => user.role === parseInt(roleFilter));
+    // Type filter
+    if (typeFilter !== "all") {
+      filtered = filtered.filter(item => item.type === typeFilter);
     }
-
-    // Status filter
-    if (statusFilter !== "all") {
-      const statusValue = statusFilter === "active";
-      filtered = filtered.filter(user => user.isActive === statusValue);
-    }
-
-    // Exclude deleted users
-    filtered = filtered.filter(user => !user.isDeleted);
 
     return filtered;
   };
 
-  const handleEditRedirect = (record: User) => {
-    navigate(`/admin/user/${record._id}/edit`);
+  const handleEditRedirect = (record: HeroSection) => {
+    navigate(`/admin/hero-section/${record._id}/edit`);
   };
-
-  // const handleViewDetails = (record: User) => {
-  //   navigate(`/admin/user/${record._id}`);
-  // };
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -111,26 +95,26 @@ export const ManageUsers = () => {
   const handleDelete = async () => {
     if (deleteId) {
       try {
-        // await deleteUser(deleteId);
-        message.success("User deleted successfully");
-        fetchUsers();
+        await deleteHeroSection(deleteId);
+        message.success("Hero section deleted successfully");
+        fetchHeroSections();
       } catch (error) {
-        message.error("Failed to delete user");
+        message.error("Failed to delete hero section");
       } finally {
         setDeleteId(null);
       }
     }
   };
 
-  const handleStatusChange = async (record: User) => {
+  const handleStatusChange = async (record: HeroSection) => {
     try {
-      await updateUserStatus(record._id, {
+      await updateHeroSectionStatus(record._id, {
         isActive: !record.isActive
       });
-      message.success(`User ${record.isActive ? 'deactivated' : 'activated'} successfully`);
-      fetchUsers();
+      message.success(`Hero section ${record.isActive ? 'deactivated' : 'activated'} successfully`);
+      fetchHeroSections();
     } catch (error) {
-      message.error("Failed to update user status");
+      message.error("Failed to update hero section status");
     }
   };
 
@@ -138,103 +122,95 @@ export const ManageUsers = () => {
     setSearchText(e.target.value);
   };
 
-  // const formatDate = (dateString: string) => {
-  //   try {
-  //     return format(new Date(dateString), "dd/MM/yyyy HH:mm");
-  //   } catch {
-  //     return dateString;
-  //   }
-  // };
+//   const formatDate = (dateString: string) => {
+//     try {
+//       return format(new Date(dateString), "dd/MM/yyyy HH:mm");
+//     } catch {
+//       return dateString;
+//     }
+//   };
 
-  const getRoleText = (role: number) => {
-    switch (role) {
-      case 1: return "Admin";
-      case 2: return "User";
-      default: return "Unknown";
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'home': return 'blue';
+      case 'about': return 'green';
+      default: return 'default';
     }
   };
 
-  const getRoleColor = (role: number) => {
-    switch (role) {
-      case 1: return "red";
-      case 2: return "blue";
-      default: return "default";
+  const getTypeText = (type: string) => {
+    switch (type) {
+      case 'home': return 'Home';
+      case 'about': return 'About';
+      default: return type;
     }
+  };
+
+  const getRedirectType = (redirect: string) => {
+    if (redirect.includes('/puja')) return 'Pooja';
+    if (redirect.includes('/chadhava')) return 'Chadhava';
+    return 'Other';
+  };
+
+  const getRedirectColor = (redirect: string) => {
+    if (redirect.includes('/puja')) return 'purple';
+    if (redirect.includes('/chadhava')) return 'orange';
+    return 'default';
   };
 
   const columns = [
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          User
+          Title
         </div>
       ),
-      key: "user",
-      render: (record: User) => (
+      dataIndex: "title",
+      key: "title",
+      render: (text: string, record: HeroSection) => (
         <div>
-          <div className="font-medium">{record.username || "No Name"}</div>
-          <div className="text-xs text-gray-500">{record.email}</div>
+          <div className="font-medium">{text || "No Title"}</div>
+          <div className="text-xs text-gray-500 truncate max-w-[200px]">
+            {record.description}
+          </div>
         </div>
       ),
-      sorter: (a: User, b: User) => (a.username || "").localeCompare(b.username || ""),
+      sorter: (a: HeroSection, b: HeroSection) => a.title.localeCompare(b.title),
     },
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Contact
+          Button
         </div>
       ),
-      key: "contact",
-      render: (record: User) => (
+      key: "button",
+      render: (record: HeroSection) => (
         <div>
-          <div className="text-sm">{record.mobile || "-"}</div>
-          {record.country && (
-            <div className="text-xs text-gray-500">{record.country}</div>
-          )}
+          <div className="text-sm font-medium">{record.btnText || "-"}</div>
+          <div className="text-xs">
+            <Tag color={getRedirectColor(record.btnRedirect)}>
+              {getRedirectType(record.btnRedirect)}
+            </Tag>
+          </div>
         </div>
       ),
     },
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Date of Birth
+          Type & Order
         </div>
       ),
-      dataIndex: "dob",
-      key: "dob",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
-      ),
-    },
-    {
-      title: (
-        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          State
+      key: "type",
+      render: (record: HeroSection) => (
+        <div className="space-y-1">
+          <Tag color={getTypeColor(record.type)}>
+            {getTypeText(record.type)}
+          </Tag>
+          <div className="text-xs text-gray-500">
+            Order: {record.orderIndex || 0}
+          </div>
         </div>
-      ),
-      dataIndex: "state",
-      key: "state",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
-      ),
-    },
-
-    {
-      title: (
-        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          City
-        </div>
-      ),
-      dataIndex: "city",
-      key: "city",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
       ),
     },
     {
@@ -244,36 +220,32 @@ export const ManageUsers = () => {
         </div>
       ),
       key: "status",
-      render: (record: User) => (
+      render: (record: HeroSection) => (
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
-            <Badge
-              status={record.isActive ? "success" : "error"}
+            <Badge 
+              status={record.isActive ? "success" : "error"} 
               text={record.isActive ? "Active" : "Inactive"}
             />
             <Switch
               size="small"
-              className="ml-2!"
               checked={record.isActive}
               onChange={() => handleStatusChange(record)}
             />
           </div>
-          {record.isDeleted && (
-            <Tag color="red" className="text-xs">Deleted</Tag>
-          )}
         </div>
       ),
     },
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Joined
+          Created
         </div>
       ),
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text: string) => (text),
-      sorter: (a: User, b: User) =>
+      sorter: (a: HeroSection, b: HeroSection) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
@@ -283,16 +255,8 @@ export const ManageUsers = () => {
         </div>
       ),
       key: "action",
-      render: (_text: any, record: User) => (
+      render: (_text: any, record: HeroSection) => (
         <div className="flex flex-row items-center space-x-2">
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => handleViewDetails(record)}
-            className="p-0"
-          >
-            View
-          </Button> */}
           <FaEdit
             className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
             onClick={() => handleEditRedirect(record)}
@@ -308,12 +272,12 @@ export const ManageUsers = () => {
     },
   ];
 
-  const filteredUsers = getFilteredUsers();
+  const filteredHeroSections = getFilteredHeroSections();
 
   return (
     <div className="">
       <Row className="m-2">
-        {/* Manage Users */}
+        {/* Manage Hero Sections */}
         <Col
           xs={24}
           sm={10}
@@ -322,7 +286,7 @@ export const ManageUsers = () => {
           xxl={14}
           className="flex justify-start font-bold"
         >
-          <h2 className="text-2xl">Manage Users</h2>
+          <h2 className="text-2xl">Manage Hero Sections</h2>
         </Col>
 
         <Col xs={24} sm={14} md={14} xl={10} xxl={10} className="">
@@ -333,19 +297,19 @@ export const ManageUsers = () => {
                 prefix={<SearchOutlined style={{ color: "#a6a6a6" }} />}
                 size="large"
                 className="w-full"
-                placeholder="Search by name, email or mobile..."
-                allowClear
+                placeholder="Search by title, description or button text..."
+                // allowClear
                 value={searchText}
                 onChange={handleSearchChange}
               />
             </Col>
 
-            {/* add user btn */}
+            {/* add hero section btn */}
             <Col xs={10} sm={8} md={8} xl={8} xxl={8} className=''>
-              <Link to={"/admin/user/add"}>
+              <Link to={"/admin/hero-section/add"}>
                 <button className="flex items-center justify-center py-3 btn-brand w-full">
                   <RiAddBoxFill style={{ fontSize: "15px" }} />
-                  <div className="ml-1">Add User</div>
+                  <div className="ml-1">Add Hero Section</div>
                 </button>
               </Link>
             </Col>
@@ -359,29 +323,14 @@ export const ManageUsers = () => {
           <Select
             className="w-full"
             size="large"
-            placeholder="Filter by Role"
-            value={roleFilter}
-            onChange={setRoleFilter}
-            // allowClear
+            placeholder="Filter by Type"
+            value={typeFilter}
+            onChange={setTypeFilter}
+            allowClear
           >
-            <Option value="all">All Roles</Option>
-            <Option value="1">Admin</Option>
-            <Option value="2">User</Option>
-          </Select>
-        </Col>
-
-        <Col xs={24} sm={8} md={6} xl={6} xxl={6}>
-          <Select
-            className="w-full"
-            size="large"
-            placeholder="Filter by Status"
-            value={statusFilter}
-            onChange={setStatusFilter}
-            // allowClear
-          >
-            <Option value="all">All Status</Option>
-            <Option value="active">Active</Option>
-            <Option value="inactive">Inactive</Option>
+            <Option value="all">All Types</Option>
+            <Option value="home">Home</Option>
+            <Option value="about">About</Option>
           </Select>
         </Col>
       </Row>
@@ -391,23 +340,23 @@ export const ManageUsers = () => {
           <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
             <Spin spinning={loading}>
               <Table
-                scroll={{ x: 1000 }}
+                scroll={{ x: 800 }}
                 columns={columns}
-                dataSource={filteredUsers}
+                dataSource={filteredHeroSections}
                 rowKey="_id"
                 pagination={{
                   pageSize: 10,
                   showSizeChanger: true,
                   pageSizeOptions: ["10", "20", "50", "100"],
                   showTotal: (total, range) =>
-                    `${range[0]}-${range[1]} of ${total} users`,
+                    `${range[0]}-${range[1]} of ${total} hero sections`,
                 }}
               />
             </Spin>
           </Col>
         </Card>
       </Row>
-
+      
       <Modal
         title="Confirm Deletion"
         open={!!deleteId}
@@ -416,9 +365,9 @@ export const ManageUsers = () => {
         centered
       >
         <div style={{ textAlign: "start", marginBottom: "1rem" }}>
-          <p>Are you sure you want to delete this user?</p>
+          <p>Are you sure you want to delete this hero section?</p>
           <p className="text-gray-500 text-sm mt-2">
-            This will mark the user as deleted. This action cannot be undone.
+            This action cannot be undone.
           </p>
         </div>
         <div style={{ textAlign: "end" }}>
@@ -446,4 +395,4 @@ export const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default HeroSectionTable;

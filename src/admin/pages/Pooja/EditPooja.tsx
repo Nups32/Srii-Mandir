@@ -77,32 +77,32 @@ const EditPujaForm: React.FC = () => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  
+
   // About Section
   const [aboutTitle, setAboutTitle] = useState<string>("");
   const [aboutDescription, setAboutDescription] = useState<string>("");
-  
+
   // Benefits Text (Array)
   const [benefitTexts, setBenefitTexts] = useState<BenefitItem[]>([{ title: "", description: "" }]);
-  
+
   // Arrays
   const [deities, setDeities] = useState<string[]>([""]);
   const [tithis, setTithis] = useState<string[]>([""]);
   const [doshas, setDoshas] = useState<string[]>([""]);
   const [benefits, setBenefits] = useState<string[]>([""]);
-  
+
   // Temple Details
   const [templeName, setTempleName] = useState<string>("");
   const [templeDescription, setTempleDescription] = useState<string>("");
   const [existingTempleImage, setExistingTempleImage] = useState<string>("");
-  
+
   // Images & Files
   const [imageList, setImageList] = useState<UploadFile[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [removedImages, setRemovedImages] = useState<string[]>([]);
   const [templeImageList, setTempleImageList] = useState<UploadFile[]>([]);
   const [videoUrl, setVideoUrl] = useState<string>("");
-  
+
   // Status
   const [isUpcoming, setIsUpcoming] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -111,77 +111,77 @@ const EditPujaForm: React.FC = () => {
   useEffect(() => {
     const fetchPoojaData = async () => {
       if (!id) return;
-      
+
       setFetching(true);
       try {
         const response = await getPoojaById(id);
-        if(response.data.status){
+        if (response.data.status) {
 
-            const data: PoojaData = response.data.data;
-            
-            // Set basic information
-            setTitle(data.title || "");
-            setName(data.name || "");
-            setTo(data.to || "");
-            setPlace(data.place || "");
-            setDate(data.date || "");
-            setTime(data.time || "");
-            setLocation(data.location || "");
-            
-            // Set about section
-            setAboutTitle(data.about?.title || "");
-            setAboutDescription(data.about?.description || "");
-            
-            // Set arrays
-            setDeities(data.deity?.length > 0 ? data.deity : [""]);
-            setTithis(data.tithis?.length > 0 ? data.tithis : [""]);
-            setDoshas(data.dosha?.length > 0 ? data.dosha : [""]);
-            setBenefits(data.benefits?.length > 0 ? data.benefits : [""]);
-            
-            // Set benefit texts
-            setBenefitTexts(data.benefitText?.length > 0 ? data.benefitText : [{ title: "", description: "" }]);
-            
-            // Set temple details
-            setTempleName(data.templeDetails?.name || "");
-            setTempleDescription(data.templeDetails?.description || "");
-            setExistingTempleImage(data.templeDetails?.image || "");
-            
-            // Set images
-            setExistingImages(data.images || []);
-            
-            // Set video URL
-            setVideoUrl(data.videoUrl || "");
-            
-            // Set status
-            setIsUpcoming(data.isUpcoming || false);
-            setIsActive(data.isActive !== undefined ? data.isActive : true);
-            // Format existing images for upload component
-            const formattedImageList = (data.images || []).map((img, index) => ({
-              uid: `existing-${index}`,
-              name: `image-${index}.jpg`,
-              status: 'done' as const,
+          const data: PoojaData = response.data.data;
+
+          // Set basic information
+          setTitle(data.title || "");
+          setName(data.name || "");
+          setTo(data.to || "");
+          setPlace(data.place || "");
+          setDate(data.date || "");
+          setTime(data.time || "");
+          setLocation(data.location || "");
+
+          // Set about section
+          setAboutTitle(data.about?.title || "");
+          setAboutDescription(data.about?.description || "");
+
+          // Set arrays
+          setDeities(data.deity?.length > 0 ? data.deity : [""]);
+          setTithis(data.tithis?.length > 0 ? data.tithis : [""]);
+          setDoshas(data.dosha?.length > 0 ? data.dosha : [""]);
+          setBenefits(data.benefits?.length > 0 ? data.benefits : [""]);
+
+          // Set benefit texts
+          setBenefitTexts(data.benefitText?.length > 0 ? data.benefitText : [{ title: "", description: "" }]);
+
+          // Set temple details
+          setTempleName(data.templeDetails?.name || "");
+          setTempleDescription(data.templeDetails?.description || "");
+          setExistingTempleImage(data.templeDetails?.image || "");
+
+          // Set images
+          setExistingImages(data.images || []);
+
+          // Set video URL
+          setVideoUrl(data.videoUrl || "");
+
+          // Set status
+          setIsUpcoming(data.isUpcoming || false);
+          setIsActive(data.isActive !== undefined ? data.isActive : true);
+          // Format existing images for upload component
+          const formattedImageList = (data.images || []).map((img, index) => ({
+            uid: `existing-${index}`,
+            name: `image-${index}.jpg`,
+            status: 'done' as const,
             //   url: img,
-              url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${img}`,
-              response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${img}`,
-              imageName: img,
-            }));
-            setImageList(formattedImageList);
-            
-            // Format temple image for upload component
-            if (data.templeDetails?.image) {
-              const templeImage = [{
-                uid: 'temple-image',
-                name: 'temple-image.jpg',
-                status: 'done' as const,
-                // url: data.templeDetails.image,
-                // response: data.templeDetails.image,
-                url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${data.templeDetails.image}`,
-                response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${data.templeDetails.image}`,
-              }];
-              setTempleImageList(templeImage);
-            }
+            url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${img}`,
+            response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${img}`,
+            imageName: img,
+          }));
+          setImageList(formattedImageList);
+
+          // Format temple image for upload component
+          if (data.templeDetails?.image) {
+            const templeImage = [{
+              uid: 'temple-image',
+              name: 'temple-image.jpg',
+              status: 'done' as const,
+              // url: data.templeDetails.image,
+              // response: data.templeDetails.image,
+              url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${data.templeDetails.image}`,
+              response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${data.templeDetails.image}`,
+            }];
+            setTempleImageList(templeImage);
+          }
         }
-        
+
       } catch (error) {
         console.error("Error fetching puja:", error);
         message.error("Failed to load puja data");
@@ -196,11 +196,11 @@ const EditPujaForm: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!id) return;
-    
+
     setLoading(true);
     try {
       const formData = new FormData();
-      
+
       // Basic Info
       formData.append("title", title);
       formData.append("name", name);
@@ -209,73 +209,77 @@ const EditPujaForm: React.FC = () => {
       formData.append("date", date);
       formData.append("time", time);
       formData.append("location", location);
-      
+
       // About
       const aboutData = { title: aboutTitle, description: aboutDescription };
       formData.append("about", JSON.stringify(aboutData));
-      
+
       // Benefit Texts (as JSON string)
       formData.append("benefitText", JSON.stringify(benefitTexts));
-      
+
       // Arrays - filter out empty strings
       const filteredDeities = deities.filter(deity => deity.trim());
       formData.append("deity", JSON.stringify(filteredDeities));
-      
+
       const filteredTithis = tithis.filter(tithi => tithi.trim());
       formData.append("tithis", JSON.stringify(filteredTithis));
-      
+
       const filteredDoshas = doshas.filter(dosha => dosha.trim());
       formData.append("dosha", JSON.stringify(filteredDoshas));
-      
+
       const filteredBenefits = benefits.filter(benefit => benefit.trim());
       formData.append("benefits", JSON.stringify(filteredBenefits));
-      
+
       // Temple Details
-      const templeDetailsData = { 
-        name: templeName, 
+      const templeDetailsData = {
+        name: templeName,
         description: templeDescription,
         image: existingTempleImage // Keep existing image unless updated
       };
       formData.append("templeDetails", JSON.stringify(templeDetailsData));
-      
+
       // Add removed images
       if (removedImages.length > 0) {
         formData.append("removeImages", JSON.stringify(removedImages));
       }
-      
+
       // Add existing images (those not removed)
       const currentExistingImages = existingImages.filter(img => !removedImages.includes(img));
       if (currentExistingImages.length > 0) {
         formData.append("existingImages", JSON.stringify(currentExistingImages));
       }
-      
+
       // Only append new temple image if uploaded
       if (templeImageList[0]?.originFileObj) {
         formData.append("templeImage", templeImageList[0].originFileObj as RcFile);
       }
-      
+
       // Handle new images upload
       imageList.forEach((file) => {
         if (file.originFileObj) {
           formData.append("images", file.originFileObj as RcFile);
         }
       });
-      
+
       // Video
       if (videoUrl) {
         formData.append("videoUrl", videoUrl);
       } else {
         formData.append("videoUrl", "");
       }
-      
+
       // Status
       formData.append("isUpcoming", isUpcoming.toString());
       formData.append("isActive", isActive.toString());
 
-      console.log("Updating puja with ID:", id);
-      await updatePooja(id, formData);
-      message.success("Puja updated successfully");
-      navigate("/admin/pooja");
+      // console.log("Updating puja with ID:", id);
+      const res = await updatePooja(id, formData);
+      if (res.data.status) {
+        message.success("Puja updated successfully");
+        navigate("/admin/pooja");
+      } else {
+        message.error("server error")
+      }
     } catch (error) {
       console.error("Error updating puja:", error);
       message.error("Failed to update puja. Please try again.");
@@ -446,7 +450,7 @@ const EditPujaForm: React.FC = () => {
       <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
         <Card className="!p-1">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Basic Information Section */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">Basic Information</h3>
@@ -964,9 +968,9 @@ const EditPujaForm: React.FC = () => {
                   {existingTempleImage && templeImageList.length === 0 && (
                     <div className="mt-2">
                       <p className="text-sm text-gray-600">Current temple image:</p>
-                      <img 
-                        src={existingTempleImage} 
-                        alt="Current temple" 
+                      <img
+                        src={existingTempleImage}
+                        alt="Current temple"
                         className="mt-1 max-h-32 object-cover rounded"
                       />
                     </div>
@@ -1083,10 +1087,10 @@ const EditPujaForm: React.FC = () => {
             </Col>
 
             {/* Submit Button */}
-            <Col span={24} className="buttons mt-6">
+            <Col span={24} className="my-6">
               <button
                 disabled={loading}
-                className={`btn-brand !py-2 !px-3 cursor-pointer ${loading && '!bg-gray-800'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (

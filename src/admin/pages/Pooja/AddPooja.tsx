@@ -15,7 +15,7 @@ import {
   Space,
   type DatePickerProps,
 } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaTimes } from "react-icons/fa";
 import type { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { storePooja } from "@/utils/API";
@@ -38,7 +38,7 @@ interface BenefitItem {
 const AddPujaForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Basic Information
   const [title, setTitle] = useState<string>("");
@@ -48,29 +48,29 @@ const AddPujaForm: React.FC = () => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   // const [location, setLocation] = useState<string>("");
-  
+
   // About Section
   const [aboutTitle, setAboutTitle] = useState<string>("");
   const [aboutDescription, setAboutDescription] = useState<string>("");
-  
+
   // Benefits Text (Array)
   const [benefitTexts, setBenefitTexts] = useState<BenefitItem[]>([{ title: "", description: "" }]);
-  
+
   // Arrays
   const [deities, setDeities] = useState<string[]>([""]);
   const [tithis, setTithis] = useState<string[]>([""]);
   const [doshas, setDoshas] = useState<string[]>([""]);
   const [benefits, setBenefits] = useState<string[]>([""]);
-  
+
   // Temple Details
   const [templeName, setTempleName] = useState<string>("");
   const [templeDescription, setTempleDescription] = useState<string>("");
-  
+
   // Images & Files
   const [imageList, setImageList] = useState<UploadFile[]>([]);
   const [templeImageList, setTempleImageList] = useState<UploadFile[]>([]);
   const [videoUrl, setVideoUrl] = useState<string>("");
-  
+
   // Status
   const [isUpcoming, setIsUpcoming] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -79,7 +79,7 @@ const AddPujaForm: React.FC = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      
+
       // Basic Info
       formData.append("title", title);
       formData.append("name", name);
@@ -88,58 +88,62 @@ const AddPujaForm: React.FC = () => {
       formData.append("date", date);
       formData.append("time", time);
       // formData.append("location", location);
-      
+
       // About
       formData.append("about[title]", aboutTitle);
       formData.append("about[description]", aboutDescription);
-      
+
       // Benefit Texts (as JSON string)
       formData.append("benefitText", JSON.stringify(benefitTexts));
-      
+
       // Arrays
       deities.forEach((deity, index) => {
         formData.append(`deity[${index}]`, deity);
       });
-      
+
       tithis.forEach((tithi, index) => {
         formData.append(`tithis[${index}]`, tithi);
       });
-      
+
       doshas.forEach((dosha, index) => {
         formData.append(`dosha[${index}]`, dosha);
       });
-      
+
       benefits.forEach((benefit, index) => {
         formData.append(`benefits[${index}]`, benefit);
       });
-      
+
       // Temple Details
       formData.append("templeDetails[name]", templeName);
       formData.append("templeDetails[description]", templeDescription);
       if (templeImageList[0]?.originFileObj) {
         formData.append("templeImage", templeImageList[0].originFileObj as RcFile);
       }
-      
+
       // Images
       imageList.forEach((file) => {
         if (file.originFileObj) {
           formData.append(`images`, file.originFileObj as RcFile);
         }
       });
-      
+
       // Video
       if (videoUrl) {
         formData.append("videoUrl", videoUrl);
       }
-      
+
       // Status
       formData.append("isUpcoming", isUpcoming.toString());
       formData.append("isActive", isActive.toString());
       console.log("formData", formData);
 
-      await storePooja(formData);
-      message.success("Puja added successfully");
-    //   navigate("/admin/puja");
+      const res = await storePooja(formData);
+      if (res.data.status) {
+        message.success("Puja added successfully");
+        navigate("/admin/pooja");
+      } else {
+        message.error("server error")
+      }
     } catch (error) {
       console.error("Error adding puja:", error);
       message.error("Failed to add puja. Please try again.");
@@ -244,21 +248,21 @@ const AddPujaForm: React.FC = () => {
     setTempleImageList(fileList.slice(-1)); // Only one temple image
   };
 
-//   // Date Handlers
-// //   const handleDateChange = (date: moment.Moment | null, dateString: string | string[]) => {
-//     const handleDateChange = (date: any,dateString: string | null) => {
-//         if (dateString) {
-//             setDate(dateString);
-//         } else {
-//             setDate(""); // or null, depending on your state
-//         }
-//     };
+  //   // Date Handlers
+  // //   const handleDateChange = (date: moment.Moment | null, dateString: string | string[]) => {
+  //     const handleDateChange = (date: any,dateString: string | null) => {
+  //         if (dateString) {
+  //             setDate(dateString);
+  //         } else {
+  //             setDate(""); // or null, depending on your state
+  //         }
+  //     };
 
 
-//   const handleTimeChange = (time: moment.Moment | null, timeString: string | string[]) => {
-    const handleTimeChange: DatePickerProps["onChange"] = ( _, dateTimeString: any) => {
+  //   const handleTimeChange = (time: moment.Moment | null, timeString: string | string[]) => {
+  const handleTimeChange: DatePickerProps["onChange"] = (_, dateTimeString: any) => {
     setTime(dateTimeString || "");
-    };
+  };
 
   return (
     <div className="">
@@ -279,7 +283,7 @@ const AddPujaForm: React.FC = () => {
       <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
         <Card className="!p-1">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Basic Information Section */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">Basic Information</h3>
@@ -429,12 +433,12 @@ const AddPujaForm: React.FC = () => {
                       format="HH:mm"
                     /> */}
                     <DatePicker
-                        size="large"
-                        style={{ width: "100%" }}
-                        showTime={{ format: "HH:mm" }}
-                        format="YYYY-MM-DD HH:mm"
-                        onChange={handleTimeChange}
-                        placeholder="Select date & time"
+                      size="large"
+                      style={{ width: "100%" }}
+                      showTime={{ format: "HH:mm" }}
+                      format="YYYY-MM-DD HH:mm"
+                      onChange={handleTimeChange}
+                      placeholder="Select date & time"
                     />
                   </Space>
                 </Col>
@@ -508,12 +512,12 @@ const AddPujaForm: React.FC = () => {
                       onChange={(e) => setAboutDescription(e.target.value)}
                     /> */}
                     <ReactQuill
-                        theme="snow"
-                        value={aboutDescription}
-                        style={{ height: "200px" }}
-                        onChange={setAboutDescription}
-                        
-                        placeholder="Detailed description about the puja"
+                      theme="snow"
+                      value={aboutDescription}
+                      style={{ height: "200px" }}
+                      onChange={setAboutDescription}
+
+                      placeholder="Detailed description about the puja"
                     />
                   </Form.Item>
                 </Col>
@@ -788,11 +792,11 @@ const AddPujaForm: React.FC = () => {
                       onChange={(e) => setTempleDescription(e.target.value)}
                     /> */}
                     <ReactQuill
-                        theme="snow"
-                        value={templeDescription}
-                        placeholder="Temple description"
-                        style={{ height: "100px" }}
-                        onChange={setTempleDescription}
+                      theme="snow"
+                      value={templeDescription}
+                      placeholder="Temple description"
+                      style={{ height: "100px" }}
+                      onChange={setTempleDescription}
                     />
                   </Form.Item>
                 </Col>
@@ -908,10 +912,10 @@ const AddPujaForm: React.FC = () => {
             </Col>
 
             {/* Submit Button */}
-            <Col span={24} className="buttons mt-6">
+            <Col span={24} className="my-6">
               <button
                 disabled={loading}
-                className={`btn-brand !py-2 !px-3 cursor-pointer ${loading && '!bg-gray-800'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (
