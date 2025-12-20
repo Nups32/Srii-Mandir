@@ -1,7 +1,7 @@
 import SectionTitle from "./MediaSectionTitle";
 import AudioCard from "./AudioCard";
 import LiveKathaCard from "./LiveKathaCard";
-import music from "../../assets/media/music.mp3"
+// import music from "../../assets/media/music.mp3"
 import { getMediaLatest } from "@/utils/API";
 import { message } from "antd";
 import { useEffect, useState } from "react";
