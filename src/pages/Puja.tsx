@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MapPin,
   Clock,
@@ -17,6 +17,8 @@ import hero3 from "../assets/Puja/hero/3.jpg";
 
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
+import { message } from "antd";
+import { getPooja } from "@/utils/API";
 // import { getPooja } from "@/utils/API";
 // import { message } from "antd";
 
@@ -36,8 +38,8 @@ const Puja: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentWorkSlide, setCurrentWorkSlide] = useState(0);
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-  // const [poojas, setPoojas] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [poojas, setPoojas] = useState<any[]>([]);
 
 
   const heroSlides = [
@@ -230,25 +232,25 @@ const Puja: React.FC = () => {
     },
   ];
 
-  // const fetchPooja = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response: any = await getPooja();
-  //     if (response?.data?.status) {
-  //       setPoojas(response);
-  //     } else {
-  //       message.error("failed to fetch poojas");
-  //     }
-  //   } catch (error) {
-  //     message.error("Network error. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchPooja = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getPooja();
+      if (response?.data?.status) {
+        setPoojas(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchPooja();
-  // }, []);
+  useEffect(() => {
+    fetchPooja();
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -345,15 +347,16 @@ const Puja: React.FC = () => {
 
           {/* Puja Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pujaCards.map((puja) => (
+            {/* {pujaCards.map((puja) => ( */}
+            {poojas?.map((puja) => (
               <div
-                key={puja.id}
+                key={puja._id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Card Image */}
                 <div className="relative h-62">
                   <img
-                    src={puja.image}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${puja.images?.[0]}`}
                     alt={puja.title}
                     className="w-full h-full object-cover"
                   />
@@ -369,32 +372,32 @@ const Puja: React.FC = () => {
                     {puja.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-3">
-                    {puja.description}
+                    {puja.to}
                   </p>
 
                   {/* Details */}
                   <div className="space-y-2 mb-4 h-35">
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
-                      <span className="line-clamp-2">{puja.temple}</span>
+                      <span className="line-clamp-2">{puja.place}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <Clock className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
-                      <span>{puja.duration}</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-gray-600 text-sm">
-                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.date}</span>
                     </div>
                     <div className="flex items-start gap-2 text-gray-600 text-sm">
+                      <Calendar className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
+                      <span>{puja.time}</span>
+                    </div>
+                    {/* <div className="flex items-start gap-2 text-gray-600 text-sm">
                       <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                       <span>{puja.location}</span>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Button */}
                   <button
-                    onClick={() => navigate("/puja-detail")}
+                    onClick={() => navigate(`/puja-detail/${puja.slug}`)}
                     // onClick={() =>
                     //   window.open(`product/${puja.slug}`, "_blank")
                     // }

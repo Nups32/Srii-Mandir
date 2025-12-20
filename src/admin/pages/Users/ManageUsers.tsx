@@ -311,7 +311,7 @@ function ManageUsers() {
         </div>
 
         {/* pagination */}
-        {userData.length > 0 && (
+        {userData?.length > 0 && (
           <div className="custom-shadow rounded-lg shadow-sm border mt-6 overflow-hidden">
             <div className="flex items-center justify-between p-4">
               <div className="text-sm text-gray-300 mr-6">

@@ -104,6 +104,15 @@ export const getPooja = async () => {
   }
 };
 
+export const getPoojaBySlug = async (slug: string) => {
+  try {
+    const response = await CommanAPI.get(`/pooja/${slug}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPoojaById = async (id: string) => {
   try {
     const response = await API.get(`/backend/pooja/${id}/edit`);

@@ -1,8 +1,6 @@
 import { pujaData } from "../../../details";
 
-export default function AboutPuja() {
-  const about = pujaData[0]?.about;
-
+export default function AboutPuja({about}: any) {
   if (!about) return null;
 
   return (
@@ -10,9 +8,9 @@ export default function AboutPuja() {
       id="about-puja"
       className="scroll-mt-32 py-10 max-w-7xl mx-auto px-4"
     >
-      <h2 className="text-3xl font-bold text-gray-900 mb-8!">{about.title}</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8!">{about?.title}</h2>
 
-      <p className="text-gray-600 leading-relaxed">{about.description}</p>
+      <p className="text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{__html: about?.description}}></p>
     </section>
   );
 }

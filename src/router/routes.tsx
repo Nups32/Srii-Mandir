@@ -40,7 +40,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <Puja />,
   },
   {
-    path: "/puja-detail",
+    path: "/puja-detail/:slug",
     element: <PujaDetail />,
   },
   {
