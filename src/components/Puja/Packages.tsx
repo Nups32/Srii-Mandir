@@ -5,7 +5,7 @@ import { getPoojaPackages } from "@/utils/API";
 import { message } from "antd";
 
 export default function Packages({ poojaId }: any) {
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [packages, setPackage] = useState<any>();
   console.log("poojaId", poojaId);
 

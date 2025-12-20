@@ -291,3 +291,36 @@ export const chadhavaData = {
   createdAt: "2025-01-01T10:30:00.000Z",
   updatedAt: "2025-01-01T10:30:00.000Z"
 }
+
+// import { Offer } from "@/components/Puja/Packages";
+
+
+
+export const packages = {
+  offering: [
+    {
+      id: "1",
+      name: "Maa Bagalamukhi Maha Kunjika Shringar Arpan",
+      price: 701,
+      image: "/images/1.jpg",
+    },
+    {
+      id: "2",
+      name: "Yellow Devi Shringar",
+      price: 501,
+      image: "temple.jpg",
+    },
+    {
+      id: "3",
+      name: "Haldi, Dahi & Kesar Doodh Arpan",
+      price: 501,
+      image: "temple.jpg",
+    },
+    {
+      id: "4",
+      name: "Deep Seva (Offering of Lamps)",
+      price: 351,
+      image: "temple.jpg",
+    },
+  ],
+};

@@ -1,4 +1,4 @@
-import { pujaData } from "../../../details";
+// import { pujaData } from "../../../details";
 
 export default function AboutPuja({about}: any) {
   if (!about) return null;

@@ -1,4 +1,4 @@
-import { pujaData } from "../../../details";
+// import { pujaData } from "../../../details";
 import pujaBenefitsLogo from "../../assets/Puja/pujaBenefits.jpg";
 
 export default function Benefits({benifits}: any) {
