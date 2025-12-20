@@ -73,3 +73,45 @@ export const calculateWorkedTime = (attendance: any) => {
     // Ensure not negative
     return Math.max(totalSeconds - breakSeconds, 0);
 }
+
+
+export const getYouTubeEmbedUrl = (url?: string) => {
+    if (!url) return "";
+
+    try {
+        const parsedUrl = new URL(url);
+        let videoId = "";
+
+        // youtu.be/VIDEO_ID
+        if (parsedUrl.hostname.includes("youtu.be")) {
+            videoId = parsedUrl.pathname.slice(1);
+        }
+
+        // youtube.com/watch?v=VIDEO_ID
+        else if (parsedUrl.searchParams.get("v")) {
+            videoId = parsedUrl.searchParams.get("v")!;
+        }
+
+        // youtube.com/embed/VIDEO_ID
+        else if (parsedUrl.pathname.startsWith("/embed/")) {
+            videoId = parsedUrl.pathname.split("/embed/")[1];
+        }
+
+        // youtube.com/live/VIDEO_ID
+        else if (parsedUrl.pathname.startsWith("/live/")) {
+            videoId = parsedUrl.pathname.split("/live/")[1];
+        }
+
+        // youtube.com/shorts/VIDEO_ID
+        else if (parsedUrl.pathname.startsWith("/shorts/")) {
+            videoId = parsedUrl.pathname.split("/shorts/")[1];
+        }
+
+        return videoId
+            ? `https://www.youtube.com/embed/${videoId}`
+            : "";
+    } catch {
+        return "";
+    }
+};
+

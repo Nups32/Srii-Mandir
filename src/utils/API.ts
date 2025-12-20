@@ -145,6 +145,14 @@ export const getMedias = async () => {
   const response = await CommanAPI.get(`/media`);
   return response;
 };
+export const getMediaLatest = async () => {
+  const response = await CommanAPI.get(`/media/latest`);
+  return response;
+};
+export const getMediaByType = async (type: string) => {
+  const response = await CommanAPI.get(`/media/${type}/type`);
+  return response;
+};
 
 export const getAllMedia = async () => {
   const response = await API.get(`/backend/media/get-all`);
@@ -265,6 +273,11 @@ export const getAllHeroSection = async () => {
 
 export const getHeroSectionById = async (id: string) => {
   const response = await API.get(`/backend/hero-section/${id}/edit`);
+  return response;
+};
+
+export const getHeroSectionByType = async (type: string) => {
+  const response = await CommanAPI.get(`/hero-section/${type}/get`);
   return response;
 };
 
