@@ -15,13 +15,13 @@ import { message } from "antd";
 export default function ChadhavaOffering() {
   const { cart, addOrUpdateItem } = useCart();
   const [current, setCurrent] = useState(0);
-  // const images = chadhavas?.images;
+  // const images = chadhava?.images;
   const [, setIsModalOpen] = useState(false);
   const [selectedOffering, setSelectedOffering] = useState<any>(null);
   const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
   const [, setLoading] = useState(true);
-  const [chadhavas, setChadhavas] = useState<any>([]);
+  const [chadhava, setChadhava] = useState<any>([]);
 
   const fetchProduct = async () => {
     setLoading(true);
@@ -29,7 +29,7 @@ export default function ChadhavaOffering() {
       if (slug) {
         const response = await getChadhavaBySlug(slug || "");
         if (response.data.status) {
-          setChadhavas(response.data.data);
+          setChadhava(response.data.data);
         }
       }
     } catch (error) {
@@ -43,8 +43,8 @@ export default function ChadhavaOffering() {
     fetchProduct();
   }, [slug]);
 
-  const prevSlide = () => setCurrent((prev) => (prev === 0 ? chadhavas?.images?.length - 1 : prev - 1));
-  const nextSlide = () => setCurrent((prev) => (prev === chadhavas?.images?.length - 1 ? 0 : prev + 1));
+  const prevSlide = () => setCurrent((prev) => (prev === 0 ? chadhava?.images?.length - 1 : prev - 1));
+  const nextSlide = () => setCurrent((prev) => (prev === chadhava?.images?.length - 1 ? 0 : prev + 1));
 
   const openModal = (item: any) => {
     setSelectedOffering(item);
@@ -65,8 +65,8 @@ export default function ChadhavaOffering() {
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <div className="relative rounded-xl overflow-hidden shadow">
           <img 
-          // src={chadhavas?.images?.[current]} alt="Chadhava" 
-          src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${chadhavas?.images?.[current]}`}
+          // src={chadhava?.images?.[current]} alt="Chadhava" 
+          src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${chadhava?.images?.[current]}`}
           className="w-full h-65 object-cover" />
           <button onClick={prevSlide} className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/80 p-1 rounded-full">
             <ChevronLeft size={20} />
@@ -75,17 +75,17 @@ export default function ChadhavaOffering() {
             <ChevronRight size={20} />
           </button>
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-            {chadhavas?.images?.map((_: any, i: any) => (
+            {chadhava?.images?.map((_: any, i: any) => (
               <span key={i} className={`h-2 w-2 rounded-full ${i === current ? "bg-orange-500" : "bg-gray-300"}`} />
             ))}
           </div>
         </div>
 
         <div className="flex flex-col justify-start">
-          <h1 className="text-2xl font-semibold text-gray-900">{chadhavas?.name}</h1>
-          <p className="text-sm text-gray-600 mt-3" dangerouslySetInnerHTML={{__html: chadhavas?.about}}></p>
+          <h1 className="text-2xl font-semibold text-gray-900">{chadhava?.name}</h1>
+          <p className="text-sm text-gray-600 mt-3" dangerouslySetInnerHTML={{__html: chadhava?.about}}></p>
           <div className="mt-4 space-y-2">
-            {chadhavas?.details?.map((item: any, index: any) => (
+            {chadhava?.details?.map((item: any, index: any) => (
               <div key={index} className="flex gap-2">
                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-orange-500"></span>
                 <div className="text-sm text-gray-700">
@@ -104,7 +104,7 @@ export default function ChadhavaOffering() {
       <div className="mt-10">
         <h2 className="text-3xl font-semibold mb-4">Choose an offering</h2>
         <div className="space-y-4">
-          {chadhavas?.offering?.map((item: any) => (
+          {chadhava?.offering?.map((item: any) => (
             <div
               key={item?._id}
               onClick={() => openModal(item)}
@@ -151,7 +151,7 @@ export default function ChadhavaOffering() {
 
       {totalCount > 0 && (
         <div
-          onClick={() => navigate("/chadhava-cart", { state: { chadhavaId: chadhavaData?._id } })}
+          onClick={() => navigate("/chadhava-cart", { state: { chadhavaId: chadhava?._id, slug: chadhava?.slug } })}
           className="fixed bottom-3 max-w-6xl left-0 right-0 mx-auto rounded-2xl bg-green-700 hover:bg-green-800 text-white px-6 py-4 flex justify-between items-center z-50 cursor-pointer"
         >
           <span className="font-medium">

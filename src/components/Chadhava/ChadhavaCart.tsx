@@ -13,6 +13,7 @@ export default function ChadhavaCart() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const location = useLocation();
   const chadhavaId: string = location.state?.chadhavaId;
+  const chadhavaSlug: string = location.state?.slug;
   console.log("Cart contents:", cart);
 
   const totalCount = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
@@ -168,7 +169,7 @@ export default function ChadhavaCart() {
         {/* <BillDetails cart={cart} totalAmount={totalAmount} /> */}
         <div>
           {/* <AdditionalOffers onAdd={(offer) => addOffer(offer.id, offer)} /> */}
-          <AdditionalOffers cart={cart} onAdd={(offer) => addOrUpdateItem({
+          <AdditionalOffers slug={chadhavaSlug} cart={cart} onAdd={(offer) => addOrUpdateItem({
             ...offer,
             qty: 0
           })} />
