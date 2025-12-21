@@ -185,7 +185,7 @@ const EditPujaForm: React.FC = () => {
       } catch (error) {
         console.error("Error fetching puja:", error);
         message.error("Failed to load puja data");
-        navigate("/admin/puja");
+        navigate("/admin/pooja");
       } finally {
         setFetching(false);
       }
@@ -276,7 +276,7 @@ const EditPujaForm: React.FC = () => {
       const res = await updatePooja(id, formData);
       if (res.data.status) {
         message.success("Puja updated successfully");
-        navigate("/admin/pooja");
+        // navigate("/admin/pooja");
       } else {
         message.error("server error")
       }
@@ -390,8 +390,11 @@ const EditPujaForm: React.FC = () => {
     // Remove from image list
     const newFileList = imageList.filter(item => item.uid !== file.uid);
     setImageList(newFileList);
+    
+    if(file.imageName){
+      setRemovedImages(prev => [...prev, file.imageName]);
+    }
 
-    // setRemovedImages(prev => [...prev, file.imageName]);
     setExistingImages(prev => prev.filter(img => img !== file.imageName));
 
     setImageList(prev => prev.filter(img => img.response !== file.imageName));

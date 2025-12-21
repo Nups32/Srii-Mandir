@@ -231,6 +231,15 @@ export const getAllChadhava = async () => {
   return response;
 };
 
+export const getChadhavaBySlug = async (slug: string) => {
+  try {
+    const response = await CommanAPI.get(`/chadhava/${slug}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getChadhavaById = async (id: string) => {
   const response = await API.get(`/backend/chadhava/${id}/edit`);
   return response;
@@ -425,6 +434,30 @@ export const updateSettigsData = async (formData: any): Promise<any> => {
 
     return response;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const createRazorpayOrder = async (orderData: any) => {
+  try {
+    const response = await API.post(`/create-order`, orderData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating Razorpay order:", error);
+    throw error;
+  }
+};
+
+export const verifyPayment = async (paymentData: {
+  razorpay_payment_id: any;
+  razorpay_order_id: any;
+  razorpay_signature: any;
+}) => {
+  try {
+    const response = await API.post(`/verify-payment`, paymentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
     throw error;
   }
 };

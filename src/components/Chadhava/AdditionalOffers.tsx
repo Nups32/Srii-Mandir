@@ -2,7 +2,7 @@ import { chadhavaData } from "../../../details";
 import type { CartItem } from "./CartContext";
 
 type Offer = {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   image?: string;
@@ -17,7 +17,7 @@ export default function AdditionalOffers({ cart, onAdd }: Props) {
   const cartIds = new Set(Object.keys(cart));
 
   const availableOffers = chadhavaData.offering
-    .filter((offer) => !cartIds.has(offer.id))
+    .filter((offer) => !cartIds.has(offer._id))
     .slice(0, 3);
 
   // if (availableOffers.length === 0) return null;
@@ -28,7 +28,7 @@ export default function AdditionalOffers({ cart, onAdd }: Props) {
       <div className="grid sm:grid-cols-2 gap-4">
         {availableOffers.map((offer) => (
           <div
-            key={offer.id}
+            key={offer._id}
             className="bg-white border rounded-xl p-4 flex gap-4"
           >
             {/* Image only if available */}

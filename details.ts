@@ -236,6 +236,7 @@ export const data = [
 ];
 
 export const chadhavaData = {
+  _id: "695c3e4f9f01f307476e1e4f",
   title: "Shree Ganesh Chadhava",
   description: "gkegkegoewr",
   name: "Ganesh Chadhava",
@@ -252,7 +253,7 @@ export const chadhavaData = {
   ],
   offering: [
     {
-      id: "1",
+      _id: "1",
       name: "Modak Offering",
       description: "Freshly prepared modaks offered to Lord Ganesh.",
       // "image": "temple.jpg",
@@ -261,7 +262,7 @@ export const chadhavaData = {
       isPrasadForHome: true
     },
     {
-      id: "2",
+      _id: "2",
       name: "Special Puja Combo",
       description: "Includes flowers, modaks, coconut, and incense sticks.",
       image: "temple.jpg",
@@ -270,7 +271,7 @@ export const chadhavaData = {
       isPrasadForHome: false
     },
     {
-      id: "3",
+      _id: "3",
       name: "Special Puja Combo",
       description: "Includes flowers, modaks, coconut, and incense sticks.",
       image: "temple.jpg",
