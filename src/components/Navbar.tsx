@@ -12,6 +12,7 @@ const menu = [
   { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
   { name: "Shakti Sanyans", path: "/shakti-sanyans" },
+  { name: "Products", path: "/products" },
 ];
 
 const Navbar = () => {

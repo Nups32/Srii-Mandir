@@ -42,7 +42,7 @@ export default function AudioCard({
 
       <audio
         controls
-        controlsList={isPaidUser ? "nodownload noplaybackrate" : undefined}
+        controlsList={!isPaidUser ? "nodownload" : undefined}
         onContextMenu={isPaidUser ? (e) => e.preventDefault() : undefined}
         className="w-full mb-4"
       >
