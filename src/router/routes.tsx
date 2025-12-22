@@ -86,7 +86,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <Library isPaidUser={false} />,
   },
   {
-    path: "/media/devotional-songs",
+    path: "/media/:type",
     element: <DevotionalMedia />,
   },
   {
