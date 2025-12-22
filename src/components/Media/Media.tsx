@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import SectionTitle from "./MediaSectionTitle";
 import AudioCard from "./AudioCard";
 import LiveKathaCard from "./LiveKathaCard";
@@ -7,7 +8,7 @@ import { message } from "antd";
 import { useEffect, useState } from "react";
 import { getYouTubeEmbedUrl } from "@/utils/Helper";
 
-export default function DevotionalAudio({ isPaidUser }: any) {
+export default function Library({ isPaidUser }: any) {
   console.log("isPaidUser", isPaidUser);
   // const devotionalSongs = [
   //   {
@@ -63,13 +64,13 @@ export default function DevotionalAudio({ isPaidUser }: any) {
   //   },
   // ];
 
-  const [soungs, setSongs] = useState<any[]>([]);
+  const [songs, setSongs] = useState<any[]>([]);
   const [mantras, setMantras] = useState<any[]>([]);
   const [kathas, setKathas] = useState<any[]>([]);
 
-  // console.log("soungs", soungs);
-  // console.log("mantras", mantras);
-  // console.log("kathas", kathas);
+  console.log("soungs", songs);
+  console.log("mantras", mantras);
+  console.log("kathas", kathas);
 
   const fetchMedia = async () => {
     // setLoading(true);
@@ -78,8 +79,12 @@ export default function DevotionalAudio({ isPaidUser }: any) {
       if (response.data.status) {
         // console.log("response.data.data", response.data.data);
         response.data.data.map((media: any) => {
-          media.type == "katha" ? setKathas(media.items) : media.type == "song" ? setSongs(media.items) : setMantras(media.items)
-        })
+          media.type == "katha"
+            ? setKathas(media.items)
+            : media.type == "song"
+            ? setSongs(media.items)
+            : setMantras(media.items);
+        });
         // setSlides(response.data.data);
       }
     } catch (error) {
@@ -93,6 +98,9 @@ export default function DevotionalAudio({ isPaidUser }: any) {
     fetchMedia();
   }, []);
 
+  const allSongs = [...songs, ...songs];
+  const allMantras = [...mantras, mantras];
+  const allKathas = [...kathas, ...kathas];
 
   return (
     <section className="min-h-screen bg-linear-to-b from-orange-50 to-white py-16">
@@ -109,22 +117,32 @@ export default function DevotionalAudio({ isPaidUser }: any) {
         </div>
 
         {/* Free Devotional Songs */}
-        <SectionTitle title="Devotional Songs" badge="Free Access" />
+        {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
+        <SectionTitle
+          title="Devotional Songs"
+          badge="Free Access"
+          viewAllPath="/media/devotional-songs"
+          showViewAll={songs.length > 1}
+        />
 
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {devotionalSongs.map((song, index) => ( */}
-          {soungs?.map((song) => (
+          {/* {songs?.map((song) => ( */}
+          {allSongs.slice(0, 2).map((song) => (
             <div key={song?._id}>
-              {song?.media == "audio" ?
+              {song?.media == "audio" ? (
                 <AudioCard
                   key={song?._id}
                   title={song?.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song?.file}`}
+                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
+                    song?.file
+                  }`}
                   free
                   premium={false}
                   isPaidUser={false}
                 />
-                : <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
+              ) : (
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
                   <iframe
                     key={song?._id}
                     src={getYouTubeEmbedUrl(song?.url)}
@@ -134,14 +152,20 @@ export default function DevotionalAudio({ isPaidUser }: any) {
                     allowFullScreen
                     className="absolute inset-0 w-full h-full"
                   />
-                </div>}
-
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         {/* Premium Vedic Mantras */}
-        <SectionTitle title="Vedic Sutra Mantras" badge="Premium Content" />
+        {/* <SectionTitle title="Vedic Sutra Mantras" badge="Premium Content" /> */}
+        <SectionTitle
+          title="Vedic Sutra Mantras"
+          badge="Premium Content"
+          viewAllPath="/media/mantras"
+          showViewAll={mantras.length > 1}
+        />
 
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {vedicMantras.map((mantra, index) => (
@@ -154,18 +178,22 @@ export default function DevotionalAudio({ isPaidUser }: any) {
               free={false}
             />
           ))} */}
-          {mantras?.map((mantra) => (
+          {/* {mantras?.map((mantra) => ( */}
+          {allMantras.slice(0, 2).map((mantra) => (
             <div key={mantra?._id}>
-              {mantra?.media == "audio" ?
+              {mantra?.media == "audio" ? (
                 <AudioCard
                   key={mantra?._id}
                   title={mantra?.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${mantra?.file}`}
+                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
+                    mantra?.file
+                  }`}
                   free
                   premium={true}
                   isPaidUser={false}
                 />
-                : <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
+              ) : (
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
                   <iframe
                     key={mantra?._id}
                     src={getYouTubeEmbedUrl(mantra?.url)}
@@ -175,18 +203,26 @@ export default function DevotionalAudio({ isPaidUser }: any) {
                     allowFullScreen
                     className="absolute inset-0 w-full h-full"
                   />
-                </div>}
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         {/* Live Katha Section */}
-        <SectionTitle title="Live Katha & Pravachan" badge="Live / Upcoming" />
+        {/* <SectionTitle title="Live Katha & Pravachan" badge="Live / Upcoming" /> */}
+        <SectionTitle
+          title="Live Katha & Pravachan"
+          badge="Live / Upcoming"
+          viewAllPath="/media/kathas"
+          showViewAll={kathas.length > 1}
+        />
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* {liveKathas.map((katha, index) => ( */}
-          {kathas.map((katha, index) => (
-            <LiveKathaCard key={index} katha={katha} />
+          {/* {kathas.map((katha, index) => ( */}
+          {allKathas.slice(0, 2).map((katha, i) => (
+            <LiveKathaCard key={i} katha={katha} />
           ))}
         </div>
       </div>

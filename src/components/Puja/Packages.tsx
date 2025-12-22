@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import { getPoojaPackages } from "@/utils/API";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../Puja/Packages/PackageContext";
 
 export default function Packages({ poojaId }: any) {
   const [, setLoading] = useState(true);
   const [packages, setPackage] = useState<any>();
   const navigate = useNavigate();
+  const { setSelectedPackage } = useCart();
   console.log("poojaId", poojaId);
 
   const fetchProduct = async () => {
@@ -19,6 +21,7 @@ export default function Packages({ poojaId }: any) {
       if (response.data.status) {
         setPackage(response.data.data);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       message.error("Network error. Please try again.");
     } finally {
@@ -34,7 +37,9 @@ export default function Packages({ poojaId }: any) {
     <section id="packages" className=" py-14">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Title */}
-        <h2 className="text-3xl font-bold text-gray-900 mb-8!">Puja Packages</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-8!">
+          Puja Packages
+        </h2>
 
         {/* Packages Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 text-left!">
@@ -56,16 +61,27 @@ export default function Packages({ poojaId }: any) {
                 {/* Services List */}
                 <ul className="text-gray-600 mb-6! space-y-3">
                   {pkg?.services.map((service: any, index: any) => (
-                    <li key={index} className="flex items-start! justify-start! gap-3">
+                    <li
+                      key={index}
+                      className="flex items-start! justify-start! gap-3"
+                    >
                       <CheckIcon className="w-5 h-5 text-orange-600 shrink-0 mt-1" />
-                      <p className="leading-relaxed w-full text-left">{service}</p>
+                      <p className="leading-relaxed w-full text-left">
+                        {service}
+                      </p>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Participate Button */}
-              <button onClick={() => navigate("/package-detail")} className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer">
+              <button
+                onClick={() => {
+                  setSelectedPackage(pkg);
+                  navigate("/package-detail");
+                }}
+                className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer"
+              >
                 Book Now
                 <ArrowRightIcon className="w-5 h-5" />
               </button>
