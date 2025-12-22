@@ -162,7 +162,7 @@ export default function DevotionalAudio({ isPaidUser }: any) {
                   title={mantra?.name}
                   audio={`${import.meta.env.VITE_APP_Image_URL}/media/${mantra?.file}`}
                   free
-                  premium={false}
+                  premium={true}
                   isPaidUser={false}
                 />
                 : <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">

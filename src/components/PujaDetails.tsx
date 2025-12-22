@@ -107,7 +107,8 @@ const PujaDetail = () => {
       },
       {
         root: null,
-        rootMargin: "-30% 0px -60% 0px",
+        // rootMargin: "-50% 0px -50% 0px", // center of screen
+        rootMargin: "-20% 0px -90% 0px", // center of screen
         threshold: 0,
       }
     );
@@ -118,7 +119,33 @@ const PujaDetail = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [tabs]);
+
+
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           setActiveTab(entry.target.id);
+  //         }
+  //       });
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: "-30% 0px -60% 0px",
+  //       threshold: 0,
+  //     }
+  //   );
+
+  //   tabs.forEach((tab) => {
+  //     const el = document.getElementById(tab.id);
+  //     if (el) observer.observe(el);
+  //   });
+
+  //   return () => observer.disconnect();
+  // }, []);
 
 
   // const handleClick = (tabId: string) => {
