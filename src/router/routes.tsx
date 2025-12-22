@@ -19,6 +19,7 @@ import VedicMantra from "@/components/Media/VedicMantra";
 import LiveKatha from "@/components/Media/LiveKatha";
 import PujaHistory from "@/components/Profile/PujaBooking/PujaBooking";
 import PackageForm from "@/components/Puja/Packages/PackageForm";
+import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBooking";
 const Index = lazy(() => import("../pages/Index"));
 
 const routes: RouteObjectWithLayout[] = [
@@ -42,8 +43,12 @@ const routes: RouteObjectWithLayout[] = [
     layout: "blank"
   },
   {
-    path: "/puja-booking",
+    path: "/puja/history",
     element: <PujaHistory />,
+  },
+  {
+    path: "/chadhava/history",
+    element: <ChadhavaHistory />,
   },
   {
     path: "/puja",

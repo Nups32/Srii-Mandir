@@ -20,13 +20,23 @@ export default function Mantras({ isPaidUser }: any) {
 
         <div className="grid md:grid-cols-2 gap-6">
           {mantras.map((mantra) => (
+            // <AudioCard
+            //   key={mantra._id}
+            //   title={mantra.name}
+            //   audio={`${import.meta.env.VITE_APP_Image_URL}/media/${mantra.file}`}
+            //   premium
+            //   free={false}
+            //   isPaidUser={isPaidUser}
+            // />
+
             <AudioCard
-              key={mantra._id}
               title={mantra.name}
-              audio={`${import.meta.env.VITE_APP_Image_URL}/media/${mantra.file}`}
-              premium
-              free={false}
+              audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
+                mantra.file
+              }`}
+              premium={mantra.isPaid}
               isPaidUser={isPaidUser}
+              contentType="vedicMantra"
             />
           ))}
         </div>

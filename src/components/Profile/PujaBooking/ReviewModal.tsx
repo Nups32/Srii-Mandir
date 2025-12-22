@@ -14,7 +14,7 @@ export default function ReviewModal({ booking, onClose }: Props) {
         </h2>
 
         <textarea
-          rows={4}
+          rows={8}
           placeholder="Write your experience..."
           className="w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -22,12 +22,12 @@ export default function ReviewModal({ booking, onClose }: Props) {
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-100"
+            className="px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-100 cursor-pointer"
           >
             Cancel
           </button>
 
-          <button className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">
+          <button className="px-4 py-2 rounded-lg bg-green-600 text-white! hover:bg-green-700 cursor-pointer">
             Submit Feedback
           </button>
         </div>
