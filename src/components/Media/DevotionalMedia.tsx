@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { getMediaByType } from "@/utils/API";
@@ -27,7 +28,7 @@ export default function DevotionalSongs() {
     try {
       const response = await getMediaByType(type || "");
       if (response.data.status) {
-        setMedia(response.data.data)
+        setMedia(response.data.data);
       }
     } catch (error) {
       message.error("Network error. Please try again.");
@@ -44,10 +45,12 @@ export default function DevotionalSongs() {
     <section className="min-h-screen py-16 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold mb-10">
-          {type === "song" ? "All Devotional Songs" :
-            type === "vedicMantra" ? "All Vedic Sutra Mantras" : "Kathas"
-          }
-          </h1>
+          {type === "song"
+            ? "All Devotional Songs"
+            : type === "vedicMantra"
+            ? "All Vedic Sutra Mantras"
+            : "Kathas"}
+        </h1>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* {media.map((song) => (
@@ -63,14 +66,24 @@ export default function DevotionalSongs() {
           {media.map((song) => (
             <div key={song?._id}>
               {song?.media == "audio" ? (
+                // <AudioCard
+                //   key={song?._id}
+                //   title={song?.name}
+                //   audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song?.file
+                //     }`}
+                //   free
+                //   premium={false}
+                //   isPaidUser={false}
+                // />
                 <AudioCard
-                  key={song?._id}
-                  title={song?.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song?.file
-                    }`}
+                  title={song.name}
+                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
+                    song.file
+                  }`}
                   free
                   premium={false}
                   isPaidUser={false}
+                  contentType="song"
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">

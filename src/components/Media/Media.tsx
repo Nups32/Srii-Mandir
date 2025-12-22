@@ -79,6 +79,7 @@ export default function Library({ isPaidUser }: any) {
       if (response.data.status) {
         // console.log("response.data.data", response.data.data);
         response.data.data.map((media: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           media.type == "katha"
             ? setKathas(media.items)
             : media.type == "song"
@@ -140,6 +141,7 @@ export default function Library({ isPaidUser }: any) {
                   free
                   premium={song?.isPaid || false}
                   isPaidUser={false}
+                  contentType={"song"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -190,6 +192,7 @@ export default function Library({ isPaidUser }: any) {
                   }`}
                   premium={mantra?.isPaid}
                   isPaidUser={false}
+                  contentType={"vedicMantra"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
