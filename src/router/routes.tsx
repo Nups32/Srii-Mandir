@@ -1,6 +1,6 @@
 import ChadhavaOffering from "@/components/ChadhavaOffering";
 import Login from "@/components/Auth/Login";
-import DevotionalAudio from "@/components/Media/Media";
+import Library from "@/components/Media/Media";
 import NakshatraFinder from "@/components/NakshtraDetail";
 import PujaDetail from "@/components/PujaDetails";
 import Register from "@/components/Auth/Register";
@@ -13,6 +13,10 @@ import type { RouteObjectWithLayout } from "@/router";
 import { lazy } from "react";
 import ForgetPassword from "@/components/Auth/ForgetPassword";
 import ChadhavaCart from "@/components/Chadhava/ChadhavaCart";
+import PackageDetail from "@/components/Puja/Packages/PackageDetail";
+import DevotionalMedia from "@/components/Media/DevotionalMedia";
+import VedicMantra from "@/components/Media/VedicMantra";
+import LiveKatha from "@/components/Media/LiveKatha";
 const Index = lazy(() => import("../pages/Index"));
 
 const routes: RouteObjectWithLayout[] = [
@@ -56,6 +60,10 @@ const routes: RouteObjectWithLayout[] = [
     element: <ChadhavaCart />,
   },
   {
+    path: "/package-detail",
+    element: <PackageDetail />,
+  },
+  {
     path: "/vedic-science",
     element: <VedicScience />,
   },
@@ -65,7 +73,19 @@ const routes: RouteObjectWithLayout[] = [
   },
   {
     path: "/media",
-    element: <DevotionalAudio isPaidUser={false} />,
+    element: <Library isPaidUser={false} />,
+  },
+  {
+    path: "/media/devotional-songs",
+    element: <DevotionalMedia />,
+  },
+  {
+    path: "/media/mantras",
+    element: <VedicMantra />,
+  },
+  {
+    path: "/media/kathas",
+    element: <LiveKatha/>,
   },
   {
     path: "/shakti-sanyans",
