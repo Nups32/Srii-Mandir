@@ -17,6 +17,7 @@ export default function Packages({ poojaId }: any) {
     setLoading(true);
     try {
       const response = await getPoojaPackages();
+      // console.log("res of fetch package", response.data)
       if (response.data.status) {
         setPackage(response.data.data);
       }
