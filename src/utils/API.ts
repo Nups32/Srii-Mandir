@@ -357,7 +357,7 @@ export const updateReviewStatus = async (id: string, data: { isActive?: boolean;
 
 // Puja Review API Functions
 export const getPujaReviews = () => {
-  return CommanAPI.get(`/puja-reviews`);
+  return CommanAPI.get(`/puja-review`);
 };
 export const getAllPujaReviews = async () => {
   const response = await API.get(`/backend/puja-reviews/get-all`);

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getPooja, getReviews } from "@/utils/API";
+import { message } from "antd";
 
 interface Review {
   id: number;
@@ -13,49 +15,71 @@ interface Review {
 const ReviewsRatings = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [reviews, setReviews] = useState<any>([]);
+  const [_loading, setLoading] = useState<any>([]);
 
-  const reviews: Review[] = [
-    {
-      id: 1,
-      name: "Abhilasha Tyagi",
-      //   image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
-      rating: 5,
-      text: "I must state upfront for all the charges, thank an all the grace of God, it gave instant rejuvenation of hopes and positivity in our life.",
-      //   videoThumbnail: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop"
-    },
-    {
-      id: 2,
-      name: "Kamalpriti Chandra Bhatt",
-      //   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
-      rating: 5,
-      text: "I might not be the eager drivers of most of the chanting and celebrate respect in favour of god Almighty and yet I can bring changes and witness miracles in my life, wonderful.",
-      //   videoThumbnail: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=400&h=300&fit=crop"
-    },
-    {
-      id: 3,
-      name: "Apurwa Sati",
-      //   image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
-      rating: 5,
-      text: "Lord and their divine are own level and it is something that me would just in favour that shine from our lord from worship that we did would not ever believe in it.",
-      //   videoThumbnail: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop"
-    },
-    {
-      id: 4,
-      name: "Ananya Dubey",
-      //   image: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop",
-      rating: 5,
-      text: "The service provided was exceptional and the puja was conducted with utmost devotion. Highly recommended for anyone seeking spiritual guidance.",
-      //   videoThumbnail: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=400&h=300&fit=crop"
-    },
-    {
-      id: 5,
-      name: "Ramchandra Bhatt",
-      //   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
-      rating: 5,
-      text: "I might not be the eager drivers of most of the chanting and celebrate respect in favour of god Almighty and yet I can bring changes and witness miracles in my life, wonderful.",
-      //   videoThumbnail: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=400&h=300&fit=crop"
-    },
-  ];
+  // const reviews: Review[] = [
+  //   {
+  //     id: 1,
+  //     name: "Abhilasha Tyagi",
+  //     //   image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+  //     rating: 5,
+  //     text: "I must state upfront for all the charges, thank an all the grace of God, it gave instant rejuvenation of hopes and positivity in our life.",
+  //     //   videoThumbnail: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Kamalpriti Chandra Bhatt",
+  //     //   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+  //     rating: 5,
+  //     text: "I might not be the eager drivers of most of the chanting and celebrate respect in favour of god Almighty and yet I can bring changes and witness miracles in my life, wonderful.",
+  //     //   videoThumbnail: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=400&h=300&fit=crop"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Apurwa Sati",
+  //     //   image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
+  //     rating: 5,
+  //     text: "Lord and their divine are own level and it is something that me would just in favour that shine from our lord from worship that we did would not ever believe in it.",
+  //     //   videoThumbnail: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Ananya Dubey",
+  //     //   image: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop",
+  //     rating: 5,
+  //     text: "The service provided was exceptional and the puja was conducted with utmost devotion. Highly recommended for anyone seeking spiritual guidance.",
+  //     //   videoThumbnail: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=400&h=300&fit=crop"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Ramchandra Bhatt",
+  //     //   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+  //     rating: 5,
+  //     text: "I might not be the eager drivers of most of the chanting and celebrate respect in favour of god Almighty and yet I can bring changes and witness miracles in my life, wonderful.",
+  //     //   videoThumbnail: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=400&h=300&fit=crop"
+  //   },
+  // ];
+
+  const fetchPooja = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getReviews();
+      if (response?.data?.status) {
+        setReviews(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPooja();
+  }, []);
 
   useEffect(() => {
     const updateVisibleCount = () => {
@@ -156,9 +180,9 @@ const ReviewsRatings = () => {
           {/* Reviews Grid */}
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {visibleReviews.map((review) => (
+              {visibleReviews.map((review: any) => (
                 <div
-                  key={review.id}
+                  key={review._id}
                   className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
                 >
                   {/* Video Thumbnail */}
@@ -180,7 +204,7 @@ const ReviewsRatings = () => {
                   {/* Review Content */}
                   <div className="p-6">
                     <p className="text-gray-700 text-sm leading-relaxed mb-6">
-                      "{review.text}"
+                      "{review.comment}"
                     </p>
 
                     {/* User Info */}
@@ -207,7 +231,7 @@ const ReviewsRatings = () => {
             </div>
 
             <div className="flex justify-center items-center gap-4">
-            {/* Navigation Buttons */}
+              {/* Navigation Buttons */}
               <button
                 onClick={prevReview}
                 disabled={currentIndex === 0}
@@ -240,11 +264,10 @@ const ReviewsRatings = () => {
                   <button
                     key={idx}
                     onClick={() => setCurrentIndex(idx * visibleCount)}
-                    className={`h-2 rounded-full transition-all ${
-                      Math.floor(currentIndex / visibleCount) === idx
+                    className={`h-2 rounded-full transition-all ${Math.floor(currentIndex / visibleCount) === idx
                         ? "bg-orange-500 w-8"
                         : "bg-gray-300 w-2"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

@@ -1,7 +1,32 @@
 import { Star } from "lucide-react";
-import { reviews } from "../../details";
-
+// import { reviews } from "../../details";
+import { useEffect, useState } from "react";
+import { message } from "antd";
+import { getPujaReviews } from "@/utils/API";
+import profileImage from "@/assets/profile.jpg"
 export default function UserReviews() {
+  const [reviews, setReviews] = useState<any>([]);
+  const [_loading, setLoading] = useState<any>([]);
+
+  const fetchPooja = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getPujaReviews();
+      if (response?.data?.status) {
+        setReviews(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPooja();
+  }, []);
   return (
     <section className="max-w-5xl mx-auto px-4 py-12">
       {/* Heading */}
@@ -12,13 +37,13 @@ export default function UserReviews() {
 
       {/* Reviews */}
       <div className="mt-8 space-y-10">
-        {reviews.map((review, index) => (
+        {reviews.map((review: any, index: any) => (
           <div key={index}>
             <div className="flex gap-4">
               {/* Avatar */}
               <div className="w-12 h-12 rounded-full border border-orange-400 overflow-hidden">
                 <img
-                  src={review.profile}
+                  src={profileImage}
                   alt={review.name}
                   className="w-full h-full rounded-full object-cover"
                 />
