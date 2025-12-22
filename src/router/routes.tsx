@@ -28,6 +28,11 @@ const routes: RouteObjectWithLayout[] = [
     element: <Index />,
   },
   {
+    path: "/admin-login",
+    element: <Login />,
+    layout: "blank"
+  },
+  {
     path: "/login",
     element: <Login />,
     layout: "blank"
@@ -100,7 +105,7 @@ const routes: RouteObjectWithLayout[] = [
   },
   {
     path: "/media/kathas",
-    element: <LiveKatha/>,
+    element: <LiveKatha />,
   },
   {
     path: "/shakti-sanyans",
