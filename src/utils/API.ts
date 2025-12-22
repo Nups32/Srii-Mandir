@@ -41,6 +41,7 @@ CommanAPI.interceptors.request.use(async (config) => {
 API.interceptors.request.use(async (config) => {
   // const token = localStorage.getItem("token");
   const token = decryptData("token", 'string');
+  console.log("token",token);
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -80,8 +81,8 @@ API.interceptors.response.use(
       // Check for invalid token response
       if (error.response.status === 401) {
         // message.error('Invalid token. Please login again.');
-        localStorage.removeItem("token");
-        window.location.href = "admin-login"; // Adjust the redirect URL as needed
+        // localStorage.removeItem("token");
+        // window.location.href = "admin-login"; // Adjust the redirect URL as needed
       }
     }
     return Promise.reject(error);
@@ -522,6 +523,19 @@ export const updateSettigsData = async (formData: any): Promise<any> => {
   } catch (error) {
     throw error;
   }
+};
+
+export const getAllBookChadhavas = (params?: {
+  chadhavaId?: string;
+  status?: string;
+  userId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/backend/book-chadhava`, { params });
 };
 
 export const createRazorpayOrder = async (orderData: any) => {

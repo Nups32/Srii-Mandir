@@ -2,10 +2,17 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import "./App.css";
 import { ArrowUp } from "lucide-react";
 import ScrollToTop from "./components/ScrollToTop";
+import { useSelector } from "react-redux";
+import type { IRootState } from "./store";
+import { useNavigate } from "react-router-dom";
 // import { getPublicIP } from './utils/API';
 
 function App({ children }: PropsWithChildren) {
   const [showButton, setShowButton] = useState(false);
+  const authData = useSelector((state: IRootState) => state.userConfig);
+  const token = authData.token;
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,23 +25,28 @@ function App({ children }: PropsWithChildren) {
   }, []);
 
   // const token = authData.token;
-  // const isAdminRoute = location.pathname.startsWith('/admin/');
+  const isAdminRoute = location.pathname.startsWith('/admin/');
   // const navigate = useNavigate();
   // const TRUSTED_IPS = ['150.129.104.117', '152.59.22.140'];
 
+  useEffect(() => {
+    if (!token && isAdminRoute) {
+      navigate('/admin-login')
+    }
+    if (location.pathname === "/logout") {
+      localStorage.clear()
+      navigate('/admin-login')
+      return
+    }
+  }, []);
+
   // useEffect(() => {
-
-  //   if (!token && isAdminRoute) {
-
-  //     navigate('/admin-login')
+  //   if (token && (location.pathname === '/' || location.pathname === '/register' || location.pathname === '/admin-login' || location.pathname === '/forget-password')) {
+  //     navigate('/dashboard');
+  //   } else if (!token && location.pathname !== '/' && location.pathname !== '/register' && location.pathname !== '/admin-login' && location.pathname !== '/forget-password') {
+  //     navigate('/');
   //   }
-  //   if (location.pathname === "/logout") {
-  //     // localStorage.removeItem("token");
-  //     localStorage.clear()
-  //     navigate('/admin-login')
-  //     return
-  //   }
-  // }, []);
+  // }, [location.pathname]);
 
   return (
     <>

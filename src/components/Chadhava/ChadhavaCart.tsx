@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { createRazorpayOrder, verifyPayment } from "@/utils/API";
 import { message } from "antd";
 import { useLocation } from "react-router-dom";
+import type { IRootState } from "@/store";
+import { useSelector } from "react-redux";
 
 export default function ChadhavaCart() {
   const { cart, addOrUpdateItem } = useCart();
@@ -14,6 +16,7 @@ export default function ChadhavaCart() {
   const location = useLocation();
   const chadhavaId: string = location.state?.chadhavaId;
   const chadhavaSlug: string = location.state?.slug;
+  const authData = useSelector((state: IRootState) => state.userConfig);
   console.log("Cart contents:", cart);
 
   const totalCount = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
@@ -57,16 +60,16 @@ export default function ChadhavaCart() {
         })),
       },
       // planId: plan._id,
-      // userId: authData?.userdata?._id,
+      userId: authData?._id,
       totalMrp: totalAmount,
       // totalDiscount: 0,
       // address: authData?.userdata?.city,
       // pincode: authData?.userdata?.pincode,
-      // paymentMethod: "Razorpay",
+      paymentMethod: "Razorpay",
       transactionId: transactionId,
-      // // fullName: `${authData?.userdata?.firstName} ${authData?.userdata?.lastName}`,
-      // // email: authData?.userdata?.email,
-      // // mobileNo: authData?.userdata?.phone,
+      fullName: `${authData?.username}`,
+      email: authData?.email,
+      mobileNo: authData?.mobile,
     };
 
     try {

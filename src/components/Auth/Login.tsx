@@ -59,7 +59,7 @@ export default function LoginPage() {
           res.data.wifiKey && localStorage.setItem("wifiKey", res.data.wifiKey);
           // localStorage.setItem("token", res.data.token);
           // setIsLoading(false);
-          // navigate("/");
+          navigate("/");
         }
         setIsLoading(false);
       })
@@ -191,12 +191,12 @@ export default function LoginPage() {
 
             {/* Forgot Password */}
             <div className="text-right mb-4">
-              <button
+              <a
                 onClick={() => navigate("/forgot-password")}
                 className="text-sm! text-green-600! hover:underline cursor-pointer"
               >
                 Forgot password?
-              </button>
+              </a>
             </div>
 
             <p className="text-xs text-gray-500 mb-6">
@@ -214,7 +214,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              onClick={() => navigate("/")}
+              // onClick={() => navigate("/")}
               className="w-full bg-green-600 hover:bg-green-700 text-white! py-3 rounded-md font-semibold cursor-pointer"
             >
               {isLoading ? (

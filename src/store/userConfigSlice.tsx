@@ -8,6 +8,7 @@ export type UserConfig = {
     role: number;
     photo?: string;
     username: string;
+    mobile: string;
     token: string;
 }
 
@@ -20,6 +21,7 @@ const localStorageData = decryptData('authData')
 export const defaultUserConfigState: UserConfig = {
     token: localStorageData?.token || null,
     username: localStorageData?.user?.username || null,
+    mobile: localStorageData?.user?.mobile || null,
     email: localStorageData?.user?.email || null,
     _id: localStorageData?.user?._id || null,
     role: localStorageData?.user?.role || null,
@@ -36,6 +38,7 @@ const userConfigSlice = createSlice({
             state.email = payload.email;
             state.photo = payload.photo;
             state.username = payload.username;
+            state.mobile = payload.mobile;
             state._id = payload._id;
             state.role = payload.role;
             encryptData('token', payload.token, 'string');
@@ -44,6 +47,7 @@ const userConfigSlice = createSlice({
                 user: {
                     _id: payload._id,
                     username: payload.username,
+                    mobile: payload.mobile,
                     email: payload.email,
                     role: payload.role,
                     photo: payload.photo,
@@ -56,6 +60,7 @@ const userConfigSlice = createSlice({
             state.email = "";
             state.photo = "";
             state.username = "";
+            state.mobile = "";
             state._id = NaN;
             state.role = NaN;
             localStorage.clear();
