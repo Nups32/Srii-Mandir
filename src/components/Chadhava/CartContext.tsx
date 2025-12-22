@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
 export type CartItem = {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   image?: string;
@@ -21,18 +21,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addOrUpdateItem = (item: CartItem, delta = 1) => {
     setCart((prev) => {
-      const existing = prev[item.id];
+      const existing = prev[item._id];
       if (existing) {
         const qty = existing.qty + delta;
         if (qty <= 0) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { [item.id]: _, ...rest } = prev;
+          const { [item._id]: _, ...rest } = prev;
           return rest;
         }
-        return { ...prev, [item.id]: { ...existing, qty } };
+        return { ...prev, [item._id]: { ...existing, qty } };
       }
       if (delta > 0) {
-        return { ...prev, [item.id]: { ...item, qty: delta } };
+        return { ...prev, [item._id]: { ...item, qty: delta } };
       }
       return prev;
     });

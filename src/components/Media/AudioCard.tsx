@@ -1,4 +1,4 @@
-import { Lock, Music } from "lucide-react";
+import { Download, Lock, Music } from "lucide-react";
 
 export default function AudioCard({ title, audio, free, premium, isPaidUser }: any) {
   const canDownload = free || (premium && isPaidUser);
@@ -17,11 +17,11 @@ export default function AudioCard({ title, audio, free, premium, isPaidUser }: a
 
       <div className="flex justify-between items-center">
         {canDownload ? (
-        //   <button className="flex items-center gap-2 text-sm font-medium text-white! bg-orange-500 px-4 py-2 my-4! rounded-lg hover:bg-orange-600 transition cursor-pointer">
-        //     <Download className="w-4 h-4" />
-        //     Download
-        //   </button>
-        ""
+          <button className="flex items-center gap-2 text-sm font-medium text-white! bg-orange-500 px-4 py-2 my-4! rounded-lg hover:bg-orange-600 transition cursor-pointer">
+            <Download className="w-4 h-4" />
+            Download
+          </button>
+        // ""
         ) : (
           <button className="flex items-center gap-2 text-sm font-medium text-gray-400 bg-gray-100 px-4 py-2 my-4! rounded-lg cursor-not-allowed">
             <Lock className="w-4 h-4" />

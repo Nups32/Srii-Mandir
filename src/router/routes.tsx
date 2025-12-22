@@ -48,7 +48,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <Chadhava />,
   },
   {
-    path: "/chadhava-detail",
+    path: "/chadhava-detail/:slug",
     element: <ChadhavaOffering />,
   },
   {
