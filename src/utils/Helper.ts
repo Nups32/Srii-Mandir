@@ -4,7 +4,7 @@ export const encryptData = (name: string, data: any, type = 'object') => {
     try {
         if (type === 'object') {
             const encryptData = CryptoJS.AES.encrypt(JSON.stringify(data), import.meta.env.VITE_ENCRYPTION_KEY).toString();
-            console.log("name", name, "data", data);
+            // console.log("name", name, "data", data);
             localStorage.setItem(name, encryptData);
             // return
         } else {

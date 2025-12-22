@@ -2,6 +2,7 @@
 /* eslint-disable no-useless-catch */
 // import { message } from 'antd';
 import axios from "axios";
+import { decryptData } from "./Helper";
 // import CryptoJS from "crypto-js";
 // import { constants } from 'fs/promises';
 
@@ -38,7 +39,8 @@ CommanAPI.interceptors.request.use(async (config) => {
 });
 
 API.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = decryptData("token", 'string');
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -472,6 +474,15 @@ export const dynamicLogin = async (api: string, data: any) => {
     }
   } catch (error) {
     throw error;
+  }
+};
+
+export const registerUser = async (data: any) => {
+  try {
+    const response = await CommanAPI.post("/register", data);
+    return response.data;
+  } catch (error: any) {
+    throw error; 
   }
 };
 

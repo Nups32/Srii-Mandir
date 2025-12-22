@@ -155,7 +155,7 @@ export default function Chadhava() {
                 <div className="relative h-45">
                   <img
                     // src={chadhava?.image}
-                    src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${chadhava?.image}`}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${chadhava?.images?.[0]}`}
                     alt={chadhava?.title}
                     className="w-full h-full object-cover"
                   />

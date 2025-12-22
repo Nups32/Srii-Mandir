@@ -121,7 +121,7 @@ export default function Library({ isPaidUser }: any) {
         <SectionTitle
           title="Devotional Songs"
           badge="Free Access"
-          viewAllPath="/media/devotional-songs"
+          viewAllPath="/media/song"
           showViewAll={songs.length > 1}
         />
 
@@ -138,7 +138,7 @@ export default function Library({ isPaidUser }: any) {
                     song?.file
                   }`}
                   free
-                  premium={false}
+                  premium={song?.isPaid || false}
                   isPaidUser={false}
                 />
               ) : (
@@ -163,7 +163,7 @@ export default function Library({ isPaidUser }: any) {
         <SectionTitle
           title="Vedic Sutra Mantras"
           badge="Premium Content"
-          viewAllPath="/media/mantras"
+          viewAllPath="/media/vedicMantra"
           showViewAll={mantras.length > 1}
         />
 
@@ -188,8 +188,7 @@ export default function Library({ isPaidUser }: any) {
                   audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
                     mantra?.file
                   }`}
-                  free
-                  premium={true}
+                  premium={mantra?.isPaid}
                   isPaidUser={false}
                 />
               ) : (
@@ -214,7 +213,7 @@ export default function Library({ isPaidUser }: any) {
         <SectionTitle
           title="Live Katha & Pravachan"
           badge="Live / Upcoming"
-          viewAllPath="/media/kathas"
+          viewAllPath="/media/katha"
           showViewAll={kathas.length > 1}
         />
 

@@ -4,6 +4,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { AuthContext } from "@/store/AuthContext";
 // import { toast } from "@/utils/ui/toast";
 import logo from "../../assets/logo.jpg";
+import { message } from "antd";
+import { dynamicLogin } from "@/utils/API";
+import { useDispatch } from "react-redux";
+import { setUserConfig } from "@/store/userConfigSlice";
+import { encryptData } from "@/utils/Helper";
 
 
 export default function LoginPage() {
@@ -17,86 +22,84 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const isAdminRoute = location.pathname === "/admin-login";
+  const dispatch = useDispatch();
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowButton(false);
     setIsLoading(true);
 
-    // dynamicLogin(location.pathname, { email, password })
-    //   .then((res: any) => {
-    //     // console.log(res);
-    //     if (res.status === 200) {
-    //       toast("success").fire({
-    //         icon: "success",
-    //         title: "Login Successful",
-    //         timer: 2000,
-    //         showConfirmButton: false,
-    //       });
-    //       setAuthData({
-    //         token: res.data.token,
-    //         userdata: {
-    //           ...res.data.userData,
-    //           wifiKey: res.data.wifiKey || null,
-    //         },
-    //       });
-    //       res.data.wifiKey && localStorage.setItem("wifiKey", res.data.wifiKey);
-    //       localStorage.setItem("token", res.data.token);
-    //       // setIsLoading(false);
-    //       navigate("/");
-    //     }
-    //     setIsLoading(false);
-    //   })
-    //   .catch((err: any) => {
-    //     if (err.response.status === 401) {
-    //       // setIsLoading(false);
-    //       console.log(err.response);
-    //       err.response.data.refreshWhiteList && setShowButton(true);
-    //       toast("danger").fire({
-    //         icon: "warning",
-    //         title:
-    //           err.response.data.result ||
-    //           err.response?.data?.message ||
-    //           "Unauthorized Access",
-    //         timer: 2000,
-    //         showConfirmButton: false,
-    //       });
-    //     } else {
-    //       toast("danger").fire({
-    //         icon: "error",
-    //         title: err.response?.data?.message || "Server Error",
-    //         timer: 2000,
-    //         showConfirmButton: false,
-    //       });
-    //     }
-    //     setIsLoading(false);
-    //   });
+    const API = isAdminRoute ? "/admin-login" : "/login";
+    dynamicLogin(API, { email, password })
+      .then((res: any) => {
+        // console.log(res);
+        if (res.status === 200) {
+          // toast("success").fire({
+          //   icon: "success",
+          //   title: "Login Successful",
+          //   timer: 2000,
+          //   showConfirmButton: false,
+          // });
+          message.success("Login Successful");
+          // setAuthData({
+          //   token: res.data.token,
+          //   userdata: {
+          //     ...res.data.userData,
+          //     wifiKey: res.data.wifiKey || null,
+          //   },
+          // });
+          const authData = {
+            token: res.data.token,
+            ...res.data.userData,
+          };
+          console.log("authData",authData);
+          dispatch(setUserConfig(authData));
+          encryptData('wifiKey', res.data.wifiKey, 'string');
+          res.data.wifiKey && localStorage.setItem("wifiKey", res.data.wifiKey);
+          // localStorage.setItem("token", res.data.token);
+          // setIsLoading(false);
+          // navigate("/");
+        }
+        setIsLoading(false);
+      })
+      .catch((err: any) => {
+        if (err.response.status === 401) {
+          // setIsLoading(false);
+          console.log(err.response);
+          err.response.data.refreshWhiteList && setShowButton(true);
+          message.error(err.response.data.result || err.response?.data?.message || "Unauthorized Access")
+        } else {
+          message.error(err.response?.data?.message || "Server Error")
+        }
+        setIsLoading(false);
+      });
   };
 
   const handleSecretSubmit = async () => {
     // try {
-      // const encryptedSecretKey = CryptoJS.AES.encrypt(
-      //   secretKey,
-      //   import.meta.env.VITE_ENCRYPTION_KEY
-      // ).toString();
-      // const res: any = await createWhitelistip({ secret: encryptedSecretKey });
-      // if (res && res.status == 200) {
-      //   toast("success").fire({
-      //     icon: "success",
-      //     title: res.data.message || "Ip Whitelisted Successful",
-      //     timer: 2000,
-      //     showConfirmButton: false,
-      //   });
-      // } else {
-      //   toast("danger").fire({
-      //     icon: "error",
-      //     title: res.data.message || "Failed to whitelist IP",
-      //     timer: 2000,
-      //     showConfirmButton: false,
-      //   });
-      // }
-      setShowButton(false);
-      setShowPopup(false);
+    // const encryptedSecretKey = CryptoJS.AES.encrypt(
+    //   secretKey,
+    //   import.meta.env.VITE_ENCRYPTION_KEY
+    // ).toString();
+    // const res: any = await createWhitelistip({ secret: encryptedSecretKey });
+    // if (res && res.status == 200) {
+    //   toast("success").fire({
+    //     icon: "success",
+    //     title: res.data.message || "Ip Whitelisted Successful",
+    //     timer: 2000,
+    //     showConfirmButton: false,
+    //   });
+    // } else {
+    //   toast("danger").fire({
+    //     icon: "error",
+    //     title: res.data.message || "Failed to whitelist IP",
+    //     timer: 2000,
+    //     showConfirmButton: false,
+    //   });
+    // }
+    setShowButton(false);
+    setShowPopup(false);
     // } catch (error: any) {
     //   toast("danger").fire({
     //     icon: "error",
@@ -144,7 +147,7 @@ export default function LoginPage() {
 
         {/* Left Section */}
         <div className="hidden md:flex w-2/5 flex-col justify-center bg-orange-500 text-white px-10">
-        <Link to="/" className="flex items-center gap-2 mb-4">
+          <Link to="/" className="flex items-center gap-2 mb-4">
             <img src={logo} alt="Logo" className="h-20" />
             {/* <span className="font-semibold text-orange-600">Srii Mandir</span> */}
           </Link>

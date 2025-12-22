@@ -162,12 +162,12 @@ export const adminRoutes: RouteObjectWithLayout[] = [
     layout: "admin",
   },
   {
-    path: "/admin/review/add",
+    path: "/admin/puja-review/add",
     element: <AddPujaReviewForm />,
     layout: "admin",
   },
   {
-    path: "/admin/review/:id/edit",
+    path: "/admin/puja-review/:id/edit",
     element: <EditPujaReviewForm />,
     layout: "admin",
   },

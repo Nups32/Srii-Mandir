@@ -118,9 +118,9 @@ export const PujaReviewTable = () => {
     navigate(`/admin/puja-review/${record._id}/edit`);
   };
 
-  const handleViewDetails = (record: PujaReview) => {
-    navigate(`/admin/puja-review/${record._id}`);
-  };
+//   const handleViewDetails = (record: PujaReview) => {
+//     navigate(`/admin/puja-review/${record._id}`);
+//   };
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -179,36 +179,50 @@ export const PujaReviewTable = () => {
   };
 
   const columns = [
+    // {
+    //   title: (
+    //     <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
+    //       User
+    //     </div>
+    //   ),
+    //   key: "user",
+    //   render: (record: PujaReview) => (
+    //     <div>
+    //       <div className="font-medium">{record.userId?.name || "Anonymous"}</div>
+    //       <div className="text-xs text-gray-500">{record.userId?.email || "No email"}</div>
+    //     </div>
+    //   ),
+    //   sorter: (a: PujaReview, b: PujaReview) => 
+    //     (a.userId?.name || "").localeCompare(b.userId?.name || ""),
+    // },
+    // {
+    //   title: (
+    //     <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
+    //       Puja
+    //     </div>
+    //   ),
+    //   key: "puja",
+    //   render: (record: PujaReview) => (
+    //     <div className="max-w-[150px] truncate" title={record.pujaId?.name}>
+    //       {record.pujaId?.name || "Unknown Puja"}
+    //     </div>
+    //   ),
+    //   sorter: (a: PujaReview, b: PujaReview) => 
+    //     (a.pujaId?.name || "").localeCompare(b.pujaId?.name || ""),
+    // },
     {
       title: (
         <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          User
+          Name
         </div>
       ),
-      key: "user",
-      render: (record: PujaReview) => (
-        <div>
-          <div className="font-medium">{record.userId?.name || "Anonymous"}</div>
-          <div className="text-xs text-gray-500">{record.userId?.email || "No email"}</div>
+      dataIndex: "name",
+      key: "name",
+      render: (text: string) => (
+        <div className="max-w-[200px] truncate" title={text}>
+          {text || "-"}
         </div>
       ),
-      sorter: (a: PujaReview, b: PujaReview) => 
-        (a.userId?.name || "").localeCompare(b.userId?.name || ""),
-    },
-    {
-      title: (
-        <div style={{ fontWeight: "bold", fontSize: "10px", color: "#a6a6a6" }}>
-          Puja
-        </div>
-      ),
-      key: "puja",
-      render: (record: PujaReview) => (
-        <div className="max-w-[150px] truncate" title={record.pujaId?.name}>
-          {record.pujaId?.name || "Unknown Puja"}
-        </div>
-      ),
-      sorter: (a: PujaReview, b: PujaReview) => 
-        (a.pujaId?.name || "").localeCompare(b.pujaId?.name || ""),
     },
     {
       title: (
@@ -294,14 +308,14 @@ export const PujaReviewTable = () => {
       key: "action",
       render: (_text: any, record: PujaReview) => (
         <div className="flex flex-row items-center space-x-2">
-          <Button
+          {/* <Button
             type="link"
             size="small"
             onClick={() => handleViewDetails(record)}
             className="p-0"
           >
             View
-          </Button>
+          </Button> */}
           <FaEdit
             className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
             onClick={() => handleEditRedirect(record)}
@@ -391,7 +405,7 @@ export const PujaReviewTable = () => {
           </div>
         </Col>
         
-        <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
+        {/* <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">
             <div className="text-xs font-medium text-gray-500">Filter by Puja</div>
             <Select
@@ -409,7 +423,7 @@ export const PujaReviewTable = () => {
               ]}
             />
           </div>
-        </Col>
+        </Col> */}
         
         <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">
