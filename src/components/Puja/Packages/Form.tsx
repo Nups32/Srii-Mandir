@@ -20,29 +20,36 @@ const GOTRAS = [
   "Kaushik",
 ];
 
-export default function PujaDetailsForm() {
+export default function PujaDetailsForm({ data }: any) {
+
   const [whatsapp, setWhatsapp] = useState("+91");
   const [alternateCalling, setAlternateCalling] = useState(false);
   const [callingNumber, setCallingNumber] = useState("");
 
-  const [members, setMembers] = useState(["", "", "", ""]);
+  const participantCount = Number(data?.person) || 1;
+
+  const [members, setMembers] = useState<string[]>(
+    () => Array(participantCount).fill("")
+  );
+
+  // Sync members if person count changes
+  useEffect(() => {
+    setMembers((prev) => {
+      if (prev.length === participantCount) return prev;
+
+      if (prev.length < participantCount) {
+        return prev.concat(
+          Array(participantCount - prev.length).fill("")
+        );
+      }
+
+      return prev.slice(0, participantCount);
+    });
+  }, [participantCount]);
 
   const [gotra, setGotra] = useState("");
   const [unknownGotra, setUnknownGotra] = useState(false);
   const [showGotraList, setShowGotraList] = useState(false);
-
-  const [aashirwad, setAashirwad] = useState<"yes" | "no" | null>(null);
-
-  const [address, setAddress] = useState<Address>({
-    pincode: "",
-    city: "",
-    state: "",
-    house: "",
-    road: "",
-    landmark: "",
-  });
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   const gotraRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -56,46 +63,47 @@ export default function PujaDetailsForm() {
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
+    return () =>
       document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
-  function handleMemberChange(index: number, value: string) {
-    const updated = [...members];
-    updated[index] = value;
-    setMembers(updated);
-  }
+  const [aashirwad, setAashirwad] = useState<"yes" | "no" | null>(null);
 
-  function updateAddress(key: keyof Address, value: string) {
+  const [address, setAddress] = useState<Address>({
+    pincode: "",
+    city: "",
+    state: "",
+    house: "",
+    road: "",
+    landmark: "",
+  });
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handleMemberChange = (index: number, value: string) => {
+    setMembers((prev) => {
+      const copy = [...prev];
+      copy[index] = value;
+      return copy;
+    });
+  };
+
+  const updateAddress = (key: keyof Address, value: string) => {
     setAddress((prev) => ({ ...prev, [key]: value }));
-  }
+  };
 
-  function handleUnknownGotraChange(checked: boolean) {
+  const handleUnknownGotraChange = (checked: boolean) => {
     setUnknownGotra(checked);
-    if (checked) {
-      setGotra("Kashyap");
-      setShowGotraList(false);
-    } else {
-      setGotra("");
-    }
-  }
+    setGotra(checked ? "Kashyap" : "");
+    setShowGotraList(false);
+  };
 
-  function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const payload = {
-      whatsapp,
-      callingNumber: alternateCalling ? callingNumber : whatsapp,
-      members: members.filter(Boolean),
-      gotra,
-      aashirwad,
-      address: aashirwad === "yes" ? address : null,
-    };
     setShowConfirmModal(true);
+  };
 
-    console.log("SUBMITTED:", payload);
-  }
+  /* ---------------- UI ---------------- */
 
   return (
     <form
@@ -104,7 +112,9 @@ export default function PujaDetailsForm() {
     >
       {/* WhatsApp */}
       <section>
-        <h2 className="text-lg font-semibold mb-1">Your WhatsApp Number</h2>
+        <h2 className="text-lg font-semibold mb-1">
+          Your WhatsApp Number
+        </h2>
         <p className="text-sm text-gray-500 mb-3">
           Puja updates will be sent on this number
         </p>
@@ -120,22 +130,22 @@ export default function PujaDetailsForm() {
           <input
             type="checkbox"
             checked={alternateCalling}
-            onChange={(e) => setAlternateCalling(e.target.checked)}
+            onChange={(e) =>
+              setAlternateCalling(e.target.checked)
+            }
           />
           I have a different number for calling
         </label>
 
-        {/*  SHOW EXTRA INPUT */}
-        <h2 className="text-lg font-semibold mb-1">
-          Enter your Calling Number
-        </h2>
         {alternateCalling && (
           <input
             type="tel"
             placeholder="Enter calling number"
             value={callingNumber}
-            onChange={(e) => setCallingNumber(e.target.value)}
-            className="mt-3 w-full border rounded-lg px-4 py-2"
+            onChange={(e) =>
+              setCallingNumber(e.target.value)
+            }
+            className="w-full border rounded-lg px-4 py-2"
           />
         )}
       </section>
@@ -153,11 +163,12 @@ export default function PujaDetailsForm() {
             <input
               key={index}
               value={value}
-              onChange={(e) => handleMemberChange(index, e.target.value)}
-              placeholder={`${
-                ["First", "Second", "Third", "Fourth"][index]
-              } Member Name`}
+              onChange={(e) =>
+                handleMemberChange(index, e.target.value)
+              }
+              placeholder={`Member ${index + 1} Name`}
               className="border rounded-lg px-4 py-2"
+              required
             />
           ))}
         </div>
@@ -165,26 +176,25 @@ export default function PujaDetailsForm() {
 
       <hr />
 
-      {/* GOTRA */}
+      {/* Gotra */}
       <section ref={gotraRef} className="relative">
-        <h2 className="text-lg font-semibold mb-1">Fill participant's gotra</h2>
-
-        <p className="text-sm text-gray-500 mb-3">
-          Gotra will be recited during the puja
-        </p>
+        <h2 className="text-lg font-semibold mb-1">
+          Fill participant's gotra
+        </h2>
 
         <input
           value={gotra}
           disabled={unknownGotra}
-          onFocus={() => !unknownGotra && setShowGotraList(true)}
+          onFocus={() =>
+            !unknownGotra && setShowGotraList(true)
+          }
           onChange={(e) => setGotra(e.target.value)}
           placeholder="Enter your Gotra"
           className="w-full border rounded-lg px-4 py-2"
         />
 
-        {/* GOTRA DROPDOWN */}
         {showGotraList && !unknownGotra && (
-          <div className="absolute z-10 mt-1 w-full bg-white border rounded-lg max-h-40 overflow-auto shadow">
+          <div className="absolute z-10 mt-1 w-full bg-white border rounded-lg shadow">
             {GOTRAS.map((g) => (
               <div
                 key={g}
@@ -200,11 +210,13 @@ export default function PujaDetailsForm() {
           </div>
         )}
 
-        <label className="flex items-center gap-2 mt-3 text-sm text-gray-600">
+        <label className="flex items-center gap-2 mt-3 text-sm">
           <input
             type="checkbox"
             checked={unknownGotra}
-            onChange={(e) => handleUnknownGotraChange(e.target.checked)}
+            onChange={(e) =>
+              handleUnknownGotraChange(e.target.checked)
+            }
           />
           I do not know gotra
         </label>
@@ -212,46 +224,43 @@ export default function PujaDetailsForm() {
 
       <hr />
 
-      {/* AASHIRWAD */}
-      <section className="space-y-4">
-        <div className="flex justify-between">
-          <div>
-            <h2 className="text-lg font-semibold">
-              Would you like to receive the Aashirwad box?
-            </h2>
-          </div>
-          <div className="flex gap-2">
-            {["yes", "no"].map((v) => (
-              <button
-                key={v}
-                type="button"
-                onClick={() => setAashirwad(v as "yes" | "no")}
-                className={`px-4 py-2 rounded-lg border ${
-                  aashirwad === v ? "bg-green-700 text-white!" : ""
-                }`}
-              >
-                {v === "yes" ? "Yes" : "No"}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Aashirwad */}
+      <section>
+        <h2 className="text-lg font-semibold mb-3">
+          Would you like to receive the Aashirwad box?
+        </h2>
 
-        <div>
-          <p className="text-sm text-gray-500">
-            The Aashirwad Box will contain divine blessing elements such as
-            Ganga Jal, and more, sourced from sacred Tirth locations.
-          </p>
+        <div className="flex gap-2">
+          {["yes", "no"].map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() =>
+                setAashirwad(v as "yes" | "no")
+              }
+              className={`px-4 py-2 rounded-lg border ${
+                aashirwad === v
+                  ? "bg-green-700 text-white"
+                  : ""
+              }`}
+            >
+              {v === "yes" ? "Yes" : "No"}
+            </button>
+          ))}
         </div>
 
         {aashirwad === "yes" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             {Object.keys(address).map((k) => (
               <input
                 key={k}
                 placeholder={`${k} (Compulsory)`}
                 value={address[k as keyof Address]}
                 onChange={(e) =>
-                  updateAddress(k as keyof Address, e.target.value)
+                  updateAddress(
+                    k as keyof Address,
+                    e.target.value
+                  )
                 }
                 className="border rounded-lg px-4 py-2"
               />
@@ -263,8 +272,8 @@ export default function PujaDetailsForm() {
       <button
         type="submit"
         disabled={!aashirwad}
-        className={`w-full py-3 rounded-lg font-semibold text-white! cursor-pointer ${
-          aashirwad ? "bg-green-600 " : "bg-gray-300"
+        className={`w-full py-3 rounded-lg font-semibold text-white ${
+          aashirwad ? "bg-green-600" : "bg-gray-300"
         }`}
       >
         Proceed to book
@@ -273,26 +282,17 @@ export default function PujaDetailsForm() {
       <ConfirmDetailsModal
         open={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
-        onConfirm={() => {
-          const payload = {
-            whatsapp,
-            callingNumber: alternateCalling ? callingNumber : whatsapp,
-            members: members.filter(Boolean),
-            gotra,
-            aashirwad,
-            address: aashirwad === "yes" ? address : null,
-          };
-
-          console.log("FINAL SUBMIT:", payload);
-          setShowConfirmModal(false);
-          // 👉 navigate to payment here
-        }}
+        onConfirm={() => setShowConfirmModal(false)}
         data={{
+          whatsapp,
+          callingNumber: alternateCalling
+            ? callingNumber
+            : whatsapp,
           members: members.filter(Boolean),
           gotra,
-          whatsapp,
-          callingNumber: alternateCalling ? callingNumber : whatsapp,
-          address: aashirwad === "yes" ? address : null,
+          aashirwad,
+          address:
+            aashirwad === "yes" ? address : null,
         }}
       />
     </form>
