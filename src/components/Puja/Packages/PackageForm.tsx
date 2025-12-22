@@ -1,7 +1,10 @@
 import SelectedPackageSummary from "./SelectedPackageSummary";
 import PujaDetailsForm from "./Form";
+import { useLocation } from "react-router-dom";
 
 export default function PackageForm() {
+  const location = useLocation();
+  const data = location?.state?.data
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -14,7 +17,7 @@ export default function PackageForm() {
 
           {/* RIGHT SUMMARY */}
           <div className="lg:col-span-1">
-            <SelectedPackageSummary />
+            <SelectedPackageSummary packageData={data?.package} />
           </div>
 
         </div>

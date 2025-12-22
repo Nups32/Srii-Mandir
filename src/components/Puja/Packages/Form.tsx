@@ -21,7 +21,7 @@ const GOTRAS = [
 ];
 
 export default function PujaDetailsForm() {
-  const [whatsapp, setWhatsapp] = useState("+91 9999999999");
+  const [whatsapp, setWhatsapp] = useState("+91");
   const [alternateCalling, setAlternateCalling] = useState(false);
   const [callingNumber, setCallingNumber] = useState("");
 

@@ -4,9 +4,10 @@ type Props = {
   total: number;
   packageName: string;
   visible: boolean;
+  data: any;
 };
 
-export default function BottomBar({ total, packageName, visible }: Props) {
+export default function BottomBar({ total, packageName, visible, data }: Props) {
   const navigate = useNavigate();
 
   if (!visible) return null;
@@ -18,7 +19,7 @@ export default function BottomBar({ total, packageName, visible }: Props) {
         <p className="text-sm">{packageName}</p>
       </div>
 
-      <button onClick={() => navigate("/package-detail/form")} className="font-semibold">Continue →</button>
+      <button onClick={() => navigate("/package-detail/form", { state: { data }})} className="font-semibold">Continue →</button>
     </div>
   );
 }

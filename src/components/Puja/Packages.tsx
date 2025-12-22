@@ -12,7 +12,6 @@ export default function Packages({ poojaId }: any) {
   const [packages, setPackage] = useState<any>();
   const navigate = useNavigate();
   const { setSelectedPackage } = useCart();
-  console.log("poojaId", poojaId);
 
   const fetchProduct = async () => {
     setLoading(true);
@@ -78,7 +77,7 @@ export default function Packages({ poojaId }: any) {
               <button
                 onClick={() => {
                   setSelectedPackage(pkg);
-                  navigate("/package-detail");
+                  navigate("/package-detail", {state: { poojaId, package: pkg }});
                 }}
                 className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer"
               >

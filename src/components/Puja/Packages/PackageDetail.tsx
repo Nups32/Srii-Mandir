@@ -1,19 +1,27 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import OfferingItem from "./ItemOffering";
 import BottomBar from "./BottomAmount";
 import { packages } from "../../../../details";
 import SelectedPackage from "./SelectedPackage";
 import { useCart } from "@/components/Puja/Packages/PackageContext";
+import { useLocation } from "react-router-dom";
 
 export default function PackageDetail() {
+  const location = useLocation();
   const {
     selectedPackage,
+    setSelectedPackage,
     cart,
     addItem,
     // updateQty,
   } = useCart();
 
   const items = Object.values(cart);
+  useEffect(() => {
+    if(!selectedPackage){
+      setSelectedPackage(location.state.package)
+    }
+  }, [location]);
 
   const totalAmount = useMemo(() => {
     const offeringsTotal = items.reduce(
@@ -58,6 +66,7 @@ export default function PackageDetail() {
           visible={!!selectedPackage || items.length > 0}
           total={totalAmount}
           packageName={bottomLabel}
+          data={{package: location.state.package, poojaId: location.state.poojaId, cartDate: cart}}
         />
       </div>
     </div>

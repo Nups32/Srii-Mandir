@@ -45,17 +45,16 @@ const PujaDetail = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchProduct();
   }, [slug]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % pooja?.images?.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? pooja?.images?.length - 1 : prev - 1));
   };
 
   const tabs = [
@@ -298,7 +297,7 @@ const PujaDetail = () => {
               {/* left image slider part */}
               <div className="relative rounded-2xl overflow-hidden shadow-lg h-full">
                 <img
-                  src={images[currentIndex]}
+                  src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${pooja?.images?.[currentIndex]}`}
                   alt={`Slide ${currentIndex + 1}`}
                   className="w-full h-full object-cover transition-all duration-500"
                 />

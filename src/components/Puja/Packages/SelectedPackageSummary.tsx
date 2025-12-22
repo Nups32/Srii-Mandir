@@ -1,9 +1,9 @@
 import { useCart } from "@/components/Puja/Packages/PackageContext";
 
-export default function SelectedPackageSummary() {
-  const { selectedPackage } = useCart();
+export default function SelectedPackageSummary({ packageData }: any) {
+  // const { selectedPackage } = useCart();
 
-  if (!selectedPackage) return null;
+  // if (!selectedPackage) return null;
 
   return (
     <div className="bg-white border rounded-xl p-5 sticky top-6">
@@ -11,15 +11,15 @@ export default function SelectedPackageSummary() {
       <div className="flex justify-between items-start">
         <div>
           <h3 className="font-semibold text-gray-900">
-            {selectedPackage.title}
+            {packageData?.title}
           </h3>
           <p className="text-sm text-gray-500">
-            {selectedPackage.person}
+            {packageData?.person}
           </p>
         </div>
 
         <p className="font-semibold text-lg">
-          ₹ {selectedPackage.price}
+          ₹ {packageData?.price}
         </p>
       </div>
 
