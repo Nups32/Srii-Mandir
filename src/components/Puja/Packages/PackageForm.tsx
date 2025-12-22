@@ -13,7 +13,7 @@ export default function PackageForm() {
           
           {/* LEFT FORM */}
           <div className="lg:col-span-2">
-            <PujaDetailsForm data={data.package} />
+            <PujaDetailsForm data={data} />
           </div>
 
           {/* RIGHT SUMMARY */}

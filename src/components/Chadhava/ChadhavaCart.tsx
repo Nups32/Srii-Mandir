@@ -74,7 +74,7 @@ export default function ChadhavaCart() {
 
     try {
       const order = await createRazorpayOrder(orderData);
-      const { id: order_id, currency, amount, point } = order;
+      const { id: order_id, currency, amount } = order;
       const options = {
         key: import.meta.env.VITE_APP_RAZOR_PAY_KEY_ID,
         amount: amount.toString(),
@@ -88,7 +88,6 @@ export default function ChadhavaCart() {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
             amount,
-            point,
             cartData: {
               chadhavaId,
               offering: Object.values(cart).map((item: any) => ({
