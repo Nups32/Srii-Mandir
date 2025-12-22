@@ -20,6 +20,7 @@ import LiveKatha from "@/components/Media/LiveKatha";
 import PujaHistory from "@/components/Profile/PujaBooking/PujaBooking";
 import PackageForm from "@/components/Puja/Packages/PackageForm";
 import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBooking";
+import Products from "@/pages/Products";
 const Index = lazy(() => import("../pages/Index"));
 
 const routes: RouteObjectWithLayout[] = [
@@ -110,6 +111,10 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/shakti-sanyans",
     element: <ShaktiSanyas />,
+  },
+  {
+    path: "/products",
+    element: <Products />,
   },
   {
     path: "*",
