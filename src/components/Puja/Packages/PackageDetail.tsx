@@ -1,70 +1,73 @@
-// import { useMemo, useState } from "react";
-// import SelectedPackage from "./PackageDetail";
-// import AddOnList from "./AddOnList";
-// import BottomBar from "./BottomBar";
-// import { packages } from "../../../../details";
-// import { Offer } from "./types";
+import { useMemo, useState } from "react";
+import OfferingItem from "./ItemOffering";
+import BottomBar from "./BottomAmount";
+import { packages } from "../../../../details";
+import type { Cart, Offer } from "./types";
+import SelectedPackage from "./SelectedPckage";
 
-// export default function ChadhavaCart() {
-//   const [cart, setCart] = useState<Cart>({});
+export default function PackageDetail() {
+  const [cart, setCart] = useState<Cart>({});
 
-//   const addItem = (offer: Offer) => {
-//     setCart(prev => ({
-//       ...prev,
-//       [offer.id]: { ...offer, qty: 1 },
-//     }));
-//   };
+  const addItem = (offer: Offer) => {
+    setCart((prev) => ({
+      ...prev,
+      [offer.id]: { ...offer, qty: 1 },
+    }));
+  };
 
-//   const updateQty = (id: string, delta: number) => {
-//     setCart(prev => {
-//       const item = prev[id];
-//       if (!item) return prev;
+  const updateQty = (id: string, delta: number) => {
+    setCart((prev) => {
+      const item = prev[id];
+      if (!item) return prev;
 
-//       const newQty = item.qty + delta;
+      const qty = item.qty + delta;
+      if (qty <= 0) {
+        const copy = { ...prev };
+        delete copy[id];
+        return copy;
+      }
 
-//       if (newQty <= 0) {
-//         const clone = { ...prev };
-//         delete clone[id];
-//         return clone;
-//       }
+      return {
+        ...prev,
+        [id]: { ...item, qty },
+      };
+    });
+  };
 
-//       return {
-//         ...prev,
-//         [id]: { ...item, qty: newQty },
-//       };
-//     });
-//   };
+  const totalAmount = useMemo(() => {
+    return Object.values(cart).reduce(
+      (sum, item) => sum + item.price * item.qty,
+      0
+    );
+  }, [cart]);
 
-//   const totalAmount = useMemo(() => {
-//     const itemsTotal = Object.values(cart).reduce(
-//       (sum, item) => sum + item.price * item.qty,
-//       0
-//     );
-//     return PACKAGE.price + itemsTotal;
-//   }, [cart]);
+  const items = Object.values(cart);
 
-//   return (
-//     <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
-//       {/* LEFT */}
-//       <SelectedPackage
-//         packageInfo={PACKAGE}
-//         cart={cart}
-//         updateQty={updateQty}
-//       />
+  const bottomLabel = useMemo(() => {
+    if (items.length === 1) {
+      return items[0].name;
+    }
+    if (items.length > 1) {
+      return `${items.length} Offerings Selected`;
+    }
+    return "";
+    // }, [cart]);
+  }, [items]);
 
-//       {/* RIGHT */}
-//       <AddOnList
-//         offers={chadhavaData.offering}
-//         cart={cart}
-//         onAdd={addItem}
-//       />
+  return (
+    <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
+      {/* LEFT – Selected Offerings */}
+      <SelectedPackage cart={cart} updateQty={updateQty} />
 
-//       {/* BOTTOM */}
-//       <BottomBar
-//         visible={Object.keys(cart).length > 0}
-//         total={totalAmount}
-//         packageName={PACKAGE.name}
-//       />
-//     </div>
-//   );
-// }
+      {/* RIGHT – Available Offerings */}
+      <OfferingItem offers={packages.offering} cart={cart} onAdd={addItem} />
+
+      {/* BOTTOM */}
+      <BottomBar
+        visible={items.length > 0}
+        total={totalAmount}
+        label={bottomLabel}
+      />
+    </div>
+  );
+}

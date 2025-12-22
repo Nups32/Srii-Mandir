@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
 // import { data } from "../../../details";
 import { useEffect, useState } from "react";
 import { getPoojaPackages } from "@/utils/API";
 import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export default function Packages({ poojaId }: any) {
   const [, setLoading] = useState(true);
   const [packages, setPackage] = useState<any>();
+  const navigate = useNavigate();
   console.log("poojaId", poojaId);
 
   const fetchProduct = async () => {
@@ -62,7 +65,7 @@ export default function Packages({ poojaId }: any) {
               </div>
 
               {/* Participate Button */}
-              <button className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer">
+              <button onClick={() => navigate("/package-detail")} className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer">
                 Book Now
                 <ArrowRightIcon className="w-5 h-5" />
               </button>
