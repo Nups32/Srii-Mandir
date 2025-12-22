@@ -113,6 +113,11 @@ export const getPoojaBySlug = async (slug: string) => {
   }
 };
 
+export const getAllPooja = async () => {
+  const response = await API.get(`/backend/pooja/get-all`);
+  return response;
+};
+
 export const getPoojaById = async (id: string) => {
   try {
     const response = await API.get(`/backend/pooja/${id}/edit`);
@@ -308,6 +313,76 @@ export const deleteHeroSection = async (id: string) => {
 export const updateHeroSectionStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
   const response = await API.patch(`/backend/hero-section/${id}/status`, data);
   return response;
+};
+
+
+// Review API functions
+export const getReviews = async () => {
+  const response = await CommanAPI.get(`/review`);
+  return response;
+};
+
+export const getAllReview = async () => {
+  const response = await API.get(`/backend/review/get-all`);
+  return response;
+};
+
+export const getReviewById = async (id: string) => {
+  const response = await API.get(`/backend/review/${id}/edit`);
+  return response;
+};
+
+export const storeReview = async (formData: FormData) => {
+  const response = await API.post(`/backend/review`, formData);
+  return response;
+};
+
+export const updateReview = async (id: string, formData: FormData) => {
+  const response = await API.put(`/backend/review/${id}/update`, formData);
+  return response;
+};
+
+export const deleteReview = async (id: string) => {
+  const response = await API.delete(`/backend/review/${id}/delete`);
+  return response;
+};
+
+export const updateReviewStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/review/${id}/status`, data);
+  return response;
+};
+
+// Puja Review API Functions
+export const getPujaReviews = () => {
+  return CommanAPI.get(`/puja-reviews`);
+};
+export const getAllPujaReviews = async () => {
+  const response = await API.get(`/backend/puja-reviews/get-all`);
+  return response;
+};
+
+export const getPujaReviewByPujaId = (id: string) => {
+  return API.get(`/puja-reviews/${id}/puja`);
+};
+
+export const getPujaReviewById = (id: string) => {
+  return API.get(`/backend/puja-reviews/${id}/edit`);
+};
+
+export const createPujaReview = (data: FormData) => {
+  return API.post(`/backend/puja-reviews`, data);
+};
+
+export const updatePujaReview = (id: string, data: FormData) => {
+  return API.put(`backend/puja-reviews/${id}/update`, data);
+};
+
+export const deletePujaReview = (id: string) => {
+  return API.delete(`/backend/puja-reviews/${id}/delete`);
+};
+
+export const updatePujaReviewStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/puja-reviews/${id}/status`, data);
 };
 
 // CONTACT API functions

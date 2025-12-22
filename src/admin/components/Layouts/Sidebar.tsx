@@ -143,6 +143,18 @@ const Sidebar = () => {
         },
         {
           icon: <PackageOpen />,
+          name: "Mange Review",
+          label: t("Manage Review"),
+          link: "/admin/review",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Mange Puja Review",
+          label: t("Manage Puja Review"),
+          link: "/admin/puja-review",
+        },
+        {
+          icon: <PackageOpen />,
           name: "Product",
           label: t("Manage Product"),
           link: "/admin/product",
