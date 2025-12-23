@@ -1,133 +1,276 @@
-import { PencilLine } from "lucide-react";
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// import React, { useEffect, useState } from "react";
+// import { getProfile, updateProfile, updateUserData } from "@/utils/API";
+// import { message } from "antd";
+// import { User } from "lucide-react";
 
-export default function ProfileView({
-  profile,
-  isProfileComplete,
-  onEdit,
-}: {
-  profile: Profile;
-  isProfileComplete: boolean;
-  onEdit: () => void;
-}) {
-  return (
-    <div className="space-y-6">
-      {/* HEADER CARD */}
-      <div className="bg-white rounded-xl border p-6">
-        <div className="flex justify-between">
-          <div>
-            <h2 className="text-lg font-semibold">{profile.username}</h2>
-            <p className="text-gray-500">{profile.phone}</p>
-          </div>
-
-          <button onClick={onEdit} className="text-blue-600 text-sm flex gap-1">
-            <PencilLine size={16} /> Edit
-          </button>
-        </div>
-
-        {!isProfileComplete && (
-          <button
-            onClick={onEdit}
-            className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-medium"
-          >
-            Please complete your profile →
-          </button>
-        )}
-      </div>
-
-      {/* CONTACT INFO */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        <Info label="Email" value={profile.email} />
-        <Info label="Phone" value={profile.phone} />
-        {profile.gender && <Info label="Gender" value={profile.gender} />}
-        {profile.occupation && (
-          <Info label="Occupation" value={profile.occupation} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function Info({ label, value }: { label: string; value?: string }) {
-  return (
-    <div className="bg-white border rounded-lg p-4">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="font-medium">{value || "—"}</p>
-    </div>
-  );
-}
-
-
-
-
-
-// import { getUserData } from "@/utils/API";
-// import { PencilLine } from "lucide-react";
-// import { useEffect } from "react";
-
-// type Profile = {
-//   username: string;
-//   email: string;
-//   phone: string;
-//   address: string;
-//   state: string;
-//   country: string;
-//   pin: string;
+// const initialUserData = {
+//   username: "",
+//   email: "",
+//   mobile: "",
+//   birthPlace: "",
+//   dob: "",
+//   address: "",
+//   city: "",
+//   pincode: "",
+//   state: "",
+//   country: "",
 // };
 
-// export default function ProfileView({
-//   profile,
-//   onEdit,
-// }: {
-//   profile: Profile;
-//   onEdit: () => void;
-// }) {
+// const accountInfoFields = [
+//   { name: "username", label: "User Name", type: "text", required: true },
+//   { name: "email", label: "Email", type: "email", required: true },
+//   { name: "mobile", label: "Phone", type: "tel", required: true },
+//   { name: "birthPlace", label: "Birth Place", type: "text" },
+//   { name: "dob", label: "Date of Birth", type: "text" },
+//   { name: "address", label: "Street Address", type: "text" },
+//   { name: "city", label: "City", type: "text" },
+//   { name: "pincode", label: "Zip Code", type: "text" },
+//   { name: "state", label: "State", type: "text" },
+//   {
+//     name: "country",
+//     label: "Country",
+//     type: "select",
+//     required: true,
+//   },
+// ];
+
+// function Profile() {
+//   const [formData, setFormData] = useState(initialUserData);
+//   const [countries, setCountries] = useState([]);
+//   const [selectedCountry, setSeclectedCountry] = useState("");
+//   const [phoneError, setPhoneError] = useState("");
+//   const [editMode, setEditMode] = useState(false);
+
 
 //   const getUserProfile = async () => {
-//     const res: any = await getUserData(profile);
+//     console.log("formdata", formData);
+//     const res: any = await getProfile();
+//     console.log("res of use data", res.data.data);
+//     console.log("debug", res.data.data.name as keyof typeof formData)
 //     if (res && res.status == 200) {
 //       const userData = res.data.data;
 //       setFormData(userData);
+//       setSeclectedCountry(userData.country);
 //     }
 //   };
 
 //   useEffect(() => {
+//     // eslint-disable-next-line react-hooks/set-state-in-effect
 //     getUserProfile();
 //   }, []);
 
-//   return (
-//     <div className="bg-white rounded-xl border p-6 space-y-6">
-//       <div className="flex justify-between items-start">
-//         <div>
-//           <h2 className="text-lg font-semibold">{profile.username}</h2>
-//           <p className="text-gray-500">{profile.phone}</p>
-//         </div>
+//   // fetch countries
+//   useEffect(() => {
+//     fetch("https://restcountries.com/v3.1/independent?status=true")
+//       .then((res) => res.json())
+//       .then((data) => {
+//         const countryNames = data
+//           .map((country: { name: { common: string } }) => country.name.common)
+//           .sort((a: string, b: string) => a.localeCompare(b));
+//         setCountries(countryNames);
+//       })
+//       .catch((err) => {
+//         console.error("Error fetching countries:", err);
+//         setCountries([]);
+//       });
+//   }, []);
 
-//         <button
-//           onClick={onEdit}
-//           className="flex items-center gap-1 text-blue-600 text-sm font-medium cursor-pointer"
+//   const handleChange = () => {
+//     setFormData({
+//       ...formData,
+//     });
+//   };
+
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     try {
+//       const res = await updateProfile();
+      
+//       if (res.status == 200) {
+//         message.success("Profile Updated Successfully");
+//       } else {
+//         message.error("Error while updating profile");
+//       }
+//     } catch (error: any) {
+//       message.error("Error:", error);
+//     }
+//   };
+
+//   const handleEditClick = () => {
+//     setEditMode(true);
+//   };
+
+//   const handleSaveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     await handleSubmit(e);
+//     setEditMode(false);
+//     getUserProfile(); // Refresh data after save
+//   };
+
+//   const renderInputField = (field: any) => {
+//     const props = {
+//       name: field.name,
+//       value: formData[field.name as keyof typeof initialUserData] as string,
+//       onChange: handleChange,
+//       className: "w-full p-2 border border-gray-300 rounded-xl text-gray-600",
+//       required: field.required,
+//     };
+
+//     if (field.type === "select") {
+//       return (
+//         <select
+//           name={field.name}
+//           value={selectedCountry}
+//           onChange={(e) => setSeclectedCountry(e.target.value)}
+//           required={field.required}
+//           className="w-full p-2 border border-gray-300 rounded-xl text-gray-600 cursor-pointer"
 //         >
-//           <PencilLine size={16} />
-//           Edit
-//         </button>
-//       </div>
+//           <option value="">Select {field.label}</option>
+//           {countries.map((country) => (
+//             <option key={country} value={country}>
+//               {country}
+//             </option>
+//           ))}
+//         </select>
+//       );
+//     }
 
-//       <div className="grid sm:grid-cols-2 gap-6">
-//         <Info label="Email" value={profile.email} />
-//         <Info label="Phone" value={profile.phone} />
-//         <Info label="Address" value={profile.address} />
-//         <Info label="State" value={profile.state} />
-//         <Info label="Country" value={profile.country} />
-//         <Info label="PIN Code" value={profile.pin} />
-//       </div>
-//     </div>
-//   );
-// }
+//     if (field.type === "tel") {
+//       return (
+//         <div className="w-full">
+//           <input
+//             type="tel"
+//             name="mobile"
+//             value={formData.mobile}
+//             maxLength={10}
+//             className="-bg w-full p-2 border border-gray-300 rounded-xl text-gray-600"
+//             required={field.required}
+//             onChange={(e) => {
+//               let value = e.target.value.replace(/\D/g, "");
+//               if (value.length > 0 && !/^[1-9]/.test(value)) {
+//                 value = value.replace(/^[^1-9]+/, "");
+//               }
+//               if (value.length > 10) value = value.slice(0, 10);
+//               setFormData({ ...formData, mobile: value });
 
-// function Info({ label, value }: { label: string; value: string }) {
+//               if (value.length === 0) {
+//                 setPhoneError("");
+//               } else if (!/^[1-9]/.test(value)) {
+//                 setPhoneError("Phone number must start with 1-9");
+//               } else if (value.length !== 10) {
+//                 setPhoneError("Phone number must be exactly 10 digits");
+//               } else {
+//                 setPhoneError("");
+//               }
+//             }}
+//             onBlur={() => {
+//               if (formData.mobile.length !== 10) {
+//                 setPhoneError("Phone number must be exactly 10 digits");
+//               } else if (!/^[1-9]/.test(formData.mobile)) {
+//                 setPhoneError("Phone number must start with 6-9");
+//               } else {
+//                 setPhoneError("");
+//               }
+//             }}
+//             pattern="[1-9][0-9]{9}"
+//             inputMode="numeric"
+//             autoComplete="tel"
+//           />
+//           {phoneError && (
+//             <p className="text-red-500 text-xs mt-1">{phoneError}</p>
+//           )}
+//         </div>
+//       );
+//     }
+
+//     return (
+//       <input disabled={field.type == "email"} type={field.type} {...props} />
+//     );
+//   };
+
 //   return (
-//     <div>
-//       <p className="text-sm text-gray-500">{label}</p>
-//       <p className="font-medium">{value || "—"}</p>
-//     </div>
+//     <section className=" p-4 sm:p-8 mt-16">
+//       {/* <img
+//         src={ProfileImg}
+//         alt="Profile"
+//         className="absolute w-full h-full top-0 left-0 object-cover -z-1 opacity-80"
+//       /> */}
+
+//       {/* <User2/> */}
+
+//       <div className="max-w-3xl mx-auto">
+//         {/* <div className="text-center mb-8">
+//           <h1 className="text-3xl text-center heading leading-tight">
+//             Account Details
+//           </h1>
+//         </div> */}
+
+//         {/* profile */}
+//         {!editMode && (
+//           <div className="bg-white shadow-lg rounded-2xl border border-gray-200 p-6">
+//             <div className="flex items-center gap-4">
+//               <div>
+//                 <h2 className="text-xl font-semibold text-gray-800">
+//                   <User /> {formData.username}
+//                 </h2>
+//               </div>
+//             </div>
+//             <hr className="my-4 border-gray-200" />
+//             <div className="space-y-3">
+//               {accountInfoFields.map((menu) => (
+//                 <div key={menu.name} className="flex justify-between text-sm">
+//                   <span className="text-gray-500">{menu.label}:</span>
+//                   <span className="font-medium text-gray-800">
+//                     {formData[menu.name as keyof typeof formData] || "-"}
+//                   </span>
+//                 </div>
+//               ))}
+//             </div>
+//             <div className="mt-6 flex justify-end gap-3">
+//               {!editMode ? (
+//                 <button
+//                   className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-blue-500 hover:text-white! cursor-pointer"
+//                   onClick={handleEditClick}
+//                 >
+//                   Edit
+//                 </button>
+//               ) : null}
+//             </div>
+//           </div>
+//         )}
+
+//         {editMode && (
+//           <form onSubmit={handleSaveChanges} className="">
+//             <fieldset className="border-2 border-[#dddada] shadow-xl rounded-2xl p-4 mb-8">
+//               <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
+//                 {accountInfoFields.map((field) => (
+//                   <div key={field.name}>
+//                     <label className="text-gray-500">
+//                       {field.label}
+//                       {field.required && (
+//                         <span className="text-red-400 ">*</span>
+//                       )}
+//                     </label>
+//                     {renderInputField(field)}
+//                   </div>
+//                 ))}
+//               </div>
+//             </fieldset>
+
+//             <div className="col-span-2 flex justify-center items-center">
+//               <button
+//                 type="submit"
+//                 className="bg-green-500 mt-5! px-6 py-2  hover:bg-green-600 rounded text-white! text-lg font-semibold transition-colors duration-200 cursor-pointer "
+//               >
+//                 Save Changes
+//               </button>
+//             </div>
+//           </form>
+//         )}
+//       </div>
+//     </section>
 //   );
 // }
+
+// export default Profile;

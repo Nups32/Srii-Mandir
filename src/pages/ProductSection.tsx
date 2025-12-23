@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 type Product = {
   id: number;
   name: string;
   image: string;
   price: string;
-  tag?: string;
+  description: string;
 };
 
 type Props = {
@@ -15,64 +15,129 @@ type Props = {
   link: string;
 };
 
-export function ProductSection({
-  title,
-  subtitle,
-  products,
-  link,
-}: Props) {
-  return (
-    <div>
-      {/* SECTION HEADER */}
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900">
-            {title}
-          </h2>
-          <p className="text-gray-600 mt-1">{subtitle}</p>
-        </div>
+export function ProductSection({ title, subtitle, products, link }: Props) {
+  const [index, setIndex] = useState(0);
+  const [step, setStep] = useState(100); // %
 
-        <Link
-          to={link}
-          className="text-sm font-medium text-orange-600 hover:underline"
-        >
-          View All
-        </Link>
+  useEffect(() => {
+    const updateStep = () => {
+      if (window.innerWidth < 640) {
+        setStep(100); // mobile: 1 card
+      } else if (window.innerWidth < 768) {
+        setStep(50); // tablet: 2 cards
+      }
+    };
+
+    updateStep();
+    window.addEventListener("resize", updateStep);
+    return () => window.removeEventListener("resize", updateStep);
+  }, []);
+
+  const maxIndex =
+    step === 100
+      ? products.length - 1
+      : Math.ceil(products.length - 2);
+
+  return (
+    <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="mb-14">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl md:text-3xl font-bold text-gray-900">
+            {title}
+          </h3>
+          <a
+            href={link}
+            className="text-orange-600 text-xs md:text-base font-semibold hover:underline"
+          >
+            View All
+          </a>
+        </div>
+        <p className="text-lg text-gray-600 max-w-3xl">{subtitle}</p>
       </div>
 
-      {/* PRODUCT GRID */}
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {products.map((product) => (
+      <div className="relative md:hidden">
+        <div className="overflow-hidden">
           <div
-            key={product.id}
-            className="bg-white rounded-2xl shadow-sm hover:shadow-md transition p-5"
+            className="flex transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${index * step}%)`,
+            }}
           >
-            <div className="relative">
-              {/* {product.tag && (
-                <span className="absolute top-3 left-3 bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full">
-                  {product.tag}
-                </span>
-              )} */}
-
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-56 object-contain rounded-xl"
-              />
-            </div>
-
-            <div className="mt-5 space-y-2">
-              <h3 className="font-medium text-gray-900">{product.name}</h3>
-              <p className="text-orange-700 font-semibold">
-                {product.price}
-              </p>
-
-              <button className="w-full mt-3 py-2 rounded-lg bg-orange-600 text-white text-sm font-medium hover:bg-orange-700 transition">
-                View Details
-              </button>
-            </div>
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="flex-shrink-0 w-full sm:w-1/2 px-2"
+              >
+                <ProductCard product={product} link={link} />
+              </div>
+            ))}
           </div>
+        </div>
+
+        {/* Controls */}
+        <button
+          onClick={() => setIndex((i) => Math.max(i - 1, 0))}
+          disabled={index === 0}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-3 disabled:opacity-40"
+        >
+          ‹
+        </button>
+
+        <button
+          onClick={() =>
+            setIndex((i) => Math.min(i + 1, maxIndex))
+          }
+          disabled={index === maxIndex}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-3 disabled:opacity-40"
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="hidden md:grid grid-cols-3 gap-8 lg:gap-10">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} link={link} />
         ))}
+      </div>
+    </section>
+  );
+}
+
+// Product Card
+
+function ProductCard({ product, link }: { product: Product; link: string }) {
+  return (
+    <div className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+      <div className="relative overflow-hidden bg-gray-100">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-64 w-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+
+      <div className="p-6 space-y-3">
+        <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600">
+          {product.name}
+        </h3>
+
+        <p className="text-sm text-gray-600 line-clamp-2">
+          {product.description}
+        </p>
+
+        <div className="flex justify-between items-center pt-4 border-t">
+          <span className="text-2xl font-bold text-orange-600">
+            {product.price}
+          </span>
+
+          <a
+            href={link}
+            className="text-sm font-semibold text-orange-600 hover:text-orange-700"
+          >
+            View Details
+          </a>
+        </div>
       </div>
     </div>
   );

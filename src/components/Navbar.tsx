@@ -16,8 +16,11 @@ const NavMenus = [
   { name: "Chadhava", path: "/chadhava" },
   { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
-  { name: "Shakti Sanyans", path: "/shakti-sanyans" },
-  { name: "Products", path: "/products" },
+  { name: "Instant Solution", path: "/instant-solution" },
+  { name: "Shakti Sanyansi", path: "/shakti-sanyans" },
+  { name: "Srii Mandir Mela", path: "/products" },
+  { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
+  { name: "Dhan Basra Potli", path: "/Dhan-basra-potli" },
 ];
 
 const AccountMenus: AccountMenuItem[] = [
@@ -98,11 +101,11 @@ export default function Navbar() {
     <>
       {/* header */}
       <header className="sticky top-0 z-50 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className=" mx-auto px-3">
           <div className="flex items-center justify-between h-20">
             {/* logo */}
             <Link to="/" className="flex items-center gap-2">
-              <img src={logo} alt="Logo" className="h-20" />
+              <img src={logo} alt="Logo" className="h-16" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -136,7 +139,7 @@ export default function Navbar() {
                     closeAllMenus();
                     navigate("/login");
                   }}
-                  className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm hover:bg-orange-600"
+                  className="bg-orange-500 text-white! px-4 py-2 rounded-full text-sm hover:bg-orange-600 cursor-pointer"
                 >
                   Login
                 </button>
@@ -149,7 +152,7 @@ export default function Navbar() {
                 <div className="relative" ref={accountMenuRef}>
                   <div
                     onClick={() => setShowAccountMenu((v) => !v)}
-                    className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold cursor-pointer"
+                    className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white! font-bold cursor-pointer"
                   >
                     {email?.charAt(0).toUpperCase() || "U"}
                   </div>
@@ -218,7 +221,7 @@ export default function Navbar() {
                 closeAllMenus();
                 navigate("/login");
               }}
-              className="mt-8 w-full py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
+              className="mt-8 w-full py-3 rounded-full bg-orange-500 text-white! font-semibold hover:bg-orange-600"
             >
               Login
             </button>

@@ -22,7 +22,7 @@ import PackageForm from "@/components/Puja/Packages/PackageForm";
 import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBooking";
 import Products from "@/pages/Products";
 import Profile from "@/components/Profile/Profile";
-import ProfileEditForm from "@/components/Profile/ProfileEdit";
+// import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
 
 const routes: RouteObjectWithLayout[] = [
@@ -54,10 +54,10 @@ const routes: RouteObjectWithLayout[] = [
     path: "/profile",
     element: <Profile />,
   },
-  {
-    path: "/profile/edit",
-    element: <ProfileEditForm  />,
-  },
+  // {
+  //   path: "/profile/edit",
+  //   element: <ProfileEditForm  />,
+  // },
   {
     path: "/puja/history",
     element: <PujaHistory />,

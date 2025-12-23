@@ -25,7 +25,7 @@ export default function LiveKathaCard({ katha }: any) {
           </span>
         )}
       </div>
-      {katha?.media == "audio" ?
+      {katha?.media == "audio" ? (
         <AudioCard
           key={katha?._id}
           title={katha?.name}
@@ -33,8 +33,10 @@ export default function LiveKathaCard({ katha }: any) {
           free
           premium={katha?.isPaid || false}
           isPaidUser={false}
+          contentType={"katha"}
         />
-        : <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
+      ) : (
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
           <iframe
             src={getYouTubeEmbedUrl(katha?.url)}
             title={katha?.title}
@@ -43,7 +45,8 @@ export default function LiveKathaCard({ katha }: any) {
             allowFullScreen
             className="absolute inset-0 w-full h-full"
           />
-        </div>}
+        </div>
+      )}
 
       {/* Player */}
       {/* {type === "audio" && (

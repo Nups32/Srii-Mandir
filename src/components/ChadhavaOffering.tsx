@@ -3,7 +3,7 @@
 
 
 import { useEffect, useState } from "react";
-import { chadhavaData } from "../../details";
+// import { chadhavaData } from "../../details";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import OfferingModal from "./OfferingModal";
 import FAQs from "./FAQs";
