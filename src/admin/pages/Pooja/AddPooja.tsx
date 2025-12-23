@@ -14,6 +14,7 @@ import {
   // TimePicker,
   Space,
   type DatePickerProps,
+  InputNumber,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaTimes } from "react-icons/fa";
@@ -33,6 +34,14 @@ interface BenefitItem {
   title: string;
   description: string;
   _id?: string;
+}
+
+interface OfferingItem {
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  fileList: UploadFile[];
 }
 
 const AddPujaForm: React.FC = () => {
@@ -74,6 +83,16 @@ const AddPujaForm: React.FC = () => {
   // Status
   const [isUpcoming, setIsUpcoming] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(true);
+
+  const [offerings, setOfferings] = useState<OfferingItem[]>([
+    {
+      name: "",
+      description: "",
+      image: "",
+      price: 0,
+      fileList: []
+    }
+  ]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -119,6 +138,22 @@ const AddPujaForm: React.FC = () => {
       if (templeImageList[0]?.originFileObj) {
         formData.append("templeImage", templeImageList[0].originFileObj as RcFile);
       }
+
+      // Prepare offerings data
+      const offeringsData = offerings.map(offering => ({
+        name: offering.name,
+        description: offering.description,
+        price: offering.price,
+        // Image will be handled separately in backend
+      }));
+      formData.append("offering", JSON.stringify(offeringsData));
+
+      // Add offering images
+      offerings.forEach((offering, index) => {
+        if (offering.fileList[0]?.originFileObj) {
+          formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
+        }
+      });
 
       // Images
       imageList.forEach((file) => {
@@ -257,6 +292,47 @@ const AddPujaForm: React.FC = () => {
   //             setDate(""); // or null, depending on your state
   //         }
   //     };
+
+  // Offering Handlers
+  const handleAddOffering = () => {
+    setOfferings([
+      ...offerings,
+      {
+        name: "",
+        description: "",
+        image: "",
+        price: 0,
+        fileList: []
+      }
+    ]);
+  };
+
+  const handleRemoveOffering = (index: number) => {
+    if (offerings.length > 1) {
+      const newOfferings = offerings.filter((_, i) => i !== index);
+      setOfferings(newOfferings);
+    }
+  };
+
+  const handleOfferingChange = (index: number, field: keyof OfferingItem, value: any) => {
+    const newOfferings = [...offerings];
+    if (field === 'price') {
+      newOfferings[index][field] = parseFloat(value) || 0;
+      // } else if (field === 'isSpecialCombo' || field === 'isPrasadForHome') {
+      //   newOfferings[index][field] = value;
+    } else if (field === 'fileList') {
+      newOfferings[index][field] = value;
+    } else {
+      newOfferings[index][field] = value;
+    }
+    setOfferings(newOfferings);
+  };
+
+  const handleOfferingImageUpload = (index: number, { fileList }: UploadChangeParam<UploadFile>) => {
+    const newOfferings = [...offerings];
+    newOfferings[index].fileList = fileList.slice(-1);
+    setOfferings(newOfferings);
+  };
 
 
   //   const handleTimeChange = (time: moment.Moment | null, timeString: string | string[]) => {
@@ -746,6 +822,114 @@ const AddPujaForm: React.FC = () => {
                 </Col>
               </Row>
             </Col>
+
+
+            {/* Offerings Section */}
+            <Col span={24}>
+              <h3 className="text-lg font-bold mb-4 border-b pb-2">Offerings</h3>
+            </Col>
+
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Offerings
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  {offerings.map((offering, index) => (
+                    <Card key={index} className="mb-6" size="small">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium">Offering {index + 1}</span>
+                        {offerings.length > 1 && (
+                          <Button
+                            type="text"
+                            danger
+                            size="small"
+                            icon={<FaTimes />}
+                            onClick={() => handleRemoveOffering(index)}
+                          />
+                        )}
+                      </div>
+
+                      <Input
+                        size="large"
+                        className="mb-2"
+                        placeholder="Offering Name"
+                        value={offering.name}
+                        onChange={(e) => handleOfferingChange(index, 'name', e.target.value)}
+                      />
+
+                      <TextArea
+                        rows={2}
+                        className="mb-2"
+                        placeholder="Description"
+                        value={offering.description}
+                        onChange={(e) => handleOfferingChange(index, 'description', e.target.value)}
+                      />
+
+                      <InputNumber
+                        className="w-full mb-2"
+                        placeholder="Price"
+                        value={offering.price}
+                        onChange={(value) => handleOfferingChange(index, 'price', value)}
+                        prefix="₹"
+                        min={0}
+                        step={100}
+                      />
+
+                      <div className="mb-2">
+                        <Upload
+                          name="offeringImage"
+                          listType="picture-card"
+                          fileList={offering.fileList}
+                          beforeUpload={() => false}
+                          onChange={(info) => handleOfferingImageUpload(index, info)}
+                          maxCount={1}
+                          accept=".png,.jpg,.jpeg"
+                        >
+                          {offering.fileList.length < 1 && (
+                            <div>
+                              <BsUpload style={{ fontSize: "16px" }} />
+                              <div style={{ marginTop: 4, fontSize: "12px" }}>Upload Image</div>
+                            </div>
+                          )}
+                        </Upload>
+                      </div>
+
+                      {/* <Space className="w-full mb-2">
+                        <div className="flex items-center">
+                          <Switch
+                            size="small"
+                            checked={offering.isSpecialCombo}
+                            onChange={(checked) => handleOfferingChange(index, 'isSpecialCombo', checked)}
+                          />
+                          <span className="ml-2 text-xs">Special Combo</span>
+                        </div>
+
+                        <div className="flex items-center">
+                          <Switch
+                            size="small"
+                            checked={offering.isPrasadForHome}
+                            onChange={(checked) => handleOfferingChange(index, 'isPrasadForHome', checked)}
+                          />
+                          <span className="ml-2 text-xs">Prasad for Home</span>
+                        </div>
+                      </Space> */}
+                    </Card>
+                  ))}
+                  <Button
+                    type="dashed"
+                    onClick={handleAddOffering}
+                    icon={<FaPlus />}
+                    className="w-full mt-2"
+                  >
+                    Add Offering
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+
 
             {/* Temple Details */}
             <Col span={24}>

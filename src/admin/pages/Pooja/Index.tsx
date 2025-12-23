@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { getPooja } from "@/utils/API";
+import { getAllPooja } from "@/utils/API";
 // import { format } from "date-fns";
 
 interface Puja {
@@ -51,7 +51,7 @@ export const PoojaTable = () => {
     const fetchPujas = async () => {
         setLoading(true);
         try {
-            const response = await getPooja();
+            const response = await getAllPooja();
             if (response?.data?.status) {
                 setDatasource(response.data.data || response);
             }

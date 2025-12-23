@@ -2,14 +2,19 @@ import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react";
 import chadhavaHome from "../assets/Chadhava/img_chadhava_web_banner.jpg";
 import { chadhavaData } from "../../details";
 import chadhava1 from "../assets/Chadhava/home.jpg";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getChadhava } from "@/utils/API";
+import { message } from "antd";
 
 export default function Chadhava() {
   const [currentWorkSlide, setCurrentWorkSlide] = useState(0);
   const navigate = useNavigate();
   const cardsRef = useRef<HTMLDivElement | null>(null);
   const howItWorksRef = useRef<HTMLDivElement | null>(null);
+  const [chadhavas, setChadhavas] = useState<any[]>([]);
+  // const [, setLoading] = useState(false);
+
 
   const features = [
     "Divine Blessings through Chadhava.",
@@ -37,6 +42,26 @@ export default function Chadhava() {
       desc: "The video of your Chadhava completed with your name will be shared here.",
     },
   ];
+
+  const fetchPooja = async () => {
+    // setLoading(true);
+    try {
+      const response: any = await getChadhava();
+      if (response?.data?.status) {
+        setChadhavas(response.data.data);
+      } else {
+        message.error("failed to fetch chadhava");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPooja();
+  }, []);
 
   const nextWorkSlide = () => {
     setCurrentWorkSlide((prev) => (prev + 1) % chadhavaWorkSlides.length);
@@ -120,7 +145,8 @@ export default function Chadhava() {
       <div ref={cardsRef} className="bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-12 ">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {chadhavaData.images.slice(0, 3).map((img, index) => (
+            {/* {chadhavaData.images.slice(0, 3).map((img, index) => ( */}
+            {chadhavas?.map((chadhava, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col"
@@ -128,8 +154,9 @@ export default function Chadhava() {
                 {/* Image Banner */}
                 <div className="relative h-45">
                   <img
-                    src={img}
-                    alt={chadhavaData.title}
+                    // src={chadhava?.image}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${chadhava?.images?.[0]}`}
+                    alt={chadhava?.title}
                     className="w-full h-full object-cover"
                   />
 
@@ -142,19 +169,19 @@ export default function Chadhava() {
                 {/* Card Content */}
                 <div className="flex flex-col grow px-5 py-6">
                   <h3 className="text-lg font-semibold text-gray-900 leading-snug mb-3! line-clamp-3">
-                    {chadhavaData.title}
+                    {chadhava?.title}
                   </h3>
 
                   <p className="text-sm font-medium text-gray-900 mb-3!">
-                    {chadhavaData.time}
+                    {chadhava?.time}
                   </p>
 
                   <p className="text-sm text-gray-600 leading-relaxed mb-6! line-clamp-5">
-                    {chadhavaData.description}
+                    {chadhava?.about}
                   </p>
 
                   <button
-                    onClick={() => navigate("/chadhava-detail")}
+                    onClick={() => navigate(`/chadhava-detail/${chadhava?.slug}`)}
                     className="mt-auto w-full bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {chadhavaData.btnText}

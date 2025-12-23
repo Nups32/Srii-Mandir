@@ -8,7 +8,9 @@ export type UserConfig = {
     role: number;
     photo?: string;
     username: string;
+    mobile: string;
     token: string;
+    isPaid: boolean;
 }
 
 // const data = localStorage.getItem('authData');
@@ -20,10 +22,12 @@ const localStorageData = decryptData('authData')
 export const defaultUserConfigState: UserConfig = {
     token: localStorageData?.token || null,
     username: localStorageData?.user?.username || null,
+    mobile: localStorageData?.user?.mobile || null,
     email: localStorageData?.user?.email || null,
     _id: localStorageData?.user?._id || null,
     role: localStorageData?.user?.role || null,
     photo: localStorageData?.user?.photo || null,
+    isPaid: localStorageData?.user?.isPaid || false,
 }
 const initialState = defaultUserConfigState
 
@@ -36,17 +40,21 @@ const userConfigSlice = createSlice({
             state.email = payload.email;
             state.photo = payload.photo;
             state.username = payload.username;
+            state.mobile = payload.mobile;
             state._id = payload._id;
             state.role = payload.role;
+            state.isPaid = payload.isPaid || false;
             encryptData('token', payload.token, 'string');
             encryptData('authData', {
                 token: payload.token,
                 user: {
                     _id: payload._id,
                     username: payload.username,
+                    mobile: payload.mobile,
                     email: payload.email,
                     role: payload.role,
                     photo: payload.photo,
+                    isPaid: payload.isPaid || false,
                 }
             });
         },
@@ -56,8 +64,10 @@ const userConfigSlice = createSlice({
             state.email = "";
             state.photo = "";
             state.username = "";
+            state.mobile = "";
             state._id = NaN;
             state.role = NaN;
+            state.isPaid = false;
             localStorage.clear();
         },
 

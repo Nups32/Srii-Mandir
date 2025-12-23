@@ -92,7 +92,7 @@ const AddUserForm: React.FC = () => {
 
             //   await storeUser(formData);
             message.success("User added successfully");
-            navigate("/admin/user");
+            navigate("/admin/users");
         } catch (error: any) {
             console.error("Error adding user:", error);
             if (error.message?.includes("email already exists")) {

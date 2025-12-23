@@ -5,12 +5,15 @@ import router from "./router";
 import { Provider } from "react-redux";
 import store from "./store";
 import { CartProvider } from "./components/Chadhava/CartContext";
+import { PackageProvider } from "./components/Puja/Packages/PackageContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <CartProvider>
-        <RouterProvider router={router} />
+        <PackageProvider>
+          <RouterProvider router={router} />
+        </PackageProvider>
       </CartProvider>
     </Provider>
   </StrictMode>

@@ -45,17 +45,17 @@ const PujaDetail = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchProduct();
   }, [slug]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % pooja?.images?.length);
   };
 
+  console.log("pooja", pooja)
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? pooja?.images?.length - 1 : prev - 1));
   };
 
   const tabs = [
@@ -71,6 +71,31 @@ const PujaDetail = () => {
   // const ScrollTabs = ({ tabs }: Props) => {
   //   const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
 
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         console.log("entry.target.id:", entry.target.id);
+  //         if (entry.isIntersecting) {
+  //           setActiveTab(entry.target.id);
+  //         }
+  //       });
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: "-50% 0px -50% 0px",
+  //       threshold: 0,
+  //     }
+  //   );
+
+  //   tabs.forEach((tab) => {
+  //     const el = document.getElementById(tab.id);
+  //     if (el) observer.observe(el);
+  //   });
+
+  //   return () => observer.disconnect();
+  // }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -82,7 +107,8 @@ const PujaDetail = () => {
       },
       {
         root: null,
-        rootMargin: "-50% 0px -50% 0px",
+        // rootMargin: "-50% 0px -50% 0px", // center of screen
+        rootMargin: "-20% 0px -90% 0px", // center of screen
         threshold: 0,
       }
     );
@@ -93,7 +119,34 @@ const PujaDetail = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [tabs]);
+
+
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           setActiveTab(entry.target.id);
+  //         }
+  //       });
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: "-30% 0px -60% 0px",
+  //       threshold: 0,
+  //     }
+  //   );
+
+  //   tabs.forEach((tab) => {
+  //     const el = document.getElementById(tab.id);
+  //     if (el) observer.observe(el);
+  //   });
+
+  //   return () => observer.disconnect();
+  // }, []);
+
 
   // const handleClick = (tabId: string) => {
   //   setActiveTab(tabId);
@@ -245,7 +298,7 @@ const PujaDetail = () => {
               {/* left image slider part */}
               <div className="relative rounded-2xl overflow-hidden shadow-lg h-full">
                 <img
-                  src={images[currentIndex]}
+                  src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${pooja?.images?.[currentIndex]}`}
                   alt={`Slide ${currentIndex + 1}`}
                   className="w-full h-full object-cover transition-all duration-500"
                 />
@@ -512,7 +565,7 @@ const PujaDetail = () => {
           <Benefits benifits={pooja?.benefitText} />
           <Process />
           <Temple temple={pooja?.templeDetails} />
-          <Packages poojaId={pooja?._id} />
+          <Packages pooja={pooja} />
 
           {/* {activeTab === "benefits" && (
             <div className="mb-8">

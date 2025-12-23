@@ -13,6 +13,7 @@ import {
   DatePicker,
   Space,
   type DatePickerProps,
+  InputNumber,
 } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaTimes } from "react-icons/fa";
@@ -28,6 +29,16 @@ interface BenefitItem {
   title: string;
   description: string;
   _id?: string;
+}
+
+interface OfferingItem {
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  _id?: string;
+  fileList: UploadFile[];
+  existingImage?: string;
 }
 
 interface PoojaData {
@@ -48,6 +59,7 @@ interface PoojaData {
   tithis: string[];
   dosha: string[];
   benefits: string[];
+  offering: OfferingItem[];
   templeDetails: {
     image: string;
     name: string;
@@ -90,6 +102,18 @@ const EditPujaForm: React.FC = () => {
   const [tithis, setTithis] = useState<string[]>([""]);
   const [doshas, setDoshas] = useState<string[]>([""]);
   const [benefits, setBenefits] = useState<string[]>([""]);
+
+  // Offering Array
+  const [offerings, setOfferings] = useState<OfferingItem[]>([
+    {
+      name: "",
+      description: "",
+      image: "",
+      price: 0,
+      fileList: [],
+      existingImage: ""
+    }
+  ]);
 
   // Temple Details
   const [templeName, setTempleName] = useState<string>("");
@@ -141,6 +165,31 @@ const EditPujaForm: React.FC = () => {
           // Set benefit texts
           setBenefitTexts(data.benefitText?.length > 0 ? data.benefitText : [{ title: "", description: "" }]);
 
+          // Set offerings with existing images
+          const offeringsWithFiles = data.offering?.map(offering => ({
+            ...offering,
+            ...(offering.image && {
+              fileList: [{
+                uid: offering.image,
+                name: offering.image,
+                status: 'done' as const,
+                // url: data.templeDetails.image,
+                // response: data.templeDetails.image,
+                url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${offering.image}`,
+                response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${offering.image}`,
+              }]
+            } || { fileList: [] }),
+            existingImage: offering.image || ""
+          })) || [{
+            name: "",
+            description: "",
+            image: "",
+            price: 0,
+            fileList: [],
+            existingImage: ""
+          }];
+          setOfferings(offeringsWithFiles);
+
           // Set temple details
           setTempleName(data.templeDetails?.name || "");
           setTempleDescription(data.templeDetails?.description || "");
@@ -185,7 +234,7 @@ const EditPujaForm: React.FC = () => {
       } catch (error) {
         console.error("Error fetching puja:", error);
         message.error("Failed to load puja data");
-        navigate("/admin/puja");
+        navigate("/admin/pooja");
       } finally {
         setFetching(false);
       }
@@ -229,6 +278,28 @@ const EditPujaForm: React.FC = () => {
 
       const filteredBenefits = benefits.filter(benefit => benefit.trim());
       formData.append("benefits", JSON.stringify(filteredBenefits));
+
+      // Prepare offerings data
+      const offeringsData = offerings.map(offering => ({
+        name: offering.name,
+        description: offering.description,
+        price: offering.price,
+        existingImage: offering.existingImage || "",
+      }));
+      formData.append("offering", JSON.stringify(offeringsData));
+      // offerings.forEach(offering => {
+      //   if (offering.fileList[0]?.originFileObj) {
+      //     // formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
+      //     formData.append("offeringImages", offering.fileList[0].originFileObj);
+      //   }
+      // });
+
+      offerings.forEach((offering, index) => {
+        if (offering.fileList[0]?.originFileObj) {
+          formData.append("offeringImages", offering.fileList[0].originFileObj as RcFile);
+          formData.append("offeringImageIndexes", index.toString());
+        }
+      });
 
       // Temple Details
       const templeDetailsData = {
@@ -276,7 +347,7 @@ const EditPujaForm: React.FC = () => {
       const res = await updatePooja(id, formData);
       if (res.data.status) {
         message.success("Puja updated successfully");
-        navigate("/admin/pooja");
+        // navigate("/admin/pooja");
       } else {
         message.error("server error")
       }
@@ -391,7 +462,10 @@ const EditPujaForm: React.FC = () => {
     const newFileList = imageList.filter(item => item.uid !== file.uid);
     setImageList(newFileList);
 
-    // setRemovedImages(prev => [...prev, file.imageName]);
+    if (file.imageName) {
+      setRemovedImages(prev => [...prev, file.imageName]);
+    }
+
     setExistingImages(prev => prev.filter(img => img !== file.imageName));
 
     setImageList(prev => prev.filter(img => img.response !== file.imageName));
@@ -412,6 +486,52 @@ const EditPujaForm: React.FC = () => {
       setDate(datePart);
       setTime(timePart);
     }
+  };
+
+
+  // Offering Handlers
+  const handleAddOffering = () => {
+    setOfferings([
+      ...offerings,
+      {
+        name: "",
+        description: "",
+        image: "",
+        price: 0,
+        fileList: [],
+        existingImage: ""
+      }
+    ]);
+  };
+
+  const handleRemoveOffering = (index: number) => {
+    if (offerings.length > 1) {
+      const newOfferings = offerings.filter((_, i) => i !== index);
+      setOfferings(newOfferings);
+    }
+  };
+
+  const handleOfferingChange = (index: number, field: keyof OfferingItem, value: any) => {
+    const newOfferings = [...offerings];
+    if (field === 'price') {
+      newOfferings[index][field] = parseFloat(value) || 0;
+      // } else if (field === 'isSpecialCombo' || field === 'isPrasadForHome') {
+      //   newOfferings[index][field] = value;
+    } else if (field === 'fileList') {
+      newOfferings[index][field] = value;
+    } else if (field === 'existingImage') {
+      newOfferings[index][field] = value;
+    } else {
+      newOfferings[index][field] = value;
+    }
+    setOfferings(newOfferings);
+  };
+
+  const handleOfferingImageUpload = (index: number, { fileList }: UploadChangeParam<UploadFile>) => {
+    const newOfferings = [...offerings];
+    newOfferings[index].fileList = fileList.slice(-1);
+    newOfferings[index].existingImage = ""; // Clear existing image when uploading new one
+    setOfferings(newOfferings);
   };
 
   // Format combined date and time
@@ -882,6 +1002,152 @@ const EditPujaForm: React.FC = () => {
                     className="w-full mt-2"
                   >
                     Add Benefit Detail
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+
+
+
+            {/* Offerings Section */}
+            <Col span={24}>
+              <h3 className="text-lg font-bold mb-4 border-b pb-2">Offerings</h3>
+            </Col>
+
+            <Col xs={24} sm={24} md={24}>
+              <Row className="bg-white mb-4">
+                <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
+                  <label className="font-bold">
+                    Offerings
+                  </label>
+                </Col>
+                <Col xs={24} sm={24} md={12}>
+                  {offerings.map((offering, index) => (
+                    <Card key={index} className="mb-6" size="small">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium">Offering {index + 1}</span>
+                        {offerings.length > 1 && (
+                          <Button
+                            type="text"
+                            danger
+                            size="small"
+                            icon={<FaTimes />}
+                            onClick={() => handleRemoveOffering(index)}
+                          />
+                        )}
+                      </div>
+
+                      <Input
+                        size="large"
+                        className="mb-2"
+                        placeholder="Offering Name"
+                        value={offering.name}
+                        onChange={(e) => handleOfferingChange(index, 'name', e.target.value)}
+                      />
+
+                      <TextArea
+                        rows={2}
+                        className="mb-2"
+                        placeholder="Description"
+                        value={offering.description}
+                        onChange={(e) => handleOfferingChange(index, 'description', e.target.value)}
+                      />
+
+                      <InputNumber
+                        className="w-full mb-2"
+                        placeholder="Price"
+                        value={offering.price}
+                        onChange={(value) => handleOfferingChange(index, 'price', value)}
+                        prefix="₹"
+                        min={0}
+                        step={100}
+                      />
+
+                      <div className="mb-2">
+                        <Upload
+                          name="offeringImage"
+                          listType="picture-card"
+                          fileList={offering.fileList}
+                          // fileList={[{
+                          //   uid: 'pooja-offering-image',
+                          //   name: 'pooja-offering-image.jpg',
+                          //   status: 'done' as const,
+                          //   // url: data.templeDetails.image,
+                          //   // response: data.templeDetails.image,
+                          //   url: `${import.meta.env.VITE_APP_Image_URL}/pooja/${offering.image}`,
+                          //   response: `${import.meta.env.VITE_APP_Image_URL}/pooja/${offering.image}`,
+                          // }]}
+                          beforeUpload={() => false}
+                          onChange={(info) => handleOfferingImageUpload(index, info)}
+                          onRemove={() => {
+                            const newOfferings = [...offerings];
+                            newOfferings[index].fileList = [];
+                            setOfferings(newOfferings);
+                          }}
+                          maxCount={1}
+                          accept=".png,.jpg,.jpeg"
+                        >
+                          {offering.fileList.length < 1 && !offering.existingImage && (
+                            <div>
+                              <BsUpload style={{ fontSize: "16px" }} />
+                              <div style={{ marginTop: 4, fontSize: "12px" }}>Upload Image</div>
+                            </div>
+                          )}
+                        </Upload>
+
+                        {/* {offering.existingImage && offering.fileList.length === 0 && (
+                                                    <div className="mt-2">
+                                                        <div className="text-xs text-gray-600 mb-1">Current Image:</div>
+                                                        <div className="relative group">
+                                                            <img
+                                                                src={offering.existingImage}
+                                                                alt={`Offering ${index + 1}`}
+                                                                className="w-20 h-20 object-cover rounded"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                                                onClick={() => {
+                                                                    const newOfferings = [...offerings];
+                                                                    newOfferings[index].existingImage = "";
+                                                                    setOfferings(newOfferings);
+                                                                }}
+                                                            >
+                                                                <FaTimes className="text-xs" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )} */}
+                      </div>
+
+                      {/* <Space className="w-full mb-2">
+                        <div className="flex items-center">
+                          <Switch
+                            size="small"
+                            checked={offering.isSpecialCombo}
+                            onChange={(checked) => handleOfferingChange(index, 'isSpecialCombo', checked)}
+                          />
+                          <span className="ml-2 text-xs">Special Combo</span>
+                        </div>
+
+                        <div className="flex items-center">
+                          <Switch
+                            size="small"
+                            checked={offering.isPrasadForHome}
+                            onChange={(checked) => handleOfferingChange(index, 'isPrasadForHome', checked)}
+                          />
+                          <span className="ml-2 text-xs">Prasad for Home</span>
+                        </div>
+                      </Space> */}
+                    </Card>
+                  ))}
+                  <Button
+                    type="dashed"
+                    onClick={handleAddOffering}
+                    icon={<FaPlus />}
+                    className="w-full mt-2"
+                  >
+                    Add Offering
                   </Button>
                 </Col>
               </Row>

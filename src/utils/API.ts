@@ -2,6 +2,7 @@
 /* eslint-disable no-useless-catch */
 // import { message } from 'antd';
 import axios from "axios";
+import { decryptData } from "./Helper";
 // import CryptoJS from "crypto-js";
 // import { constants } from 'fs/promises';
 
@@ -38,7 +39,9 @@ CommanAPI.interceptors.request.use(async (config) => {
 });
 
 API.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = decryptData("token", 'string');
+  console.log("token",token);
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -78,8 +81,8 @@ API.interceptors.response.use(
       // Check for invalid token response
       if (error.response.status === 401) {
         // message.error('Invalid token. Please login again.');
-        localStorage.removeItem("token");
-        window.location.href = "admin-login"; // Adjust the redirect URL as needed
+        // localStorage.removeItem("token");
+        // window.location.href = "admin-login"; // Adjust the redirect URL as needed
       }
     }
     return Promise.reject(error);
@@ -111,6 +114,11 @@ export const getPoojaBySlug = async (slug: string) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const getAllPooja = async () => {
+  const response = await API.get(`/backend/pooja/get-all`);
+  return response;
 };
 
 export const getPoojaById = async (id: string) => {
@@ -231,6 +239,15 @@ export const getAllChadhava = async () => {
   return response;
 };
 
+export const getChadhavaBySlug = async (slug: string) => {
+  try {
+    const response = await CommanAPI.get(`/chadhava/${slug}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getChadhavaById = async (id: string) => {
   const response = await API.get(`/backend/chadhava/${id}/edit`);
   return response;
@@ -301,6 +318,76 @@ export const updateHeroSectionStatus = async (id: string, data: { isActive?: boo
   return response;
 };
 
+
+// Review API functions
+export const getReviews = async () => {
+  const response = await CommanAPI.get(`/review`);
+  return response;
+};
+
+export const getAllReview = async () => {
+  const response = await API.get(`/backend/review/get-all`);
+  return response;
+};
+
+export const getReviewById = async (id: string) => {
+  const response = await API.get(`/backend/review/${id}/edit`);
+  return response;
+};
+
+export const storeReview = async (formData: FormData) => {
+  const response = await API.post(`/backend/review`, formData);
+  return response;
+};
+
+export const updateReview = async (id: string, formData: FormData) => {
+  const response = await API.put(`/backend/review/${id}/update`, formData);
+  return response;
+};
+
+export const deleteReview = async (id: string) => {
+  const response = await API.delete(`/backend/review/${id}/delete`);
+  return response;
+};
+
+export const updateReviewStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/review/${id}/status`, data);
+  return response;
+};
+
+// Puja Review API Functions
+export const getPujaReviews = () => {
+  return CommanAPI.get(`/puja-review`);
+};
+export const getAllPujaReviews = async () => {
+  const response = await API.get(`/backend/puja-reviews/get-all`);
+  return response;
+};
+
+export const getPujaReviewByPujaId = (id: string) => {
+  return API.get(`/puja-reviews/${id}/puja`);
+};
+
+export const getPujaReviewById = (id: string) => {
+  return API.get(`/backend/puja-reviews/${id}/edit`);
+};
+
+export const createPujaReview = (data: FormData) => {
+  return API.post(`/backend/puja-reviews`, data);
+};
+
+export const updatePujaReview = (id: string, data: FormData) => {
+  return API.put(`backend/puja-reviews/${id}/update`, data);
+};
+
+export const deletePujaReview = (id: string) => {
+  return API.delete(`/backend/puja-reviews/${id}/delete`);
+};
+
+export const updatePujaReviewStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/puja-reviews/${id}/status`, data);
+};
+
 // CONTACT API functions
 
 export const deleteContact = async (id: any) => {
@@ -316,6 +403,7 @@ export const deleteContact = async (id: any) => {
 export const getUserData = async (data: any) => {
   try {
     const response = await API.get("/backend/users/get", { params: data });
+    console.log("res of getuserdata", response)
     return response;
   } catch (error) {
     throw error;
@@ -391,6 +479,15 @@ export const dynamicLogin = async (api: string, data: any) => {
   }
 };
 
+export const registerUser = async (data: any) => {
+  try {
+    const response = await CommanAPI.post("/register", data);
+    return response.data;
+  } catch (error: any) {
+    throw error; 
+  }
+};
+
 export const createWhitelistip = async (data: any) => {
   try {
     const response = await axios.get("https://api.ipify.org?format=json");
@@ -423,6 +520,126 @@ export const updateSettigsData = async (formData: any): Promise<any> => {
   try {
     const response = await API.put("admin/setting/update", formData);
 
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllBookChadhavas = (params?: {
+  chadhavaId?: string;
+  status?: string;
+  userId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/backend/book-chadhava`, { params });
+};
+
+export const createRazorpayOrder = async (orderData: any) => {
+  try {
+    const response = await API.post(`/frontend/create-order`, orderData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating Razorpay order:", error);
+    throw error;
+  }
+};
+
+export const verifyBookChadhavaPayment = async (paymentData: {
+  razorpay_payment_id: any;
+  razorpay_order_id: any;
+  razorpay_signature: any;
+}) => {
+  try {
+    const response = await API.post(`/frontend/verify-payment/book-chadhava`, paymentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+export const verifyPoojaPayment = async (paymentData: {
+  razorpay_payment_id: any;
+  razorpay_order_id: any;
+  razorpay_signature: any;
+}) => {
+  try {
+    const response = await API.post(`/frontend/verify-payment/book-puja`, paymentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const response = await API.get("frontend/get-profile");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const updateProfile = async (data: any) => {
+  try {
+    const response = await API.post("frontend/update-profile", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// BookPuja API Functions
+export const getAllBookPujas = (params?: {
+  pujaId?: string;
+  paymentStatus?: string;
+  userId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/backend/book-pooja`, { params });
+};
+
+export const getUserBookPujas = (params?: {
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/frontend/booked-pooja`, { params });
+};
+
+export const exportBookPujas = (format: 'excel' | 'pdf', filters?: {
+  pujaId?: string;
+  paymentStatus?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+}) => {
+  return API.get(`/backend/book-pooja/export`, {
+    params: { format, ...filters },
+    responseType: 'blob' // Important for file downloads
+  });
+};
+
+export const getBookedChadhava = async () => {
+  try {
+    const response = await API.get("frontend/book-chadhava");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getBookedPuja = async () => {
+  try {
+    const response = await API.get("frontend/book-puja");
     return response;
   } catch (error) {
     throw error;

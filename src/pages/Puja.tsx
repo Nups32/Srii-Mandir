@@ -236,6 +236,7 @@ const Puja: React.FC = () => {
     setLoading(true);
     try {
       const response: any = await getPooja();
+      // console.log("res from fetchpooja", response)
       if (response?.data?.status) {
         setPoojas(response.data.data);
       } else {

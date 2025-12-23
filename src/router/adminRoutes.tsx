@@ -18,6 +18,14 @@ import AddUserForm from "@/admin/pages/Users/AddUser";
 import HeroSectionTable from "@/admin/pages/HeroSection/Index";
 import EditHeroSectionForm from "@/admin/pages/HeroSection/EditHeroSection";
 import AddHeroSectionForm from "@/admin/pages/HeroSection/AddHeroSection";
+import ReviewTable from "@/admin/pages/Review/Index";
+import AddReviewForm from "@/admin/pages/Review/AddReview";
+import EditReviewForm from "@/admin/pages/Review/EditReview";
+import PujaReviewTable from "@/admin/pages/PujaReview/Index";
+import AddPujaReviewForm from "@/admin/pages/PujaReview/AddPujaReview";
+import EditPujaReviewForm from "@/admin/pages/PujaReview/EditPujaReview";
+import BookChadhavaTable from "@/admin/pages/BookChadhava/Index";
+import BookPujaTable from "@/admin/pages/BookPuja/Index";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -133,6 +141,46 @@ export const adminRoutes: RouteObjectWithLayout[] = [
     path: "/admin/hero-section/:id/edit",
     // element: <Index />,
     element: <EditHeroSectionForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/review",
+    element: <ReviewTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/review/add",
+    element: <AddReviewForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/review/:id/edit",
+    element: <EditReviewForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/puja-review",
+    element: <PujaReviewTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/puja-review/add",
+    element: <AddPujaReviewForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/puja-review/:id/edit",
+    element: <EditPujaReviewForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/book-pooja",
+    element: <BookPujaTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/book-chadhava",
+    element: <BookChadhavaTable />,
     layout: "admin",
   },
   // {

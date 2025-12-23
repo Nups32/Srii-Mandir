@@ -1,6 +1,8 @@
+import type { RouteObjectWithLayout } from "@/router";
+import { lazy } from "react";
 import ChadhavaOffering from "@/components/ChadhavaOffering";
 import Login from "@/components/Auth/Login";
-import DevotionalAudio from "@/components/Media/Media";
+import Library from "@/components/Media/Media";
 import NakshatraFinder from "@/components/NakshtraDetail";
 import PujaDetail from "@/components/PujaDetails";
 import Register from "@/components/Auth/Register";
@@ -9,16 +11,31 @@ import PageNotFound from "@/pages/PagenotFound";
 import Puja from "@/pages/Puja";
 import ShaktiSanyas from "@/pages/ShaktiSanyas";
 import VedicScience from "@/pages/VedicScience";
-import type { RouteObjectWithLayout } from "@/router";
-import { lazy } from "react";
 import ForgetPassword from "@/components/Auth/ForgetPassword";
 import ChadhavaCart from "@/components/Chadhava/ChadhavaCart";
+import PackageDetail from "@/components/Puja/Packages/PackageDetail";
+import DevotionalMedia from "@/components/Media/DevotionalMedia";
+import VedicMantra from "@/components/Media/VedicMantra";
+import LiveKatha from "@/components/Media/LiveKatha";
+import PujaHistory from "@/components/Profile/PujaBooking/PujaBooking";
+import PackageForm from "@/components/Puja/Packages/PackageForm";
+import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBooking";
+import Products from "@/pages/Products";
+import Profile from "@/components/Profile/Profile";
+import ProductDetail from "@/components/Products/ProductDetail";
+import Logout from "@/components/Logout";
+// import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
 
 const routes: RouteObjectWithLayout[] = [
   {
     path: "/",
     element: <Index />,
+  },
+  {
+    path: "/admin-login",
+    element: <Login />,
+    layout: "blank"
   },
   {
     path: "/login",
@@ -36,6 +53,22 @@ const routes: RouteObjectWithLayout[] = [
     layout: "blank"
   },
   {
+    path: "/profile",
+    element: <Profile />,
+  },
+  // {
+  //   path: "/profile/edit",
+  //   element: <ProfileEditForm  />,
+  // },
+  {
+    path: "/puja/history",
+    element: <PujaHistory />,
+  },
+  {
+    path: "/chadhava/history",
+    element: <ChadhavaHistory />,
+  },
+  {
     path: "/puja",
     element: <Puja />,
   },
@@ -44,16 +77,24 @@ const routes: RouteObjectWithLayout[] = [
     element: <PujaDetail />,
   },
   {
+    path: "/package-detail/form",
+    element: <PackageForm />,
+  },
+  {
     path: "/chadhava",
     element: <Chadhava />,
   },
   {
-    path: "/chadhava-detail",
+    path: "/chadhava-detail/:slug",
     element: <ChadhavaOffering />,
   },
   {
     path: "/chadhava-cart",
     element: <ChadhavaCart />,
+  },
+  {
+    path: "/package-detail",
+    element: <PackageDetail />,
   },
   {
     path: "/vedic-science",
@@ -65,11 +106,40 @@ const routes: RouteObjectWithLayout[] = [
   },
   {
     path: "/media",
-    element: <DevotionalAudio isPaidUser={false} />,
+    element: <Library isPaidUser={false} />,
+  },
+  {
+    path: "/media/:type",
+    element: <DevotionalMedia />,
+  },
+  {
+    path: "/media/mantras",
+    element: <VedicMantra />,
+  },
+  {
+    path: "/media/kathas",
+    element: <LiveKatha />,
   },
   {
     path: "/shakti-sanyans",
     element: <ShaktiSanyas />,
+  },
+  {
+    path: "/products",
+    element: <Products />,
+  },
+  {
+    path: "/products/jap-mala",
+    element: <Products />,
+  },
+  {
+    path: "/products/detail",
+    element: <ProductDetail />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
+    layout: "blank"
   },
   {
     path: "*",

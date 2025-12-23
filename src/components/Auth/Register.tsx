@@ -4,22 +4,28 @@ import { Link, useNavigate } from "react-router-dom";
 // import { AuthContext } from "../../store/AuthContext";
 // import { toast } from "@/utils/ui/toast";
 import logo from "../../assets/logo.jpg";
+import { message } from "antd";
+import { registerUser } from "@/utils/API";
+import { useDispatch } from "react-redux";
+import { setUserConfig } from "@/store/userConfigSlice";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>({});
-  const [passwordError, setPasswordError] = useState("");
-  const [, setConfirmPassword] = useState("");
+  // const [passwordError, setPasswordError] = useState("");
+  // const [, setConfirmPassword] = useState("");
   const [isOTPVerification, setIsOTPVerification] = useState(false);
   const [inputOtp, setInputOtp] = useState<(string | number)[]>(
     new Array(4).fill("")
   );
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   // const { setAuthData } = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    // try {
+    try {
       e.preventDefault();
 
       // if (userData.confirmPassword !== userData.password) {
@@ -32,38 +38,25 @@ export default function Register() {
       setIsLoading(true);
 
       // show otp verification form after validation of data
-      setIsOTPVerification(true);
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //   const { confirmPassword, ...data } = userData;
-    //   const res: any = await register(data);
-    //   if (res && res.status == 200) {
-    //     toast("success").fire({
-    //       icon: "success",
-    //       title: "OTP sent to your email Successfully",
-    //       timer: 2000,
-    //       showConfirmButton: false,
-    //     });
-    //     setIsLoading(false);
-    //     setIsOTPVerification(true);
-    //   } else {
-    //     setIsLoading(false);
-    //     toast("danger").fire({
-    //       icon: "error",
-    //       title: res.data.error || "Server Error",
-    //       timer: 2000,
-    //       showConfirmButton: false,
-    //     });
-    //   }
-    // } catch (error: any) {
-    //   setIsLoading(false);
-    //   toast("danger").fire({
-    //     icon: "error",
-    //     title: error.response.data.error || "Server Error",
-    //     timer: 2000,
-    //     showConfirmButton: false,
-    //   });
-    // }
+      const { confirmPassword, ...data } = userData;
+      const res: any = await registerUser(data);
+      console.log("res", res);
+      if (res && res.status) {
+        message.success("OTP sent to your email Successfully");
+        setIsLoading(false);
+        setIsOTPVerification(true);
+      } else {
+        setIsLoading(false);
+        message.error(res?.error || "Server Error");
+
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      message.error(error?.response?.data?.error || "Server Error");
+
+    }
   };
 
   const handleChange = (element: HTMLInputElement, index: number) => {
@@ -93,44 +86,43 @@ export default function Register() {
   };
 
   const handleOTPSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+    try {
+      e.preventDefault();
+      setIsLoading(true);
 
-    // const enteredOtp = inputOtp.join("");
-    // if (inputOtp.some((digit) => digit === "")) {
-    //   toast("error").fire({
-    //     icon: "error",
-    //     title: "Please enter OTP",
-    //     timer: 2000,
-    //     showConfirmButton: false,
-    //   });
-    //   setIsLoading(false);
-    //   return;
-    // }
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { confirmPassword, ...data } = userData as any;
-    // const res: any = await register({ ...data, otp: enteredOtp });
+      const enteredOtp = inputOtp.join("");
+      if (inputOtp.some((digit) => digit === "")) {
+        message.error("Please enter OTP",);
+        setIsLoading(false);
+        return;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...data } = userData as any;
+      const res: any = await registerUser({ ...data, otp: enteredOtp });
 
-    // if (res && res.status == 200) {
-    //   setIsLoading(false);
-    //   setAuthData({ token: res.data.token, userdata: res.data.userData });
-    //   localStorage.setItem("token", res.data.token);
-    //   toast("success").fire({
-    //     icon: "success",
-    //     title: "Register Successful",
-    //     timer: 2000,
-    //     showConfirmButton: false,
-    //   });
-    //   navigate("/");
-    // } else {
-    //   setIsLoading(false);
-    //   toast("danger").fire({
-    //     icon: "error",
-    //     title: res.data.error || "Server Error",
-    //     timer: 2000,
-    //     showConfirmButton: false,
-    //   });
-    // }
+      if (res && res.status) {
+        setIsLoading(false);
+        // setAuthData({ token: res?.token, userdata: res?.userData });
+        const authData = {
+            token: res.token,
+            ...res.userData,
+          };
+        dispatch(setUserConfig(authData));
+        // localStorage.setItem("token", res?.token);
+
+        message.success("Register Successful");
+        navigate("/");
+      } else {
+        setIsLoading(false);
+        message.error(res.error || "Server Error",);
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      message.error(error?.response?.data?.error || "Server Error");
+    }
+     finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -200,22 +192,22 @@ export default function Register() {
                     ...userData,
                     password: (e.target as HTMLInputElement).value,
                   });
-                  if (
-                    userData.confirmPassword &&
-                    (e.target as HTMLInputElement).value !==
-                      userData.confirmPassword
-                  ) {
-                    setPasswordError("Passwords don't match");
-                  } else {
-                    setPasswordError("");
-                    setConfirmPassword("");
-                  }
+                  // if (
+                  //   userData.confirmPassword &&
+                  //   (e.target as HTMLInputElement).value !==
+                  //   userData.confirmPassword
+                  // ) {
+                  //   setPasswordError("Passwords don't match");
+                  // } else {
+                  //   setPasswordError("");
+                  //   setConfirmPassword("");
+                  // }
                 }}
                 className="w-full border rounded-md px-4 py-3 mb-6! focus:ring-2 focus:ring-green-600 outline-none"
               />
-              {passwordError && (
+              {/* {passwordError && (
                 <p className="text-red-500 text-xs mt-1">{passwordError}</p>
-              )}
+              )} */}
 
               <button className="w-full bg-green-600 hover:bg-green-700 text-white! py-3 rounded-md font-semibold cursor-pointer">
                 Create Account
