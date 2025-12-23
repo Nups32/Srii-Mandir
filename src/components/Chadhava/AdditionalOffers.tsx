@@ -43,6 +43,7 @@ export default function AdditionalOffers({ slug, cart, onAdd }: Props) {
 
   const availableOffers = chadhava?.offering?.filter((offer: any) => !cartIds.has(offer?._id))?.slice(0, 3);
 
+  console.log("availableOffers", availableOffers)  
   // if (availableOffers.length === 0) return null;
 
   return (

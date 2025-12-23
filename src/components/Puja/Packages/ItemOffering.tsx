@@ -9,12 +9,10 @@ type Props = {
 export default function OfferingItem({ offers, cart, onAdd }: Props) {
   const cartIds = new Set(Object.keys(cart));
 
-  // 🔥 Filter out already-added items
   const availableOffers = offers.filter(
     (item) => !cartIds.has(item._id)
   );
 
-  // Optional: hide section if nothing left to add
   if (availableOffers.length === 0) {
     return null;
   }

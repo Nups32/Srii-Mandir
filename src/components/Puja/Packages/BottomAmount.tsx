@@ -27,7 +27,7 @@ export default function BottomBar({
         <p className="text-sm">{packageName}</p>
       </div>
 
-      <button className="font-semibold">Continue →</button>
+      <button className="font-semibold cursor-pointer">Continue -&gt;</button>
     </div>
   );
 }

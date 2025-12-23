@@ -12,8 +12,7 @@ import { setUserConfig } from "@/store/userConfigSlice";
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>({});
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [passwordError, setPasswordError] = useState("");
+  // const [passwordError, setPasswordError] = useState("");
   // const [, setConfirmPassword] = useState("");
   const [isOTPVerification, setIsOTPVerification] = useState(false);
   const [inputOtp, setInputOtp] = useState<(string | number)[]>(
@@ -206,9 +205,9 @@ export default function Register() {
                 }}
                 className="w-full border rounded-md px-4 py-3 mb-6! focus:ring-2 focus:ring-green-600 outline-none"
               />
-              {passwordError && (
+              {/* {passwordError && (
                 <p className="text-red-500 text-xs mt-1">{passwordError}</p>
-              )}
+              )} */}
 
               <button className="w-full bg-green-600 hover:bg-green-700 text-white! py-3 rounded-md font-semibold cursor-pointer">
                 Create Account

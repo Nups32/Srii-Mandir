@@ -1,4 +1,4 @@
-import { ProductSection } from "./ProductSection";
+import { ProductSection } from "../components/Products/ProductSection";
 import { japMalas, brassIdols, rudraksha } from "../../details";
 
 export default function Products() {
@@ -21,7 +21,7 @@ export default function Products() {
           title="Jap Mala Collection"
           subtitle="For Meditation, Mantra Jaap & Spiritual Discipline"
           products={japMalas}
-          link="/jap-mala"
+          link="/products/jap-mala"
         />
 
         {/* BRASS IDOLS */}
@@ -29,7 +29,7 @@ export default function Products() {
           title="Brass God Idols"
           subtitle="Handcrafted Idols for Home & Temple Worship"
           products={brassIdols}
-          link="/brass-idols"
+          link="/products/brass-idols"
         />
 
         {/* RUDRAKSHA */}
@@ -37,7 +37,7 @@ export default function Products() {
           title="Rudraksha Collection"
           subtitle="Authentic & Spiritually Energized Rudraksha Beads"
           products={rudraksha}
-          link="/rudraksha"
+          link="/products/rudraksha"
         />
       </div>
     </section>

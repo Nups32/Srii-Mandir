@@ -1,3 +1,5 @@
+import type { RouteObjectWithLayout } from "@/router";
+import { lazy } from "react";
 import ChadhavaOffering from "@/components/ChadhavaOffering";
 import Login from "@/components/Auth/Login";
 import Library from "@/components/Media/Media";
@@ -9,8 +11,6 @@ import PageNotFound from "@/pages/PagenotFound";
 import Puja from "@/pages/Puja";
 import ShaktiSanyas from "@/pages/ShaktiSanyas";
 import VedicScience from "@/pages/VedicScience";
-import type { RouteObjectWithLayout } from "@/router";
-import { lazy } from "react";
 import ForgetPassword from "@/components/Auth/ForgetPassword";
 import ChadhavaCart from "@/components/Chadhava/ChadhavaCart";
 import PackageDetail from "@/components/Puja/Packages/PackageDetail";
@@ -22,6 +22,8 @@ import PackageForm from "@/components/Puja/Packages/PackageForm";
 import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBooking";
 import Products from "@/pages/Products";
 import Profile from "@/components/Profile/Profile";
+import ProductDetail from "@/components/Products/ProductDetail";
+import Logout from "@/components/Logout";
 // import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
 
@@ -125,6 +127,19 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/products",
     element: <Products />,
+  },
+  {
+    path: "/products/jap-mala",
+    element: <Products />,
+  },
+  {
+    path: "/products/detail",
+    element: <ProductDetail />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
+    layout: "blank"
   },
   {
     path: "*",

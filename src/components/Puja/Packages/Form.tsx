@@ -29,7 +29,7 @@ export default function PujaDetailsForm({ data }: any) {
   const [transactionId, setTransactionId] = useState<string>("");
 
   const participantCount = Number(data?.package?.person) || 1;
-  console.log(data);
+  // console.log("Card data", data);
 
   const [members, setMembers] = useState<string[]>(
     () => Array(participantCount).fill("")
@@ -52,6 +52,8 @@ export default function PujaDetailsForm({ data }: any) {
 
   const [gotra, setGotra] = useState("");
   const [unknownGotra, setUnknownGotra] = useState(false);
+  const [aashirwad, setAashirwad] = useState<"yes" | "no" | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [showGotraList, setShowGotraList] = useState(false);
   const gotraRef = useRef<HTMLDivElement | null>(null);
 
@@ -70,8 +72,6 @@ export default function PujaDetailsForm({ data }: any) {
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const [aashirwad, setAashirwad] = useState<"yes" | "no" | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
 
   const [address, setAddress] = useState<Address>({
@@ -107,8 +107,6 @@ export default function PujaDetailsForm({ data }: any) {
     e.preventDefault();
     setShowConfirmModal(true);
   };
-
-  /* ---------------- UI ---------------- */
 
   return (
     <form
@@ -269,6 +267,7 @@ export default function PujaDetailsForm({ data }: any) {
                   )
                 }
                 className="border rounded-lg px-4 py-2"
+                required
               />
             ))}
           </div>

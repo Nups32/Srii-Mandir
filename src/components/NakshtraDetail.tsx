@@ -125,12 +125,12 @@ export default function NakshatraFinder() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       {" "}
-                      Wife's/Husband's Name{" "}
+                      Spouse's Name{" "}
                     </label>
                     <input
                       type="text"
                       name="partnerName"
-                      placeholder="Wife's / Husband's Name (if applicable)"
+                      placeholder="Spouse's Name (if applicable)"
                       className="vedic-input"
                     />
                   </div>
