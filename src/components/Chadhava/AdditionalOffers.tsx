@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { chadhavaData } from "../../../details";
 import type { CartItem } from "./CartContext";
 import { getChadhavaBySlug } from "@/utils/API";
 import { message } from "antd";
@@ -58,7 +57,7 @@ export default function AdditionalOffers({ slug, cart, onAdd }: Props) {
             {/* Image only if available */}
             {offer?.image && (
               <img
-                src={offer?.image}
+                src={`${import.meta.env.VITE_APP_Image_URL}/chadhava/${offer?.image}`}
                 alt={offer?.name}
                 className="w-20 h-20 rounded-lg object-cover"
               />

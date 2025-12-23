@@ -564,7 +564,7 @@ const PujaDetail = () => {
           <Benefits benifits={pooja?.benefitText} />
           <Process />
           <Temple temple={pooja?.templeDetails} />
-          <Packages poojaId={pooja?._id} />
+          <Packages pooja={pooja} />
 
           {/* {activeTab === "benefits" && (
             <div className="mb-8">

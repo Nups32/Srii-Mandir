@@ -28,7 +28,7 @@ export function PackageProvider({ children }: { children: React.ReactNode }) {
   const addItem = (offer: Offer) => {
     setCart((prev) => ({
       ...prev,
-      [offer.id]: { ...offer, qty: 1 },
+      [offer._id]: { ...offer, qty: 1 },
     }));
   };
 

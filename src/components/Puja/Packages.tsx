@@ -7,7 +7,7 @@ import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../Puja/Packages/PackageContext";
 
-export default function Packages({ poojaId }: any) {
+export default function Packages({ pooja }: any) {
   const [, setLoading] = useState(true);
   const [packages, setPackage] = useState<any>();
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function Packages({ poojaId }: any) {
               <button
                 onClick={() => {
                   setSelectedPackage(pkg);
-                  navigate("/package-detail", {state: { poojaId, package: pkg }});
+                  navigate("/package-detail", {state: { pooja, package: pkg }});
                 }}
                 className="mt-auto bg-orange-600 text-white! font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-orange-700 transition-colors duration-300 cursor-pointer"
               >

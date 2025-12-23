@@ -12,7 +12,6 @@ import {
   Switch,
   Rate,
   Badge,
-  Select,
 } from "antd";
 import { AiFillDelete } from "react-icons/ai";
 import { RiAddBoxFill } from "react-icons/ri";
@@ -45,8 +44,8 @@ export const PujaReviewTable = () => {
   const [searchText, setSearchText] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [pujaFilter, setPujaFilter] = useState<string>("all");
-  const [uniquePujas, setUniquePujas] = useState<{_id: string, name: string}[]>([]);
+  // const [pujaFilter, setPujaFilter] = useState<string>("all");
+  // const [uniquePujas, setUniquePujas] = useState<{_id: string, name: string}[]>([]);
   const navigate = useNavigate();
 
   const fetchPujaReviews = async () => {
@@ -56,19 +55,19 @@ export const PujaReviewTable = () => {
       if (response.data.status) {
         setDatasource(response.data.data);
         
-        // Extract unique pujas for filter
-        const pujas = response.data.data
-          .filter((item: PujaReview) => item.pujaId)
-          .map((item: PujaReview) => ({
-            _id: item.pujaId._id,
-            name: item.pujaId.name
-          }));
+        // // Extract unique pujas for filter
+        // const pujas = response.data.data
+        //   .filter((item: PujaReview) => item.pujaId)
+        //   .map((item: PujaReview) => ({
+        //     _id: item.pujaId._id,
+        //     name: item.pujaId.name
+        //   }));
         
-        // Remove duplicates
-        const unique: any = Array.from(
-          new Map(pujas.map((p: any) => [p._id, p])).values()
-        );
-        setUniquePujas(unique);
+        // // Remove duplicates
+        // const unique: any = Array.from(
+        //   new Map(pujas.map((p: any) => [p._id, p])).values()
+        // );
+        // setUniquePujas(unique);
       }
     } catch (error) {
       message.error("Network error. Please try again.");
@@ -106,10 +105,10 @@ export const PujaReviewTable = () => {
       filtered = filtered.filter(item => item.isActive === statusValue);
     }
 
-    // Puja filter
-    if (pujaFilter !== "all") {
-      filtered = filtered.filter(item => item.pujaId._id === pujaFilter);
-    }
+    // // Puja filter
+    // if (pujaFilter !== "all") {
+    //   filtered = filtered.filter(item => item.pujaId._id === pujaFilter);
+    // }
 
     return filtered;
   };

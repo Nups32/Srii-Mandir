@@ -540,7 +540,7 @@ export const getAllBookChadhavas = (params?: {
 
 export const createRazorpayOrder = async (orderData: any) => {
   try {
-    const response = await API.post(`/create-order`, orderData);
+    const response = await API.post(`/frontend/create-order`, orderData);
     return response.data;
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
@@ -548,16 +548,47 @@ export const createRazorpayOrder = async (orderData: any) => {
   }
 };
 
-export const verifyPayment = async (paymentData: {
+export const verifyBookChadhavaPayment = async (paymentData: {
   razorpay_payment_id: any;
   razorpay_order_id: any;
   razorpay_signature: any;
 }) => {
   try {
-    const response = await API.post(`/verify-payment`, paymentData);
+    const response = await API.post(`/frontend/verify-payment/book-chadhava`, paymentData);
     return response.data;
   } catch (error) {
     console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+export const verifyPoojaPayment = async (paymentData: {
+  razorpay_payment_id: any;
+  razorpay_order_id: any;
+  razorpay_signature: any;
+}) => {
+  try {
+    const response = await API.post(`/frontend/verify-payment/book-puja`, paymentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const response = await API.get("frontend/get-profile");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const updateProfile = async (data: any) => {
+  try {
+    const response = await API.post("frontend/update-profile", data);
+    return response;
+  } catch (error) {
     throw error;
   }
 };

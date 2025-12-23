@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     Col,
     Row,
@@ -9,35 +9,35 @@ import {
     Spin,
     Switch,
     Rate,
-    Select,
+    // Select,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import { createPujaReview, getAllPooja } from "@/utils/API";
+import { createPujaReview } from "@/utils/API";
 
 const { TextArea } = Input;
-const { Option } = Select;
+// const { Option } = Select;
 
-interface User {
-    _id: string;
-    name: string;
-    email: string;
-}
+// interface User {
+//     _id: string;
+//     name: string;
+//     email: string;
+// }
 
-interface Puja {
-    _id: string;
-    name: string;
-}
+// interface Puja {
+//     _id: string;
+//     name: string;
+// }
 
 const AddPujaReviewForm: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [fetching, setFetching] = useState<boolean>(false);
+    // const [fetching, setFetching] = useState<boolean>(false);
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
     // Form states
-    const [userId, setUserId] = useState<string>("");
-    const [pujaId, setPujaId] = useState<string>("");
+    // const [userId, setUserId] = useState<string>("");
+    // const [pujaId, setPujaId] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [comment, setComment] = useState<string>("");
     const [rating, setRating] = useState<number>(5);
@@ -141,18 +141,18 @@ const AddPujaReviewForm: React.FC = () => {
         }
     };
 
-    const filterOption = (input: string, option: any) => {
-        return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    };
+    // const filterOption = (input: string, option: any) => {
+    //     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    // };
 
-    if (fetching) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <Spin size="large" />
-                <span className="ml-4">Loading data...</span>
-            </div>
-        );
-    }
+    // if (fetching) {
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <Spin size="large" />
+    //             <span className="ml-4">Loading data...</span>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="">

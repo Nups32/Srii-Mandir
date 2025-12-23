@@ -3,11 +3,12 @@ import AdditionalOffers from "./AdditionalOffers";
 import BottomBar from "./BottomBar";
 import { useCart } from "./CartContext";
 import { useEffect, useState } from "react";
-import { createRazorpayOrder, verifyPayment } from "@/utils/API";
+import { createRazorpayOrder, verifyBookChadhavaPayment } from "@/utils/API";
 import { message } from "antd";
 import { useLocation } from "react-router-dom";
 import type { IRootState } from "@/store";
 import { useSelector } from "react-redux";
+import ThankYouModal from "../ThankYouModal";
 
 export default function ChadhavaCart() {
   const { cart, addOrUpdateItem } = useCart();
@@ -17,7 +18,7 @@ export default function ChadhavaCart() {
   const chadhavaId: string = location.state?.chadhavaId;
   const chadhavaSlug: string = location.state?.slug;
   const authData = useSelector((state: IRootState) => state.userConfig);
-  console.log("Cart contents:", cart);
+  // console.log("Cart contents:", cart);
 
   const totalCount = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
   const totalAmount = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
@@ -80,7 +81,7 @@ export default function ChadhavaCart() {
         amount: amount.toString(),
         currency: currency,
         name: "Srii Mandir",
-        description: "Test Transaction",
+        description: "Offering Chadhava",
         order_id: order_id,
         handler: async function (response: any) {
           const paymentData = {
@@ -100,53 +101,27 @@ export default function ChadhavaCart() {
           };
 
           try {
-            const verifyResult = await verifyPayment(paymentData);
+            const verifyResult = await verifyBookChadhavaPayment(paymentData);
             if (verifyResult === "OK") {
               setTransactionId(response.razorpay_payment_id);
               try {
-                // refreshAuthData();
-                // toast("success").fire({
-                //   icon: "success",
-                //   title: "Payment Successfull",
-                //   timer: 2000,
-                //   showConfirmButton: false,
-                // });
                 message.success("Payment Successful");
                 setIsModalVisible(true);
               } catch (error: any) {
-                // toast("danger").fire({
-                //   icon: "error",
-                //   title:
-                //     "An error occurred while processing your payment. Please try again.",
-                //   timer: 2000,
-                //   showConfirmButton: false,
-                // });
                 message.error("An error occurred while processing your payment. Please try again.");
               }
             } else {
-              // toast("danger").fire({
-              //   icon: "error",
-              //   title: "Payment verification failed. Please try again.",
-              //   timer: 2000,
-              //   showConfirmButton: false,
-              // });
               message.error("Payment verification failed. Please try again.");
             }
           } catch (error) {
-            // toast("danger").fire({
-            //   icon: "error",
-            //   title: "Error verifying payment. Please try again.",
-            //   timer: 2000,
-            //   showConfirmButton: false,
-            // });
             message.error("Error verifying payment. Please try again.");
           }
         },
-        // prefill: {
-        //   name: `${authData?.userdata?.firstName} ${authData?.userdata?.lastName}`,
-        //   email: authData?.userdata?.email,
-        //   contact: authData?.userdata?.phone,
-        // },
+        prefill: {
+          name: `${authData?.username}`,
+          email: authData?.email,
+          contact: authData?.mobile,
+        },
         theme: {
           color: "#29c261",
         },
@@ -184,6 +159,8 @@ export default function ChadhavaCart() {
         })} /> */}
       </div>
       {totalCount > 0 && <BottomBar handlePayment={handlePayment} count={totalCount} amount={totalAmount} />}
+      
+      <ThankYouModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} transactionId={transactionId} />
     </section>
   );
 }

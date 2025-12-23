@@ -1,5 +1,5 @@
 import type { IRootState } from "@/store";
-import { createRazorpayOrder } from "@/utils/API";
+import { createRazorpayOrder, verifyPoojaPayment } from "@/utils/API";
 import { message } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -16,7 +16,7 @@ type Address = {
 type Props = {
   open: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (transactionId: any) => void;
   data: {
     billData: any;
     members: string[];
@@ -43,15 +43,15 @@ export default function ConfirmDetailsModal({
     callingNumber,
     address,
   } = data;
-  const offringItems = Object.values(billData?.cartDate).map((item: any) => ({
-    _id: item._id || item.id,
+  const offeringItems = Object.values(billData?.cartDate).map((item: any) => ({
+    // _id: item._id || item.id,
+    _id: item._id,
     qty: item.qty,
     price: item.price,
     name: item.name,
   }));
-  const totalAmount = ((offringItems.reduce((sum: number, item: any) => sum + item.qty * item.price, 0) || 0) + (billData?.package.price || 0));
+  const totalAmount = ((offeringItems.reduce((sum: number, item: any) => sum + item.qty * item.price, 0) || 0) + (billData?.package.price || 0));
   const [transactionId, setTransactionId] = useState<string>("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const authData = useSelector((state: IRootState) => state.userConfig);
 
   // const formData = {
@@ -70,7 +70,7 @@ export default function ConfirmDetailsModal({
   //     person: paymentData?.package?.person,
   //     price: paymentData?.package?.price,
   //   },
-  //   offring: offringItems,
+  //   offring: offeringItems,
   //   amount: totalAmount,
   //   formData: {
   //     whatsappNumber: whatsapp,
@@ -135,13 +135,13 @@ export default function ConfirmDetailsModal({
       mobileNo: authData?.mobile,
       orderItem: {
         poojaId: billData?.poojaId,
-        package: {
-          packageId: billData?.package?.packageId,
+        pujaPackage: {
+          packageId: billData?.package?._id,
           person: billData?.package?.person,
           price: billData?.package?.price,
         },
-        offring: offringItems,
-        formData: {
+        offering: offeringItems,
+        pujaParticipateMemberDetail: {
           whatsappNumber: whatsapp,
           callingNumber: callingNumber ? callingNumber : whatsapp,
           members: members,
@@ -159,7 +159,7 @@ export default function ConfirmDetailsModal({
         amount: amount.toString(),
         currency: currency,
         name: "Srii Mandir",
-        description: "Test Transaction",
+        description: "Puja Booking",
         order_id: order_id,
         handler: async function (response: any) {
           const paymentData = {
@@ -169,13 +169,13 @@ export default function ConfirmDetailsModal({
             amount,
             cartData: {
               poojaId: billData?.poojaId,
-              package: {
-                packageId: billData?.package?.packageId,
+              pujaPackage: {
+                packageId: billData?.package?._id,
                 person: billData?.package?.person,
                 price: billData?.package?.price,
               },
-              offring: offringItems,
-              formData: {
+              offering: offeringItems,
+              pujaParticipateMemberDetail: {
                 whatsappNumber: whatsapp,
                 callingNumber: callingNumber ? callingNumber : whatsapp,
                 members: members,
@@ -186,53 +186,28 @@ export default function ConfirmDetailsModal({
           };
 
           try {
-            const verifyResult = await verifyPayment(paymentData);
+            const verifyResult = await verifyPoojaPayment(paymentData);
             if (verifyResult === "OK") {
               setTransactionId(response.razorpay_payment_id);
               try {
-                // refreshAuthData();
-                // toast("success").fire({
-                //   icon: "success",
-                //   title: "Payment Successfull",
-                //   timer: 2000,
-                //   showConfirmButton: false,
-                // });
                 message.success("Payment Successful");
-                setIsModalVisible(true);
+                // setIsModalVisible(true);
+                onConfirm(response.razorpay_payment_id)
               } catch (error: any) {
-                // toast("danger").fire({
-                //   icon: "error",
-                //   title:
-                //     "An error occurred while processing your payment. Please try again.",
-                //   timer: 2000,
-                //   showConfirmButton: false,
-                // });
                 message.error("An error occurred while processing your payment. Please try again.");
               }
             } else {
-              // toast("danger").fire({
-              //   icon: "error",
-              //   title: "Payment verification failed. Please try again.",
-              //   timer: 2000,
-              //   showConfirmButton: false,
-              // });
               message.error("Payment verification failed. Please try again.");
             }
           } catch (error) {
-            // toast("danger").fire({
-            //   icon: "error",
-            //   title: "Error verifying payment. Please try again.",
-            //   timer: 2000,
-            //   showConfirmButton: false,
-            // });
             message.error("Error verifying payment. Please try again.");
           }
         },
-        // prefill: {
-        //   name: `${authData?.userdata?.firstName} ${authData?.userdata?.lastName}`,
-        //   email: authData?.userdata?.email,
-        //   contact: authData?.userdata?.phone,
-        // },
+        prefill: {
+          name: `${authData?.username}`  || "",
+          email: authData?.email,
+          contact: authData?.mobile || "",
+        },
         theme: {
           color: "#29c261",
         },
@@ -319,7 +294,7 @@ export default function ConfirmDetailsModal({
           </button>
 
           <button
-            onClick={onConfirm}
+            onClick={handlePayment}
             className="flex-1 bg-green-600 text-white! rounded-lg py-2 font-medium hover:bg-green-700  cursor-pointer"
           >
             Submit & Pay

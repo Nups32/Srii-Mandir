@@ -11,7 +11,7 @@ export default function OfferingItem({ offers, cart, onAdd }: Props) {
 
   // 🔥 Filter out already-added items
   const availableOffers = offers.filter(
-    (item) => !cartIds.has(item.id)
+    (item) => !cartIds.has(item._id)
   );
 
   // Optional: hide section if nothing left to add
@@ -28,12 +28,12 @@ export default function OfferingItem({ offers, cart, onAdd }: Props) {
       <div className="space-y-4">
         {availableOffers.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             className="flex items-center gap-4 border rounded-lg p-4 hover:shadow-sm transition"
           >
             {/* IMAGE */}
             <img
-              src={item.image}
+              src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${item.image}`}
               alt={item.name}
               className="w-20 h-20 rounded-lg object-cover"
             />

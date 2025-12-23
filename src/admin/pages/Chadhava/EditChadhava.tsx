@@ -119,9 +119,33 @@ const EditChadhavaForm: React.FC = () => {
                     setDetails(data.details?.length > 0 ? data.details : [{ question: "", answer: "" }]);
 
                     // Set offerings with existing images
+                    // const offeringsWithFiles = data.offering?.map(offering => ({
+                    //     ...offering,
+                    //     fileList: [],
+                    //     existingImage: offering.image || ""
+                    // })) || [{
+                    //     name: "",
+                    //     description: "",
+                    //     image: "",
+                    //     price: 0,
+                    //     isSpecialCombo: false,
+                    //     isPrasadForHome: false,
+                    //     fileList: [],
+                    //     existingImage: ""
+                    // }];
                     const offeringsWithFiles = data.offering?.map(offering => ({
                         ...offering,
-                        fileList: [],
+                        ...(offering.image && {
+                            fileList: [{
+                                uid: offering.image,
+                                name: offering.image,
+                                status: 'done' as const,
+                                // url: data.templeDetails.image,
+                                // response: data.templeDetails.image,
+                                url: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
+                                response: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
+                            }]
+                        } || { fileList: [] }),
                         existingImage: offering.image || ""
                     })) || [{
                         name: "",
@@ -194,18 +218,26 @@ const EditChadhavaForm: React.FC = () => {
             }));
             formData.append("offering", JSON.stringify(offeringsData));
 
-            // Add new offering images
-            // offerings.forEach((offering, index) => {
+            // // Add new offering images
+            // // offerings.forEach((offering, index) => {
+            // //     if (offering.fileList[0]?.originFileObj) {
+            // //         formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
+            // //     }
+            // // });
+            // offerings.forEach(offering => {
             //     if (offering.fileList[0]?.originFileObj) {
-            //         formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
+            //         // formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
+            //         formData.append("offeringImages", offering.fileList[0].originFileObj);
             //     }
             // });
-            offerings.forEach(offering => {
+
+            offerings.forEach((offering, index) => {
                 if (offering.fileList[0]?.originFileObj) {
-                    // formData.append(`offeringImages[${index}]`, offering.fileList[0].originFileObj as RcFile);
-                    formData.append("offeringImages", offering.fileList[0].originFileObj);
+                    formData.append("offeringImages", offering.fileList[0].originFileObj as RcFile);
+                    formData.append("offeringImageIndexes", index.toString());
                 }
             });
+
 
 
             // Add existing images (those not removed)
@@ -234,7 +266,7 @@ const EditChadhavaForm: React.FC = () => {
             if (res.data.status) {
                 message.success("Chadhava updated successfully");
                 navigate("/admin/chadhava");
-            }else{
+            } else {
                 message.error("server error")
             }
         } catch (error) {
@@ -600,16 +632,16 @@ const EditChadhavaForm: React.FC = () => {
                                                 <Upload
                                                     name="offeringImage"
                                                     listType="picture-card"
-                                                    // fileList={offering.fileList}
-                                                    fileList={[{
-                                                        uid: 'temple-image',
-                                                        name: 'temple-image.jpg',
-                                                        status: 'done' as const,
-                                                        // url: data.templeDetails.image,
-                                                        // response: data.templeDetails.image,
-                                                        url: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
-                                                        response: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
-                                                    }]}
+                                                    fileList={offering.fileList}
+                                                    // fileList={[{
+                                                    //     uid: 'temple-image',
+                                                    //     name: 'temple-image.jpg',
+                                                    //     status: 'done' as const,
+                                                    //     // url: data.templeDetails.image,
+                                                    //     // response: data.templeDetails.image,
+                                                    //     url: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
+                                                    //     response: `${import.meta.env.VITE_APP_Image_URL}/chadhava/${offering.image}`,
+                                                    // }]}
                                                     beforeUpload={() => false}
                                                     onChange={(info) => handleOfferingImageUpload(index, info)}
                                                     onRemove={() => {

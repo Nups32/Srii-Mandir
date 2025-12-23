@@ -9,29 +9,28 @@ import {
     Spin,
     Switch,
     Rate,
-    Select,
+    // Select,
 } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import {
     getPujaReviewById,
     updatePujaReview,
-    getAllPooja
 } from "@/utils/API";
 
 const { TextArea } = Input;
-const { Option } = Select;
+// const { Option } = Select;
 
-interface User {
-    _id: string;
-    name: string;
-    email: string;
-}
+// interface User {
+//     _id: string;
+//     name: string;
+//     email: string;
+// }
 
-interface Puja {
-    _id: string;
-    name: string;
-}
+// interface Puja {
+//     _id: string;
+//     name: string;
+// }
 
 interface PujaReviewData {
     _id: string;
@@ -182,9 +181,9 @@ const EditPujaReviewForm: React.FC = () => {
         }
     };
 
-    const filterOption = (input: string, option: any) => {
-        return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    };
+    // const filterOption = (input: string, option: any) => {
+    //     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    // };
 
     if (fetching) {
         return (

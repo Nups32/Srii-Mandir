@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ConfirmDetailsModal from "./ConfirmDetailsModal";
+import ThankYouModal from "@/components/ThankYouModal";
 
 type Address = {
   pincode: string;
@@ -25,8 +26,10 @@ export default function PujaDetailsForm({ data }: any) {
   const [whatsapp, setWhatsapp] = useState("+91");
   const [alternateCalling, setAlternateCalling] = useState(false);
   const [callingNumber, setCallingNumber] = useState("");
+  const [transactionId, setTransactionId] = useState<string>("");
 
   const participantCount = Number(data?.package?.person) || 1;
+  console.log(data);
 
   const [members, setMembers] = useState<string[]>(
     () => Array(participantCount).fill("")
@@ -68,6 +71,8 @@ export default function PujaDetailsForm({ data }: any) {
   }, []);
 
   const [aashirwad, setAashirwad] = useState<"yes" | "no" | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const [address, setAddress] = useState<Address>({
     pincode: "",
@@ -238,11 +243,10 @@ export default function PujaDetailsForm({ data }: any) {
               onClick={() =>
                 setAashirwad(v as "yes" | "no")
               }
-              className={`px-4 py-2 rounded-lg border ${
-                aashirwad === v
+              className={`px-4 py-2 rounded-lg border ${aashirwad === v
                   ? "bg-green-700 text-white"
                   : ""
-              }`}
+                }`}
             >
               {v === "yes" ? "Yes" : "No"}
             </button>
@@ -272,9 +276,8 @@ export default function PujaDetailsForm({ data }: any) {
       <button
         type="submit"
         disabled={!aashirwad}
-        className={`w-full py-3 rounded-lg font-semibold text-white ${
-          aashirwad ? "bg-green-600" : "bg-gray-300"
-        }`}
+        className={`w-full py-3 rounded-lg font-semibold text-white ${aashirwad ? "bg-green-600" : "bg-gray-300"
+          }`}
       >
         Proceed to book
       </button>
@@ -282,7 +285,7 @@ export default function PujaDetailsForm({ data }: any) {
       <ConfirmDetailsModal
         open={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
-        onConfirm={() => setShowConfirmModal(false)}
+        onConfirm={(transactionId) => {console.log("transactionId", transactionId); setTransactionId(transactionId); setIsModalVisible(true); setShowConfirmModal(false)}}
         data={{
           billData: data,
           whatsapp,
@@ -296,6 +299,46 @@ export default function PujaDetailsForm({ data }: any) {
             aashirwad === "yes" ? address : null,
         }}
       />
+
+      <ThankYouModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} transactionId={transactionId} />
+      {/* <Modal
+        open={isModalVisible}
+        footer={null}
+        onCancel={() => setIsModalVisible(false)}
+        centered
+      >
+        <div className="text-center space-y-3">
+          <img
+            src="/icons/success.png"
+            alt="success"
+            className="mx-auto w-16"
+          />
+
+          <h2 className="text-xl font-semibold text-green-600">
+            Pooja Booked Successfully 🙏
+          </h2>
+
+          <p className="text-gray-600">
+            Your pooja has been successfully booked. Our priests will perform the pooja
+            at the selected temple and time.
+          </p>
+
+          <div className="bg-gray-100 p-3 rounded">
+            <p className="text-sm text-gray-700">
+              <strong>Transaction ID:</strong> {transactionId}
+            </p>
+          </div>
+
+          <Button
+            type="primary"
+            className="w-full"
+            onClick={() => setIsModalVisible(false)}
+          >
+            View Booking Details
+          </Button>
+        </div>
+      </Modal> */}
+
     </form>
   );
 }

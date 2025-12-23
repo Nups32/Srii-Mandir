@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import OfferingItem from "./ItemOffering";
 import BottomBar from "./BottomAmount";
-import { packages } from "../../../../details";
 import SelectedPackage from "./SelectedPackage";
 import { useCart } from "@/components/Puja/Packages/PackageContext";
 import { useLocation } from "react-router-dom";
@@ -17,10 +16,14 @@ export default function PackageDetail() {
   } = useCart();
 
   const items = Object.values(cart);
+  // const [offerings, setOfferings] = useState([]);
   useEffect(() => {
     if(!selectedPackage){
       setSelectedPackage(location.state.package)
     }
+    // // if(offerings.length < 0){
+    //   setOfferings(location.state.pooja.offering)
+    // // }
   }, [location]);
 
   const totalAmount = useMemo(() => {
@@ -41,7 +44,6 @@ export default function PackageDetail() {
     }
     return selectedPackage ? selectedPackage.title : "";
   }, [items, selectedPackage]);
-
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4">
@@ -54,7 +56,7 @@ export default function PackageDetail() {
           {/* RIGHT */}
           <div className="">
             <OfferingItem
-              offers={packages.offering}
+              offers={location.state.pooja.offering}
               cart={cart}
               onAdd={addItem}
             />
@@ -66,7 +68,7 @@ export default function PackageDetail() {
           visible={!!selectedPackage || items.length > 0}
           total={totalAmount}
           packageName={bottomLabel}
-          data={{package: location.state.package, poojaId: location.state.poojaId, cartDate: cart}}
+          data={{package: location.state.package, pooja: location.state.pooja, cartDate: cart}}
         />
       </div>
     </div>

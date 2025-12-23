@@ -22,7 +22,7 @@ export default function SelectedPackage() {
         : // <p className="text-sm text-gray-500">No offerings selected</p>
           items.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="flex justify-between items-center border border-gray-300 rounded-lg p-4"
             >
               <div>
@@ -34,7 +34,7 @@ export default function SelectedPackage() {
 
               <div className="flex items-center bg-white border rounded-lg shadow-sm overflow-hidden">
                 <button
-                  onClick={() => updateQty(item.id, -1)}
+                  onClick={() => updateQty(item._id, -1)}
                   className="w-7 h-7 flex items-center justify-center text-lg font-medium text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition disabled:opacity-40 cursor-pointer"
                 >
                   -
@@ -45,7 +45,7 @@ export default function SelectedPackage() {
                 </span>
 
                 <button
-                  onClick={() => updateQty(item.id, 1)}
+                  onClick={() => updateQty(item._id, 1)}
                   className="w-7 h-7 flex items-center justify-center text-lg font-medium text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer"
                 >
                   +
