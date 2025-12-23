@@ -6,8 +6,11 @@ import AudioCard from "@/components/Media/AudioCard";
 import { message } from "antd";
 import { useParams } from "react-router-dom";
 import { getYouTubeEmbedUrl } from "@/utils/Helper";
+import { useSelector } from "react-redux";
+import type { IRootState } from "@/store";
 
 export default function DevotionalSongs() {
+  const authData = useSelector((state: IRootState) => state.userConfig);
   // const [songs, setSongs] = useState<any[]>([]);
 
   // useEffect(() => {
@@ -81,8 +84,8 @@ export default function DevotionalSongs() {
                     song.file
                   }`}
                   free
-                  premium={false}
-                  isPaidUser={false}
+                  premium={song?.isPaid}
+                  isPaidUser={authData?.isPaid}
                   contentType="song"
                 />
               ) : (

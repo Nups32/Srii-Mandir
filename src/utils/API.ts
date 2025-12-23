@@ -593,3 +593,55 @@ export const updateProfile = async (data: any) => {
     throw error;
   }
 };
+
+// BookPuja API Functions
+export const getAllBookPujas = (params?: {
+  pujaId?: string;
+  paymentStatus?: string;
+  userId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/backend/book-pooja`, { params });
+};
+
+export const getUserBookPujas = (params?: {
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/frontend/booked-pooja`, { params });
+};
+
+export const exportBookPujas = (format: 'excel' | 'pdf', filters?: {
+  pujaId?: string;
+  paymentStatus?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+}) => {
+  return API.get(`/backend/book-pooja/export`, {
+    params: { format, ...filters },
+    responseType: 'blob' // Important for file downloads
+  });
+};
+
+export const getBookedChadhava = async () => {
+  try {
+    const response = await API.get("frontend/book-chadhava");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getBookedPuja = async () => {
+  try {
+    const response = await API.get("frontend/book-puja");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

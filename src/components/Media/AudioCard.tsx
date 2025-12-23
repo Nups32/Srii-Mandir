@@ -19,8 +19,7 @@ export default function AudioCard({
 }: AudioCardProps) {
   const isVedicMantra = contentType === "vedicMantra";
 
-  const canDownload =
-    free || (!isVedicMantra && premium) || (premium && isPaidUser);
+  const canDownload = free || (!isVedicMantra && premium) || (premium && isPaidUser);
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
@@ -42,8 +41,8 @@ export default function AudioCard({
 
       <audio
         controls
-        controlsList={!isPaidUser ? "nodownload" : undefined}
-        onContextMenu={isPaidUser ? (e) => e.preventDefault() : undefined}
+        controlsList={premium && !isPaidUser ? "nodownload" : undefined}
+        onContextMenu={premium && !isPaidUser ? undefined : (e) => e.preventDefault()}
         className="w-full mb-4"
       >
         <source src={audio} type="audio/mpeg" />

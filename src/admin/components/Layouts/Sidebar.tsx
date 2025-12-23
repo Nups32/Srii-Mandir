@@ -161,6 +161,12 @@ const Sidebar = () => {
         },
         {
           icon: <PackageOpen />,
+          name: "Book Pooja",
+          label: t("Book Pooja"),
+          link: "/admin/book-pooja",
+        },
+        {
+          icon: <PackageOpen />,
           name: "Product",
           label: t("Manage Product"),
           link: "/admin/product",
