@@ -128,6 +128,7 @@ export default function PujaDetailsForm({ data }: any) {
           type="tel"
           value={whatsapp}
           onChange={(e) => setWhatsapp(e.target.value)}
+          required
           className="w-full border rounded-lg px-4 py-2 bg-gray-50"
         />
 
@@ -196,6 +197,7 @@ export default function PujaDetailsForm({ data }: any) {
           onChange={(e) => setGotra(e.target.value)}
           placeholder="Enter your Gotra"
           className="w-full border rounded-lg px-4 py-2"
+          required
         />
 
         {showGotraList && !unknownGotra && (

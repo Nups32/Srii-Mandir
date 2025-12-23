@@ -12,6 +12,7 @@ import { setUserConfig } from "@/store/userConfigSlice";
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [passwordError, setPasswordError] = useState("");
   // const [, setConfirmPassword] = useState("");
   const [isOTPVerification, setIsOTPVerification] = useState(false);

@@ -35,12 +35,6 @@ export default function LoginPage() {
       .then((res: any) => {
         // console.log(res);
         if (res.status === 200) {
-          // toast("success").fire({
-          //   icon: "success",
-          //   title: "Login Successful",
-          //   timer: 2000,
-          //   showConfirmButton: false,
-          // });
           message.success("Login Successful");
           // setAuthData({
           //   token: res.data.token,

@@ -403,6 +403,7 @@ export const deleteContact = async (id: any) => {
 export const getUserData = async (data: any) => {
   try {
     const response = await API.get("/backend/users/get", { params: data });
+    console.log("res of getuserdata", response)
     return response;
   } catch (error) {
     throw error;

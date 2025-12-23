@@ -171,7 +171,6 @@ export const reviews = [
   },
 ];
 
-
 export const data = [
   {
     _id: "6942aaa57f01f307476e1e43",
@@ -240,16 +239,18 @@ export const chadhavaData = {
   title: "Shree Ganesh Chadhava",
   description: "gkegkegoewr",
   name: "Ganesh Chadhava",
-  about: "A sacred offering dedicated to Lord Ganesh for prosperity and wisdom.",
+  about:
+    "A sacred offering dedicated to Lord Ganesh for prosperity and wisdom.",
   details: [
     {
       question: "What is Chadhava?",
-      answer: "Chadhava is a traditional offering made to the deity as a form of devotion."
+      answer:
+        "Chadhava is a traditional offering made to the deity as a form of devotion.",
     },
     {
       question: "When is it performed?",
-      answer: "It can be performed on Ganesh Chaturthi or any auspicious day."
-    }
+      answer: "It can be performed on Ganesh Chaturthi or any auspicious day.",
+    },
   ],
   offering: [
     {
@@ -259,7 +260,7 @@ export const chadhavaData = {
       // "image": "temple.jpg",
       price: 251,
       isSpecialCombo: false,
-      isPrasadForHome: true
+      isPrasadForHome: true,
     },
     {
       _id: "2",
@@ -268,7 +269,7 @@ export const chadhavaData = {
       image: "temple.jpg",
       price: 751,
       isSpecialCombo: true,
-      isPrasadForHome: false
+      isPrasadForHome: false,
     },
     {
       _id: "3",
@@ -277,24 +278,18 @@ export const chadhavaData = {
       image: "temple.jpg",
       price: 751,
       isSpecialCombo: false,
-      isPrasadForHome: false
-    }
+      isPrasadForHome: false,
+    },
   ],
   time: "19 December 2025, Friday, Pausha Krishna Amavasya",
-  images: [
-    "temple.jpg",
-    "temple.jpg"
-  ],
+  images: ["temple.jpg", "temple.jpg"],
   slug: "ganesh-chadhava",
   btnText: "Chadhava",
   isUpcoming: false,
   isActive: true,
   createdAt: "2025-01-01T10:30:00.000Z",
-  updatedAt: "2025-01-01T10:30:00.000Z"
-}
-
-// import { Offer } from "@/components/Puja/Packages";
-
+  updatedAt: "2025-01-01T10:30:00.000Z",
+};
 
 
 export const packages = {
@@ -325,3 +320,75 @@ export const packages = {
     },
   ],
 };
+
+export const japMalas = [
+  {
+    id: 1,
+    name: "Tulsi Jap Mala (108 Beads)",
+    image: "/images/jap/tulsi-mala.jpg",
+    price: "₹899",
+    description: "asdf",
+  },
+  {
+    id: 2,
+    name: "Sandalwood Jap Mala",
+    image: "/images/jap/sandalwood-mala.jpg",
+    price: "₹1,299",
+    description: "asdf",
+  },
+  {
+    id: 3,
+    name: "Rudraksha Jap Mala",
+    image: "/images/jap/rudraksha-mala.jpg",
+    price: "₹2,499",
+    description: "asdf",
+  },
+];
+
+export const brassIdols = [
+  {
+    id: 1,
+    name: "Brass Ganesh Idol",
+    image: "/images/brass/ganesh.jpg",
+    price: "₹3,999",
+    description: "asdf",
+  },
+  {
+    id: 2,
+    name: "Brass Lakshmi Idol",
+    image: "/images/brass/lakshmi.jpg",
+    price: "₹4,499",
+    description: "asdf",
+  },
+  {
+    id: 3,
+    name: "Brass Shiva Idol",
+    image: "/images/brass/shiva.jpg",
+    price: "₹5,999",
+    description: "asdf",
+  },
+];
+
+export const rudraksha = [
+  {
+    id: 1,
+    name: "5 Mukhi Rudraksha",
+    image: "/images/rudraksha/5-mukhi.jpg",
+    price: "₹1,999",
+    description: "asdf",
+  },
+  {
+    id: 2,
+    name: "7 Mukhi Rudraksha",
+    image: "/images/rudraksha/7-mukhi.jpg",
+    price: "₹3,999",
+    description: "asdf",
+  },
+  {
+    id: 3,
+    name: "Gauri Shankar Rudraksha",
+    image: "/images/rudraksha/gauri-shankar.jpg",
+    price: "₹6,999",
+    description: "asdf",
+  },
+];

@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getPooja, getReviews } from "@/utils/API";
+import { getReviews } from "@/utils/API";
 import { message } from "antd";
 
-interface Review {
-  id: number;
-  name: string;
-  //   image: string;
-  rating: number;
-  text: string;
-  //   videoThumbnail?: string;
-}
+// interface Review {
+//   id: number;
+//   name: string;
+//   //   image: string;
+//   rating: number;
+//   text: string;
+//   //   videoThumbnail?: string;
+// }
 
 const ReviewsRatings = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [reviews, setReviews] = useState<any>([]);
-  const [_loading, setLoading] = useState<any>([]);
+  const [, setLoading] = useState<any>([]);
 
   // const reviews: Review[] = [
   //   {
