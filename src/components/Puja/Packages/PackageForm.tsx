@@ -18,7 +18,7 @@ export default function PackageForm() {
 
           {/* RIGHT SUMMARY */}
           <div className="lg:col-span-1">
-            <SelectedPackageSummary packageData={data?.package} />
+            <SelectedPackageSummary packageData={data?.package} cartData={data?.cartDate} />
           </div>
 
         </div>

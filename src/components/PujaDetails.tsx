@@ -53,6 +53,7 @@ const PujaDetail = () => {
     setCurrentIndex((prev) => (prev + 1) % pooja?.images?.length);
   };
 
+  console.log("pooja", pooja)
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? pooja?.images?.length - 1 : prev - 1));
   };

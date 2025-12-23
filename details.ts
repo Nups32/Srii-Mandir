@@ -291,7 +291,6 @@ export const chadhavaData = {
   updatedAt: "2025-01-01T10:30:00.000Z",
 };
 
-
 export const packages = {
   offering: [
     {
@@ -325,70 +324,79 @@ export const japMalas = [
   {
     id: 1,
     name: "Tulsi Jap Mala (108 Beads)",
-    image: "/images/jap/tulsi-mala.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹899",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
     id: 2,
     name: "Sandalwood Jap Mala",
-    image: "/images/jap/sandalwood-mala.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹1,299",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
     id: 3,
     name: "Rudraksha Jap Mala",
-    image: "/images/jap/rudraksha-mala.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹2,499",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
 ];
 
 export const brassIdols = [
   {
-    id: 1,
+    id: 11,
     name: "Brass Ganesh Idol",
-    image: "/images/brass/ganesh.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹3,999",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
-    id: 2,
+    id: 12,
     name: "Brass Lakshmi Idol",
-    image: "/images/brass/lakshmi.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹4,499",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
-    id: 3,
+    id: 13,
     name: "Brass Shiva Idol",
-    image: "/images/brass/shiva.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹5,999",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
 ];
 
 export const rudraksha = [
   {
-    id: 1,
+    id: 21,
     name: "5 Mukhi Rudraksha",
-    image: "/images/rudraksha/5-mukhi.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹1,999",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
-    id: 2,
+    id: 22,
     name: "7 Mukhi Rudraksha",
-    image: "/images/rudraksha/7-mukhi.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹3,999",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
   {
-    id: 3,
+    id: 23,
     name: "Gauri Shankar Rudraksha",
-    image: "/images/rudraksha/gauri-shankar.jpg",
+    image: ["temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg", "temple.jpg"],
     price: "₹6,999",
-    description: "asdf",
+    description:
+      "Item Name:  12.7 Inch Brass Ram Statue: A Symbol of Strength and Grace Material: Made with High and Virgin Quality of Brass Material. Dimension: Height: 32.5 cm, Length: 37 cm, Width: 20.5 cm  Weight: 4620 Grams Approx About Product: Keeping Ram with Bow Statue is good for Strength. Rama not only strings the bow, but he also snaps it with his strength and victory. In this situation, the bow is more than just a symbol of Rama's great strength; it also acts as a symbol of Rama's goodness, worthiness, and divine origins.",
   },
 ];

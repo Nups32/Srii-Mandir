@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Product = {
   id: number;
   name: string;
-  image: string;
+  image: string[];
   price: string;
   description: string;
 };
@@ -34,9 +35,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
   }, []);
 
   const maxIndex =
-    step === 100
-      ? products.length - 1
-      : Math.ceil(products.length - 2);
+    step === 100 ? products.length - 1 : Math.ceil(products.length - 2);
 
   return (
     <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -69,7 +68,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
                 key={product.id}
                 className="flex-shrink-0 w-full sm:w-1/2 px-2"
               >
-                <ProductCard product={product} link={link} />
+                <ProductCard product={product} />
               </div>
             ))}
           </div>
@@ -85,9 +84,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
         </button>
 
         <button
-          onClick={() =>
-            setIndex((i) => Math.min(i + 1, maxIndex))
-          }
+          onClick={() => setIndex((i) => Math.min(i + 1, maxIndex))}
           disabled={index === maxIndex}
           className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-3 disabled:opacity-40"
         >
@@ -97,7 +94,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
 
       <div className="hidden md:grid grid-cols-3 gap-8 lg:gap-10">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} link={link} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>
@@ -105,38 +102,43 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
 }
 
 // Product Card
+function ProductCard({ product }: { product: Product }) {
+  const navigate = useNavigate();
 
-function ProductCard({ product, link }: { product: Product; link: string }) {
   return (
     <div className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
       <div className="relative overflow-hidden bg-gray-100">
         <img
-          src={product.image}
+          src={product.image[0]}
           alt={product.name}
           className="h-64 w-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
       </div>
 
       <div className="p-6 space-y-3">
-        <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600">
+        <h3 className="text-xl font-bold text-gray-900">
           {product.name}
         </h3>
 
-        <p className="text-sm text-gray-600 line-clamp-2">
+        {/* <p className="text-sm text-gray-600 line-clamp-2">
           {product.description}
-        </p>
+        </p> */}
 
-        <div className="flex justify-between items-center pt-4 border-t">
+        <div className="flex justify-between items-center pt-4 border-t border-gray-200">
           <span className="text-2xl font-bold text-orange-600">
             {product.price}
           </span>
 
-          <a
-            href={link}
-            className="text-sm font-semibold text-orange-600 hover:text-orange-700"
+          <span
+            onClick={() =>
+              navigate("/products/detail", {
+                state: { product },
+              })
+            }
+            className="text-sm font-semibold text-orange-600 hover:text-orange-700 cursor-pointer"
           >
             View Details
-          </a>
+          </span>
         </div>
       </div>
     </div>
