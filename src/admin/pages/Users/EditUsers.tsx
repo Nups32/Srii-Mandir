@@ -148,7 +148,7 @@ const EditUserForm: React.FC = () => {
 
       await updateUserData(id, formData);
       message.success("User updated successfully");
-      navigate("/admin/user");
+      navigate("/admin/users");
     } catch (error: any) {
       console.error("Error updating user:", error);
       if (error.message?.includes("email already exists")) {

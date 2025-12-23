@@ -10,7 +10,7 @@ import {
   Button,
   Tag,
   Badge,
-  Select,
+  // Select,
   Descriptions,
   Timeline,
 } from "antd";
@@ -47,9 +47,9 @@ export const BookChadhavaTable = () => {
   const [datasource, setDatasource] = useState<BookChadhava[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [chadhavaFilter, setChadhavaFilter] = useState<string>("all");
+  // const [chadhavaFilter, setChadhavaFilter] = useState<string>("all");
 //   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [uniqueChadhavas, setUniqueChadhavas] = useState<{_id: string, name: string}[]>([]);
+  // const [uniqueChadhavas, setUniqueChadhavas] = useState<{_id: string, name: string}[]>([]);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<BookChadhava | null>(null);
 //   const navigate = useNavigate();
@@ -61,19 +61,19 @@ export const BookChadhavaTable = () => {
       if (response.data.status) {
         setDatasource(response.data.data);
         
-        // Extract unique chadhavas for filter
-        const chadhavas = response.data.data
-          .filter((item: BookChadhava) => item.chadhavaId)
-          .map((item: BookChadhava) => ({
-            _id: item.chadhavaId._id,
-            name: item.chadhavaId.name
-          }));
+        // // Extract unique chadhavas for filter
+        // const chadhavas = response.data.data
+        //   .filter((item: BookChadhava) => item.chadhavaId)
+        //   .map((item: BookChadhava) => ({
+        //     _id: item.chadhavaId._id,
+        //     name: item.chadhavaId.name
+        //   }));
         
-        // Remove duplicates
-        const unique: any = Array.from(
-          new Map(chadhavas.map((c: any) => [c._id, c])).values()
-        );
-        setUniqueChadhavas(unique);
+        // // Remove duplicates
+        // const unique: any = Array.from(
+        //   new Map(chadhavas.map((c: any) => [c._id, c])).values()
+        // );
+        // setUniqueChadhavas(unique);
       }
     } catch (error) {
         console.log(error);
@@ -355,7 +355,7 @@ export const BookChadhavaTable = () => {
 
       {/* Filters Row */}
       <Row className="m-2 mt-4" gutter={16}>
-        <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
+        {/* <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">
             <div className="text-xs font-medium text-gray-500">Filter by Chadhava</div>
             <Select
@@ -373,7 +373,7 @@ export const BookChadhavaTable = () => {
               ]}
             />
           </div>
-        </Col>
+        </Col> */}
         
         {/* <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">

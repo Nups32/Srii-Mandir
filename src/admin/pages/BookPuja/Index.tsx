@@ -15,9 +15,9 @@ import {
   Timeline,
   Tooltip,
 } from "antd";
-import { SearchOutlined, EyeOutlined, DownloadOutlined, FileExcelOutlined } from "@ant-design/icons";
+import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { getAllBookPujas, getPooja, exportBookPujas } from "@/utils/API";
+import { getAllBookPujas, getPooja } from "@/utils/API";
 import dayjs from "dayjs";
 // import { format } from "date-fns";
 
@@ -76,7 +76,7 @@ interface BookPuja {
 export const BookPujaTable = () => {
   const [datasource, setDatasource] = useState<BookPuja[]>([]);
   const [loading, setLoading] = useState(false);
-  const [exportLoading, setExportLoading] = useState(false);
+//   const [exportLoading, setExportLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pujaFilter, setPujaFilter] = useState<string>("all");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState<string>("all");
@@ -132,7 +132,7 @@ export const BookPujaTable = () => {
     // Puja filter
     if (pujaFilter !== "all") {
       filtered = filtered.filter(item => 
-        item.pujaPackage?.packageId?._id === pujaFilter
+        item.pujaId._id === pujaFilter
       );
     }
 
@@ -157,42 +157,42 @@ export const BookPujaTable = () => {
     setViewModalVisible(true);
   };
 
-  const handleExport = async (format: 'excel' | 'pdf') => {
-    setExportLoading(true);
-    try {
-      const filters = {
-        pujaId: pujaFilter !== "all" ? pujaFilter : undefined,
-        paymentStatus: paymentStatusFilter !== "all" ? paymentStatusFilter : undefined,
-        search: searchText || undefined,
-      };
+//   const handleExport = async (format: 'excel' | 'pdf') => {
+//     setExportLoading(true);
+//     try {
+//       const filters = {
+//         pujaId: pujaFilter !== "all" ? pujaFilter : undefined,
+//         paymentStatus: paymentStatusFilter !== "all" ? paymentStatusFilter : undefined,
+//         search: searchText || undefined,
+//       };
 
-      const response = await exportBookPujas(format, filters);
+//       const response = await exportBookPujas(format, filters);
       
-      if (response.data) {
-        // Create download link
-        const blob = new Blob([response.data], { 
-          type: format === 'excel' 
-            ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-            : 'application/pdf' 
-        });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `puja-bookings-${format}-${new Date().getTime()}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+//       if (response.data) {
+//         // Create download link
+//         const blob = new Blob([response.data], { 
+//           type: format === 'excel' 
+//             ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+//             : 'application/pdf' 
+//         });
+//         const url = window.URL.createObjectURL(blob);
+//         const link = document.createElement('a');
+//         link.href = url;
+//         link.download = `puja-bookings-${format}-${new Date().getTime()}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         window.URL.revokeObjectURL(url);
         
-        message.success(`Data exported successfully as ${format.toUpperCase()}`);
-      }
-    } catch (error) {
-      console.error("Export error:", error);
-      message.error("Failed to export data");
-    } finally {
-      setExportLoading(false);
-    }
-  };
+//         message.success(`Data exported successfully as ${format.toUpperCase()}`);
+//       }
+//     } catch (error) {
+//       console.error("Export error:", error);
+//       message.error("Failed to export data");
+//     } finally {
+//       setExportLoading(false);
+//     }
+//   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -473,7 +473,7 @@ export const BookPujaTable = () => {
                 { value: 'all', label: 'All Pujas' },
                 ...pujas.map(pkg => ({
                   value: pkg._id,
-                  label: `${pkg.title} (₹${pkg.price?.toLocaleString('en-IN') || 0})`
+                  label: `${pkg.title}`
                 }))
               ]}
             />
