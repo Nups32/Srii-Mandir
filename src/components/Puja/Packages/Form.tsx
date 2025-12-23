@@ -26,7 +26,7 @@ export default function PujaDetailsForm({ data }: any) {
   const [alternateCalling, setAlternateCalling] = useState(false);
   const [callingNumber, setCallingNumber] = useState("");
 
-  const participantCount = Number(data?.person) || 1;
+  const participantCount = Number(data?.package?.person) || 1;
 
   const [members, setMembers] = useState<string[]>(
     () => Array(participantCount).fill("")
@@ -286,6 +286,7 @@ export default function PujaDetailsForm({ data }: any) {
         onClose={() => setShowConfirmModal(false)}
         onConfirm={() => setShowConfirmModal(false)}
         data={{
+          billData: data,
           whatsapp,
           callingNumber: alternateCalling
             ? callingNumber

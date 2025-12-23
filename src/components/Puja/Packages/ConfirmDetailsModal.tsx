@@ -1,3 +1,9 @@
+import type { IRootState } from "@/store";
+import { createRazorpayOrder } from "@/utils/API";
+import { message } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 type Address = {
   pincode: string;
   city: string;
@@ -12,6 +18,7 @@ type Props = {
   onClose: () => void;
   onConfirm: () => void;
   data: {
+    billData: any;
     members: string[];
     gotra: string;
     whatsapp: string;
@@ -29,12 +36,215 @@ export default function ConfirmDetailsModal({
   if (!open) return null;
 
   const {
+    billData,
     members,
     gotra,
     whatsapp,
     callingNumber,
     address,
   } = data;
+  const offringItems = Object.values(billData?.cartDate).map((item: any) => ({
+    _id: item._id || item.id,
+    qty: item.qty,
+    price: item.price,
+    name: item.name,
+  }));
+  const totalAmount = ((offringItems.reduce((sum: number, item: any) => sum + item.qty * item.price, 0) || 0) + (billData?.package.price || 0));
+  const [transactionId, setTransactionId] = useState<string>("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const authData = useSelector((state: IRootState) => state.userConfig);
+
+  // const formData = {
+  //   whatsappNumber: whatsapp,
+  //   callingNumber: callingNumber ? callingNumber : whatsapp,
+  //   members: members,
+  //   gotra: gotra,
+  //   address: address,
+  // }
+
+  // const orderData = {
+  //   // ...paymentData,
+  //   poojaId: paymentData?.poojaId,
+  //   package: {
+  //     packageId: paymentData?.package?.packageId,
+  //     person: paymentData?.package?.person,
+  //     price: paymentData?.package?.price,
+  //   },
+  //   offring: offringItems,
+  //   amount: totalAmount,
+  //   formData: {
+  //     whatsappNumber: whatsapp,
+  //     callingNumber: callingNumber ? callingNumber : whatsapp,
+  //     members: members,
+  //     gotra: gotra,
+  //     address: address,
+  //   },
+  // };
+  // console.log("orderData", orderData);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  const handlePayment = async () => {
+    if (!(window as any).Razorpay) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    // const plan = allPlans.find((p: any) => p._id == selected);
+
+    // const orderData = {
+    //   amount: totalAmount * 100,
+    //   currency: "INR",
+    //   receipt: `receipt_${Date.now()}`,
+    //   orderItem: {
+    //     chadhavaId,
+    //     offering: Object.values(cart).map((item: any) => ({
+    //       _id: item._id,
+    //       qty: item.qty,
+    //       price: item.price,
+    //       name: item.name,
+    //     })),
+    //   },
+    //   // planId: plan._id,
+    //   userId: authData?._id,
+    //   totalMrp: totalAmount,
+    //   // totalDiscount: 0,
+    //   // address: authData?.userdata?.city,
+    //   // pincode: authData?.userdata?.pincode,
+    //   paymentMethod: "Razorpay",
+    //   transactionId: transactionId,
+    //   fullName: `${authData?.username}`,
+    //   email: authData?.email,
+    //   mobileNo: authData?.mobile,
+    // };
+    const orderData = {
+      amount: totalAmount * 100,
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+      userId: authData?._id,
+      totalMrp: totalAmount,
+      paymentMethod: "Razorpay",
+      transactionId: transactionId,
+      fullName: `${authData?.username}`,
+      email: authData?.email,
+      mobileNo: authData?.mobile,
+      orderItem: {
+        poojaId: billData?.poojaId,
+        package: {
+          packageId: billData?.package?.packageId,
+          person: billData?.package?.person,
+          price: billData?.package?.price,
+        },
+        offring: offringItems,
+        formData: {
+          whatsappNumber: whatsapp,
+          callingNumber: callingNumber ? callingNumber : whatsapp,
+          members: members,
+          gotra: gotra,
+          address: address,
+        }
+      }
+    };
+
+    try {
+      const order = await createRazorpayOrder(orderData);
+      const { id: order_id, currency, amount } = order;
+      const options = {
+        key: import.meta.env.VITE_APP_RAZOR_PAY_KEY_ID,
+        amount: amount.toString(),
+        currency: currency,
+        name: "Srii Mandir",
+        description: "Test Transaction",
+        order_id: order_id,
+        handler: async function (response: any) {
+          const paymentData = {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            amount,
+            cartData: {
+              poojaId: billData?.poojaId,
+              package: {
+                packageId: billData?.package?.packageId,
+                person: billData?.package?.person,
+                price: billData?.package?.price,
+              },
+              offring: offringItems,
+              formData: {
+                whatsappNumber: whatsapp,
+                callingNumber: callingNumber ? callingNumber : whatsapp,
+                members: members,
+                gotra: gotra,
+                address: address,
+              }
+            },
+          };
+
+          try {
+            const verifyResult = await verifyPayment(paymentData);
+            if (verifyResult === "OK") {
+              setTransactionId(response.razorpay_payment_id);
+              try {
+                // refreshAuthData();
+                // toast("success").fire({
+                //   icon: "success",
+                //   title: "Payment Successfull",
+                //   timer: 2000,
+                //   showConfirmButton: false,
+                // });
+                message.success("Payment Successful");
+                setIsModalVisible(true);
+              } catch (error: any) {
+                // toast("danger").fire({
+                //   icon: "error",
+                //   title:
+                //     "An error occurred while processing your payment. Please try again.",
+                //   timer: 2000,
+                //   showConfirmButton: false,
+                // });
+                message.error("An error occurred while processing your payment. Please try again.");
+              }
+            } else {
+              // toast("danger").fire({
+              //   icon: "error",
+              //   title: "Payment verification failed. Please try again.",
+              //   timer: 2000,
+              //   showConfirmButton: false,
+              // });
+              message.error("Payment verification failed. Please try again.");
+            }
+          } catch (error) {
+            // toast("danger").fire({
+            //   icon: "error",
+            //   title: "Error verifying payment. Please try again.",
+            //   timer: 2000,
+            //   showConfirmButton: false,
+            // });
+            message.error("Error verifying payment. Please try again.");
+          }
+        },
+        // prefill: {
+        //   name: `${authData?.userdata?.firstName} ${authData?.userdata?.lastName}`,
+        //   email: authData?.userdata?.email,
+        //   contact: authData?.userdata?.phone,
+        // },
+        theme: {
+          color: "#29c261",
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      // throw error;
+    }
+  };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
