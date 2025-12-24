@@ -42,7 +42,6 @@ CommanAPI.interceptors.request.use(async (config) => {
 API.interceptors.request.use(async (config) => {
   // const token = localStorage.getItem("token");
   const token = decryptData("token", 'string');
-  console.log("token", token);
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -90,6 +89,16 @@ API.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
+export const forgetPassword = async (data: any) => {
+  try {
+    const response = await CommanAPI.post("/forget-password", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const contactUs = async (data: any) => {
   try {
@@ -678,6 +687,15 @@ export const updatePassword = async (data: any) => {
 export const PujaReviewByUser = async (data: any) => {
   try {
     const response = await API.post("frontend/puja-review", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateReport = async (data: any) => {
+  try {
+    const response = await API.post("frontend/generate-report", data);
     return response;
   } catch (error) {
     throw error;

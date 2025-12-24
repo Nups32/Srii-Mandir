@@ -23,7 +23,8 @@ import ChadhavaHistory from "@/components/Profile/ChadhavaBooking/ChadhavaBookin
 import Products from "@/pages/Products";
 import Profile from "@/components/Profile/Profile";
 import ProductDetail from "@/components/Products/ProductDetail";
-import Logout from "@/components/Logout";
+import ContactUs from "@/pages/Contact";
+// import Logout from "@/components/Logout";
 // import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
 
@@ -121,7 +122,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <LiveKatha />,
   },
   {
-    path: "/shakti-sanyans",
+    path: "/shakti-sanyas",
     element: <ShaktiSanyas />,
   },
   {
@@ -137,10 +138,14 @@ const routes: RouteObjectWithLayout[] = [
     element: <ProductDetail />,
   },
   {
-    path: "/logout",
-    element: <Logout />,
-    layout: "blank"
+    path: "/contact",
+    element: <ContactUs />,
   },
+  
+  // {
+  //   path: "/logout",
+  //   element: <Logout />,
+  // },
   {
     path: "*",
     element: (

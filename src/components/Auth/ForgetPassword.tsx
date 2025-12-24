@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.jpg";
-// import { forgetPassword } from "../utils/API";
+import { forgetPassword } from "../../utils/API";
+import { message } from "antd";
 
 function ForgetPassword() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ function ForgetPassword() {
     new Array(4).fill("")
   );
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const navigate = useNavigate();
 
   const handleChange = (element: HTMLInputElement, index: number) => {
     if (isNaN(Number(element.value))) return false;
@@ -43,124 +45,73 @@ function ForgetPassword() {
   const handleOTPSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    // if (inputOtp.some((digit) => digit === "")) {
-    //   // toast("error").fire({
-    //   //   icon: "error",
-    //   //   title: "Please enter OTP",
-    //   //   timer: 2000,
-    //   //   showConfirmButton: false,
-    //   // });
+    if (inputOtp.some((digit) => digit === "")) {
+      message.warning("Please enter OTP");
       setIsLoading(false);
-    //   return;
-    // }
-    // const otp = inputOtp.join("");
-    // const res: any = await forgetPassword({
-    //   email,
-    //   otp,
-    // });
+      return;
+    }
+    const otp = inputOtp.join("");
+    const res: any = await forgetPassword({
+      email,
+      otp,
+    });
 
-    // if (res && res.status == 200) {
-    //   setIsLoading(false);
-    //   // toast("success").fire({
-    //   //   icon: "success",
-    //   //   title: "OTP verified",
-    //   //   timer: 2000,
-    //   //   showConfirmButton: false,
-    //   // });
-    //   // move to new password step after successful OTP verification
+    if (res && res.status == 200) {
+      setIsLoading(false);
+      message.success("OTP verified");
+      // move to new password step after successful OTP verification
       setIsOTPVerification(false);
       setIsNewPassword(true);
-    // } else {
-    //   setIsLoading(false);
-    //   // toast("danger").fire({
-    //   //   icon: "error",
-    //   //   title: res?.data?.error || "OTP verified Failed",
-    //   //   timer: 2000,
-    //   //   showConfirmButton: false,
-    //   // });
-    // }
+    } else {
+      setIsLoading(false);
+      message.error("OTP verified Failed");
+    }
   };
 
   const handleNewPassword = async (e: any) => {
-    // try {
+    try {
       e.preventDefault();
-    //   const formData = new FormData(e.currentTarget);
-    //   const password = formData.get("password");
-    //   const confirmPassword = formData.get("confirmPassword");
+      const formData = new FormData(e.currentTarget);
+      const password = formData.get("password");
+      const confirmPassword = formData.get("confirmPassword");
 
-    //   if (password !== confirmPassword) {
-    //     // toast("error").fire({
-    //     //   icon: "error",
-    //     //   title: "Passwords do not match",
-    //     //   timer: 2000,
-    //     //   showConfirmButton: false,
-    //     // });
-    //     return;
-    //   }
+      if (password !== confirmPassword) {
+        message.error("Passwords do not match");
+        return;
+      }
 
-    //   const otp = inputOtp.join("");
-    //   const res: any = await forgetPassword({
-    //     email,
-    //     otp,
-    //     newPassword: password,
-    //   });
-    //   if (res && res.status == 200) {
-    //     // toast("success").fire({
-    //     //   icon: "success",
-    //     //   title: "Password updated successfully",
-    //     //   timer: 2000,
-    //     //   showConfirmButton: false,
-    //     // });
-    //     navigate("/login");
-    //   } else {
-    //     // toast("danger").fire({
-    //     //   icon: "error",
-    //     //   title: res?.data?.message || "Upadte Password Failed",
-    //     //   timer: 2000,
-    //     //   showConfirmButton: false,
-    //     // });
-    //   }
-    // } catch (error: any) {
-    //   // toast("danger").fire({
-    //   //   icon: "error",
-    //   //   title: error?.response?.data?.message || "Server Error",
-    //   //   timer: 2000,
-    //   //   showConfirmButton: false,
-    //   // });
-    // }
+      const otp = inputOtp.join("");
+      const res: any = await forgetPassword({
+        email,
+        otp,
+        newPassword: password,
+      });
+      if (res && res.status == 200) {
+        message.success("Password updated successfully");
+        navigate("/login");
+      } else {
+        message.error("Upadate Password Failed");
+      }
+    } catch (error: any) {
+      message.error("Server Error");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // try {
-    //   setIsLoading(true);
-    //   const res: any = await forgetPassword({ email });
-    //   if (res && res.status === 200) {
-    //     // toast("success").fire({
-    //     //   icon: "success",
-    //     //   title: "OTP sent to your email",
-    //     //   timer: 2000,
-    //     //   showConfirmButton: false,
-    //     // });
+    try {
+      setIsLoading(true);
+      const res: any = await forgetPassword({ email });
+      if (res && res.status === 200) {
+        message.success("OTP sent to your email");
         setIsOTPVerification(true);
-    //   } else {
-    //     // toast("danger").fire({
-    //     //   icon: "error",
-    //     //   title: res?.data?.message || "Email not registered",
-    //     //   timer: 2000,
-    //     //   showConfirmButton: false,
-    //     // });
-    //   }
-    // } catch (error: any) {
-    //   // toast("danger").fire({
-    //   //   icon: "error",
-    //   //   title: error?.response?.data?.message || "Email not registered",
-    //   //   timer: 2000,
-    //   //   showConfirmButton: false,
-    //   // });
-    // } finally {
-    //   setIsLoading(false);
-    // }
+      } else {
+        message.error("Email not registered");
+      }
+      // message.error("Email not registered");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

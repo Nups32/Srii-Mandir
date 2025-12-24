@@ -4,23 +4,23 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const footerServices = [
-    { label: "Puja Services", href: "/puja-services" },
+    { label: "Puja Services", href: "/puja" },
     { label: "Chadhava", href: "/chadhava" },
-    { label: "Instant Solutions", href: "/solutions" },
+    // { label: "Instant Solutions", href: "/solutions" },
     { label: "Vedic Science", href: "/vedic-science" },
     { label: "Contact Us", href: "/contact" },
   ];
 
   const footerExplore = [
-    { label: "Mandir", href: "/mandir" },
+    // { label: "Mandir", href: "/mandir" },
     { label: "Media", href: "/media" },
     { label: "Live Katha", href: "/media/katha" },
-    { label: "About Guru", href: "/about-guru" },
+    { label: "About Guru", href: "/shakti-sanyas" },
   ];
 
   return (
     <footer className="bg-linear-to-br from-orange-400 to-yellow-600">
-      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div>
           {/* logo */}
           <Link to="/" className="flex items-center gap-2 mb-4">
@@ -74,7 +74,7 @@ const Footer = () => {
             href="mailto: support@devpuja.com"
             className="hover:underline transition text-gray-50 font-semibold"
           >
-            Email: support@devpuja.com
+            Email: support@sriimandir.com
           </a>
 
           {/* socials */}

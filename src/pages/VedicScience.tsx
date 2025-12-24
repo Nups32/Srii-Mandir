@@ -27,11 +27,11 @@ export default function VedicScience() {
           {/* Nakshatra Finder */}
           <div className="group border border-gray-200 rounded-2xl p-10 flex justify-between items-center transition-all hover:shadow-lg hover:border-purple-200">
             <div>
-              <h3 className="text-2xl font-semibold text-purple-700 mb-3">
-                Nakshatra Finder
+              <h3 className="text-xl md:text-2xl font-semibold text-purple-700 mb-3">
+                Ganerate Hosoroscope Report 
               </h3>
 
-              <p className="text-gray-600 mb-8 max-w-xs">
+              <p className="text-xs md:text-xl text-gray-600 mb-8 max-w-xs">
                 Discover your Janma Nakshatra and understand its spiritual and
                 astrological significance.
               </p>
@@ -51,7 +51,7 @@ export default function VedicScience() {
             />
           </div>
 
-          {/* Future card placeholder (optional, keeps symmetry) */}
+          {/* Future card placeholder */}
           <div className="border border-dashed border-gray-200 rounded-2xl p-10 flex items-center justify-center text-gray-400 text-sm">
             More Vedic calculators coming soon
           </div>
