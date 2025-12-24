@@ -244,7 +244,7 @@ export default function PujaDetailsForm({ data }: any) {
                 setAashirwad(v as "yes" | "no")
               }
               className={`px-4 py-2 rounded-lg border ${aashirwad === v
-                  ? "bg-green-700 text-white"
+                  ? "bg-green-700 text-white!"
                   : ""
                 }`}
             >
@@ -277,7 +277,7 @@ export default function PujaDetailsForm({ data }: any) {
       <button
         type="submit"
         disabled={!aashirwad}
-        className={`w-full py-3 rounded-lg font-semibold text-white ${aashirwad ? "bg-green-600" : "bg-gray-300"
+        className={`w-full py-3 rounded-lg font-semibold text-white! ${aashirwad ? "bg-green-600" : "bg-gray-300"
           }`}
       >
         Proceed to book

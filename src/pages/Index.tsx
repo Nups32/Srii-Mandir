@@ -129,19 +129,19 @@ const Index = () => {
         <section className="max-w-7xl mx-auto px-4 mt-10">
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
-            <h2 className="text-4xl text-purple-400 flex justify-center items-center font-semibold text-center sm:text-left">
+            <h2 className="text-2xl md:text-4xl text-purple-400 flex justify-center items-center font-semibold text-center sm:text-left">
               Special Pujas
             </h2>
             <Link
               to="/puja"
               className="text-orange-600 text-sm font-medium hover:underline"
             >
-              View All →
+              View All -&gt;
             </Link>
           </div>
 
           <div>
-            <p className="my-4 text-black/70 text-2xl">
+            <p className="my-4 text-black/70 text-sm md:text-xl">
               Close 2025 with faith - get special year-end pujas performed in
               your name at India's powerful temples and begin 2026 with peace
               and protection.

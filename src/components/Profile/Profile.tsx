@@ -37,12 +37,15 @@ const accountInfoFields = [
   { name: "address", label: "Street Address", type: "textarea" },
 ];
 
+type EditTab = "profile" | "email" | "password";
+
 function Profile() {
   const [formData, setFormData] = useState(initialUserData);
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSeclectedCountry] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState<EditTab>("profile");
 
   const getUserProfile = async () => {
     const res: any = await getProfile();
@@ -102,9 +105,6 @@ function Profile() {
       message.error("Error:", error);
     }
   };
-
-  type EditTab = "profile" | "email" | "password";
-  const [activeTab, setActiveTab] = useState<EditTab>("profile");
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -309,8 +309,11 @@ function Profile() {
         )}
 
         {editMode && activeTab === "profile" && (
-          <form onSubmit={handleSaveChanges} className="border border-gray-200 shadow-xl rounded-2xl ">
-            <fieldset >
+          <form
+            onSubmit={handleSaveChanges}
+            className="border border-gray-200 shadow-xl rounded-2xl "
+          >
+            <fieldset>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
                 {accountInfoFields.map((field) => (
                   <div key={field.name}>

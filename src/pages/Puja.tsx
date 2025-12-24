@@ -294,7 +294,7 @@ const Puja: React.FC = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
           Perform Puja as per Vedic rituals at Famous Hindu Temples in India
         </h1>
 
@@ -353,10 +353,10 @@ const Puja: React.FC = () => {
 
         {/* Upcoming Pujas Section */}
         <div className="mb-8">
-          <h2 className="text-4xl font-bold text-gray-800 my-7">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 my-7">
             Upcoming Pujas
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-sm md:text-base text-gray-600 mb-8">
             Book puja{" "}
             <span className="text-orange-500 font-semibold">Online</span> with
             your name and gotra, receive the puja video along with the
@@ -440,10 +440,10 @@ const Puja: React.FC = () => {
         <div className="space-y-24">
           {/*Puja Stats Section */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
               Start your Sacred Journey with Srii Mandir Puja Service
             </h2>
-            <p className="text-gray-600 text-lg text-center">
+            <p className="text-sm md:text-base text-gray-600 text-center">
               Why book Srii Mandir Online Puja?{" "}
             </p>
 
@@ -473,7 +473,7 @@ const Puja: React.FC = () => {
 
           {/* How Puja Works */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10! text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-10! text-center">
               How does Srii Mandir Online Puja Works?
             </h2>
 
@@ -489,7 +489,7 @@ const Puja: React.FC = () => {
                       <h3 className="text-lg font-semibold text-gray-900">
                         {item.title}
                       </h3>
-                      <p className="text-gray-600">{item.desc}</p>
+                      <p className="text-gray-600 text-sm md:text-base">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -522,10 +522,10 @@ const Puja: React.FC = () => {
 
           {/* Purohit Team Section */}
           <section className="max-w-7xl mx-auto px-4 py-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-10! text-center md:text-4xl">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-10! text-center ">
               Meet the experienced community of Srii Mandir Purohit's
             </h2>
-            <p className="text-gray-600 text-lg text-center max-w-3xl mx-auto mb-12! leading-relaxed">
+            <p className="text-sm md:text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12! leading-relaxed">
               Our commitment is to perform pujas with true devotion towards the
               Divine and in accordance with Vedic scriptures. We perform pujas
               at Shaktipeeths, Jyotirlingas and other sacred temples to ensure
