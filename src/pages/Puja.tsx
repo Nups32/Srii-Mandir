@@ -11,9 +11,9 @@ import slide1 from "../assets/Puja/1/1.webp";
 import slide2 from "../assets/Puja/1/2.webp";
 import slide3 from "../assets/Puja/1/3.webp";
 import slide4 from "../assets/Puja/1/4.webp";
-import hero1 from "../assets/Puja/hero/1.jpg";
-import hero2 from "../assets/Puja/hero/2.jpg";
-import hero3 from "../assets/Puja/hero/3.jpg";
+// import hero1 from "../assets/Puja/hero/1.jpg";
+// import hero2 from "../assets/Puja/hero/2.jpg";
+// import hero3 from "../assets/Puja/hero/3.jpg";
 
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
@@ -300,11 +300,11 @@ const Puja: React.FC = () => {
 
         {/* Hero Slider */}
         <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
-          <div className="relative h-64 md:h-96">
+          <div className="relative h-45 md:h-96">
             <img
               src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${slides?.[currentSlide]?.image}`}
               alt={slides?.[currentSlide]?.title}
-              className="w-full h-full"
+              className="w-full h-full object-"
             />
             {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
               <div className="h-full flex flex-col justify-center px-8 md:px-16">

@@ -298,15 +298,15 @@ export const BookChadhavaTable = () => {
 
   const filteredBookings = getFilteredBookings();
 
-  // Calculate statistics
-  const totalAmount = filteredBookings.reduce((sum, item) => sum + item.amount, 0);
-  const totalBookings = filteredBookings.length;
-  const successBookings = filteredBookings.filter(item =>
-    ['success', 'completed', 'confirmed'].includes(item.paymentStatus?.toLowerCase())
-  ).length;
-  const pendingBookings = filteredBookings.filter(item =>
-    ['pending', 'processing'].includes(item.paymentStatus?.toLowerCase())
-  ).length;
+  // // Calculate statistics
+  // const totalAmount = filteredBookings.reduce((sum, item) => sum + item.amount, 0);
+  // const totalBookings = filteredBookings.length;
+  // const successBookings = filteredBookings.filter(item =>
+  //   ['success', 'completed', 'confirmed'].includes(item.paymentStatus?.toLowerCase())
+  // ).length;
+  // const pendingBookings = filteredBookings.filter(item =>
+  //   ['pending', 'processing'].includes(item.paymentStatus?.toLowerCase())
+  // ).length;
 
   return (
     <div className="">

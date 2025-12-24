@@ -3,6 +3,7 @@
 // import { message } from 'antd';
 import axios from "axios";
 import { decryptData } from "./Helper";
+import { message } from "antd";
 // import CryptoJS from "crypto-js";
 // import { constants } from 'fs/promises';
 
@@ -79,10 +80,11 @@ API.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Check for invalid token response
-      if (error.response.status === 401) {
-        // message.error('Invalid token. Please login again.');
-        // localStorage.removeItem("token");
+      if (error.response.status === 401 || error.response.status === 403) {
+        message.error('Invalid token. Please login again.');
+        localStorage.removeItem("token");
         // window.location.href = "admin-login"; // Adjust the redirect URL as needed
+        // window.location.href = "/login"; // Adjust the redirect URL as needed
       }
     }
     return Promise.reject(error);
@@ -541,7 +543,7 @@ export const getAllBookChadhavas = (params?: {
   page?: number;
   limit?: number;
 }) => {
-  return API.get(`/backend/book-chadhava`, { params });
+  return API.get(`/backend/book-chadhavas`, { params });
 };
 
 export const createRazorpayOrder = async (orderData: any) => {
@@ -658,6 +660,24 @@ export const getBookedPuja = async (page = 1, limit = 10) => {
 export const updateEmail = async (data: any) => {
   try {
     const response = await API.post("frontend/profile/email/update", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePassword = async (data: any) => {
+  try {
+    const response = await API.post("frontend/profile/password/update", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const PujaReviewByUser = async (data: any) => {
+  try {
+    const response = await API.post("frontend/puja-review", data);
     return response;
   } catch (error) {
     throw error;

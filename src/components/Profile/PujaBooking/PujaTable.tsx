@@ -29,7 +29,7 @@ export default function PujaTable({
   const fetchBookedPooja = async (page = 1, limit = 10) => {
     try {
       const response: any = await getBookedPuja(page, limit);
-      console.log("res from fetchBookedPooja", response.data.data);
+      // console.log("res from fetchBookedPooja", response.data.data);
       if (response?.data?.status) {
         setBooking(response.data.data);
         setPagination({

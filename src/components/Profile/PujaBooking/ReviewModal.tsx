@@ -1,5 +1,7 @@
 import { useState } from "react";
 import type { BookPuja } from "@/admin/pages/BookPuja/Index";
+import { message } from "antd";
+import { PujaReviewByUser } from "@/utils/API";
 
 type Props = {
   booking: BookPuja;
@@ -11,20 +13,53 @@ export default function ReviewModal({ booking, onClose }: Props) {
   const [hovered, setHovered] = useState<number>(0);
   const [comment, setComment] = useState("");
 
-  const handleSubmit = () => {
-    if (rating === 0) {
-      alert("Please select a rating");
+  // const handleSubmit = () => {
+  //   if (rating === 0) {
+  //     alert("Please select a rating");
+  //     return;
+  //   }
+
+  //   // TODO: Call submit review API here
+  //   console.log({
+  //     pujaId: booking.pujaId._id,
+  //     rating,
+  //     comment,
+  //   });
+
+
+
+  //   onClose();
+  // };
+
+  const handleSubmit = async () => {
+    if (!comment.trim()) {
+      message.error("Please enter a review comment");
       return;
     }
 
-    // TODO: Call submit review API here
-    console.log({
-      pujaId: booking.pujaId._id,
-      rating,
-      comment,
-    });
-
-    onClose();
+    if (rating < 1 || rating > 5) {
+      message.error("Please select a valid rating (1-5 stars)");
+      return;
+    }
+    // setLoading(true);
+    try {
+      const res = await PujaReviewByUser({
+        pujaId: booking.pujaId._id,
+        rating,
+        comment
+      });
+      if (res.data.status) {
+        message.success("Puja review created successfully");
+        onClose();
+      } else {
+        message.error(res.data.message || "Server Error");
+      }
+    } catch (error: any) {
+      console.error("Error creating puja review:", error);
+      message.error(error.response?.data?.message || "Failed to create review. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
   };
 
   return (
@@ -58,11 +93,10 @@ export default function ReviewModal({ booking, onClose }: Props) {
                 className="focus:outline-none"
               >
                 <svg
-                  className={`w-7 h-7 ${
-                    (hovered || rating) >= star
-                      ? "fill-yellow-400"
-                      : "fill-gray-300"
-                  }`}
+                  className={`w-7 h-7 ${(hovered || rating) >= star
+                    ? "fill-yellow-400"
+                    : "fill-gray-300"
+                    }`}
                   viewBox="0 0 20 20"
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.95a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.951c.3.92-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.951a1 1 0 00-.364-1.118L2.05 9.377c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.951-.69l1.287-3.95z" />

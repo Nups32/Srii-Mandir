@@ -289,7 +289,7 @@ export default function ChadhavaHistory() {
                 </div>
                 <div className="bg-white p-3 rounded shadow-sm border">
                   <div className="text-xs text-gray-500">Successful</div>
-                  <div className="text-lg font-bold text-green-600">{stats?.paymentStatusDistribution?.captured}</div>
+                  <div className="text-lg font-bold text-green-600">{stats?.paymentStatusDistribution?.captured || 0}</div>
                 </div>
                 <div className="bg-white p-3 rounded shadow-sm border">
                   <div className="text-xs text-gray-500">Avg. Booking</div>
