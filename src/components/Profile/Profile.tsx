@@ -166,7 +166,7 @@ function Profile() {
             name="mobile"
             value={formData.mobile}
             maxLength={10}
-            className="-bg w-full p-2 border border-gray-300 rounded-xl text-gray-600"
+            className=" w-full p-2 border border-gray-300 rounded-xl text-gray-600"
             required={field.required}
             onChange={(e) => {
               let value = e.target.value.replace(/\D/g, "");
@@ -203,6 +203,17 @@ function Profile() {
             <p className="text-red-500 text-xs mt-1">{phoneError}</p>
           )}
         </div>
+      );
+    }
+
+    if (field.type === "email") {
+      return (
+        <input
+          type="email"
+          {...props}
+          disabled
+          className="w-full p-2 border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed"
+        />
       );
     }
 
@@ -258,14 +269,14 @@ function Profile() {
         )}
 
         {editMode && (
-          <div className="flex gap-6 border-b mb-6">
+          <div className="flex gap-6 border-b border-gray-300 mb-6 cursor-pointer">
             <button
               type="button"
               onClick={() => setActiveTab("profile")}
               className={`pb-2 text-sm font-semibold border-b-2 ${
                 activeTab === "profile"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500"
+                  ? "border-orange-500 text-orange-600!"
+                  : "border-transparent text-gray-700!"
               }`}
             >
               Update Profile
@@ -276,8 +287,8 @@ function Profile() {
               onClick={() => setActiveTab("email")}
               className={`pb-2 text-sm font-semibold border-b-2 ${
                 activeTab === "email"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500"
+                  ? "border-orange-500 text-orange-600!"
+                  : "border-transparent text-gray-700!"
               }`}
             >
               Update Email
@@ -288,8 +299,8 @@ function Profile() {
               onClick={() => setActiveTab("password")}
               className={`pb-2 text-sm font-semibold border-b-2 ${
                 activeTab === "password"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500"
+                  ? "border-orange-500 text-orange-600!"
+                  : "border-transparent text-gray-700!"
               }`}
             >
               Update Password
@@ -300,10 +311,10 @@ function Profile() {
         {editMode && activeTab === "profile" && (
           <form onSubmit={handleSaveChanges}>
             <fieldset className="border-2 border-[#dddada] shadow-xl rounded-2xl p-4 mb-8">
-              <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
                 {accountInfoFields.map((field) => (
                   <div key={field.name}>
-                    <label className="text-gray-500">
+                    <label className="text-gray-500 font-bold">
                       {field.label}
                       {field.required && (
                         <span className="text-red-400 ">*</span>
