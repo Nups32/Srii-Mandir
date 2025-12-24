@@ -20,6 +20,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { deleteReview, getAllReview, updateReviewStatus } from "@/utils/API";
+import dayjs from "dayjs";
 // import { format } from "date-fns";
 
 interface Review {
@@ -92,9 +93,9 @@ export const ReviewTable = () => {
     navigate(`/admin/review/${record._id}/edit`);
   };
 
-  const handleViewDetails = (record: Review) => {
-    navigate(`/admin/review/${record._id}`);
-  };
+  // const handleViewDetails = (record: Review) => {
+  //   navigate(`/admin/review/${record._id}`);
+  // };
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -243,7 +244,7 @@ export const ReviewTable = () => {
       ),
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text: string) => (text),
+      render: (text: string) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
       sorter: (a: Review, b: Review) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
@@ -256,14 +257,14 @@ export const ReviewTable = () => {
       key: "action",
       render: (_text: any, record: Review) => (
         <div className="flex flex-row items-center space-x-2">
-          <Button
+          {/* <Button
             type="link"
             size="small"
             onClick={() => handleViewDetails(record)}
             className="p-0"
           >
             View
-          </Button>
+          </Button> */}
           <FaEdit
             className="w-4 h-4 text-blue-500 cursor-pointer hover:text-blue-700"
             onClick={() => handleEditRedirect(record)}

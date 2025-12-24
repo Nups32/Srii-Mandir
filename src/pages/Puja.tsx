@@ -11,14 +11,15 @@ import slide1 from "../assets/Puja/1/1.webp";
 import slide2 from "../assets/Puja/1/2.webp";
 import slide3 from "../assets/Puja/1/3.webp";
 import slide4 from "../assets/Puja/1/4.webp";
-import hero1 from "../assets/Puja/hero/1.jpg";
-import hero2 from "../assets/Puja/hero/2.jpg";
-import hero3 from "../assets/Puja/hero/3.jpg";
+// import hero1 from "../assets/Puja/hero/1.jpg";
+// import hero2 from "../assets/Puja/hero/2.jpg";
+// import hero3 from "../assets/Puja/hero/3.jpg";
 
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
 import { message } from "antd";
-import { getPooja } from "@/utils/API";
+import { getHeroSectionByType, getPooja } from "@/utils/API";
+import type { SlideItem } from "@/components/HeroSlider";
 // import { getPooja } from "@/utils/API";
 // import { message } from "antd";
 
@@ -42,29 +43,29 @@ const Puja: React.FC = () => {
   const [poojas, setPoojas] = useState<any[]>([]);
 
 
-  const heroSlides = [
-    {
-      id: 1,
-      image:
-        hero1,
-      title: "Join Sade Sati and Mahadasha Shanti Maha Puja",
-      buttonText: "BOOK NOW",
-    },
-    {
-      id: 2,
-      image:
-        hero2,
-      title: "Maha Shivaratri Special Puja",
-      buttonText: "BOOK NOW",
-    },
-    {
-      id: 2,
-      image:
-        hero3,
-      title: "Maha Shivaratri Special Puja",
-      buttonText: "BOOK NOW",
-    },
-  ];
+  // const heroSlides = [
+  //   {
+  //     id: 1,
+  //     image:
+  //       hero1,
+  //     title: "Join Sade Sati and Mahadasha Shanti Maha Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       hero2,
+  //     title: "Maha Shivaratri Special Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       hero3,
+  //     title: "Maha Shivaratri Special Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  // ];
 
   // const pujaCards: PujaCard[] = [
   //   {
@@ -232,6 +233,21 @@ const Puja: React.FC = () => {
     },
   ];
 
+  const [slides, setSlides] = useState<SlideItem[]>([]);
+  const fetchHeroSliders = async () => {
+    // setLoading(true);
+    try {
+      const response = await getHeroSectionByType("puja");
+      if (response.data.status) {
+        setSlides(response.data.data);
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
   const fetchPooja = async () => {
     setLoading(true);
     try {
@@ -250,16 +266,17 @@ const Puja: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchHeroSliders();
     fetchPooja();
   }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % slides?.length);
   };
 
   const prevSlide = () => {
     setCurrentSlide(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+      (prev) => (prev - 1 + slides?.length) % slides?.length
     );
   };
 
@@ -277,17 +294,17 @@ const Puja: React.FC = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
           Perform Puja as per Vedic rituals at Famous Hindu Temples in India
         </h1>
 
         {/* Hero Slider */}
         <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
-          <div className="relative h-64 md:h-96">
+          <div className="relative h-45 md:h-96">
             <img
-              src={heroSlides[currentSlide].image}
-              alt={heroSlides[currentSlide].title}
-              className="w-full h-full object-cover"
+              src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${slides?.[currentSlide]?.image}`}
+              alt={slides?.[currentSlide]?.title}
+              className="w-full h-full object-"
             />
             {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
               <div className="h-full flex flex-col justify-center px-8 md:px-16">
@@ -323,7 +340,7 @@ const Puja: React.FC = () => {
 
           {/* Dots */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {heroSlides.map((_, idx) => (
+            {slides?.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
@@ -336,10 +353,10 @@ const Puja: React.FC = () => {
 
         {/* Upcoming Pujas Section */}
         <div className="mb-8">
-          <h2 className="text-4xl font-bold text-gray-800 my-7">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 my-7">
             Upcoming Pujas
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-sm md:text-base text-gray-600 mb-8">
             Book puja{" "}
             <span className="text-orange-500 font-semibold">Online</span> with
             your name and gotra, receive the puja video along with the
@@ -352,7 +369,7 @@ const Puja: React.FC = () => {
             {poojas?.map((puja) => (
               <div
                 key={puja._id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-white flex flex-col justify-between rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Card Image */}
                 <div className="relative h-62">
@@ -396,17 +413,20 @@ const Puja: React.FC = () => {
                     </div> */}
                   </div>
 
-                  {/* Button */}
+                </div>
+                {/* Button */}
+                <div className="p-4">
                   <button
                     onClick={() => navigate(`/puja-detail/${puja.slug}`)}
                     // onClick={() =>
                     //   window.open(`product/${puja.slug}`, "_blank")
                     // }
-                    className="w-full bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full  bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     PARTICIPATE
                     <ChevronRight className="w-4 h-4" />
                   </button>
+
                 </div>
               </div>
             ))}
@@ -420,10 +440,10 @@ const Puja: React.FC = () => {
         <div className="space-y-24">
           {/*Puja Stats Section */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
               Start your Sacred Journey with Srii Mandir Puja Service
             </h2>
-            <p className="text-gray-600 text-lg text-center">
+            <p className="text-sm md:text-base text-gray-600 text-center">
               Why book Srii Mandir Online Puja?{" "}
             </p>
 
@@ -453,7 +473,7 @@ const Puja: React.FC = () => {
 
           {/* How Puja Works */}
           <section className="max-w-7xl mx-auto px-4 pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10! text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-10! text-center">
               How does Srii Mandir Online Puja Works?
             </h2>
 
@@ -469,7 +489,7 @@ const Puja: React.FC = () => {
                       <h3 className="text-lg font-semibold text-gray-900">
                         {item.title}
                       </h3>
-                      <p className="text-gray-600">{item.desc}</p>
+                      <p className="text-gray-600 text-sm md:text-base">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -502,10 +522,10 @@ const Puja: React.FC = () => {
 
           {/* Purohit Team Section */}
           <section className="max-w-7xl mx-auto px-4 py-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-10! text-center md:text-4xl">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-10! text-center ">
               Meet the experienced community of Srii Mandir Purohit's
             </h2>
-            <p className="text-gray-600 text-lg text-center max-w-3xl mx-auto mb-12! leading-relaxed">
+            <p className="text-sm md:text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12! leading-relaxed">
               Our commitment is to perform pujas with true devotion towards the
               Divine and in accordance with Vedic scriptures. We perform pujas
               at Shaktipeeths, Jyotirlingas and other sacred temples to ensure

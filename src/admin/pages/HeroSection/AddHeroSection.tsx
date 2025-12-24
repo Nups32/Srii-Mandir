@@ -303,7 +303,7 @@ const AddHeroSectionForm: React.FC = () => {
                       className="w-full"
                     >
                       <Radio value="home" className="!mb-2 block">Home Page</Radio>
-                      <Radio value="about" className="!mb-2 block">About Page</Radio>
+                      <Radio value="puja" className="!mb-2 block">Puja Page</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Col>
@@ -363,13 +363,13 @@ const AddHeroSectionForm: React.FC = () => {
             <Col span={24} className="buttons mt-6">
               <button
                 disabled={loading}
-                className={`btn-brand !py-2 !px-3 cursor-pointer ${loading && '!bg-gray-800'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (
                   <div className="flex items-center">
                     <Spin size="small" />
-                    <span className="!ml-2">Adding Hero Section...</span>
+                    <span className="ml-2!">Adding Hero Section...</span>
                   </div>
                 ) : (
                   "Add Hero Section"

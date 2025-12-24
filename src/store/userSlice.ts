@@ -13,7 +13,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       return { ...state, ...action.payload };
     },
-    logoutUser: () => initialState, // ✅ IMPORTANT
+    logoutUser: () => initialState, 
   },
 });
 

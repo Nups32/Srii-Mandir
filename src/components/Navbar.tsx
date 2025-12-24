@@ -4,10 +4,12 @@ import { Menu, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import logo from "../assets/logo.jpg";
 import type { IRootState } from "../store";
+import Logout from "./Logout";
 
 type AccountMenuItem = {
   name: string;
-  href: string;
+  href?: string;
+  isLogout?: boolean;
 };
 
 const NavMenus = [
@@ -16,23 +18,24 @@ const NavMenus = [
   { name: "Chadhava", path: "/chadhava" },
   { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
-  { name: "Instant Solution", path: "/instant-solution" },
-  { name: "Shakti Sanyansi", path: "/shakti-sanyans" },
+  // { name: "Instant Solution", path: "/instant-solution" },
+  { name: "Shakti Sanyansi", path: "/shakti-sanyas" },
   { name: "Srii Mandir Mela", path: "/products" },
-  { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
-  { name: "Dhan Basra Potli", path: "/Dhan-basra-potli" },
+  // { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
+  // { name: "Dhan Basra Potli", path: "/dhan-basra-potli" },
 ];
 
 const AccountMenus: AccountMenuItem[] = [
   { name: "Profile", href: "/profile" },
   { name: "My Puja Booking", href: "/puja/history" },
   { name: "My Chadhava Booking", href: "/chadhava/history" },
-  { name: "Logout", href: "/logout" },
+  { name: "Logout", isLogout: true },
 ];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -82,18 +85,33 @@ export default function Navbar() {
 
   const renderAccountMenu = (isMobile = false) => (
     <div className="bg-[#0B1221] border border-gray-700 rounded-lg shadow-lg min-w-62">
-      {AccountMenus.map((item) => (
-        <Link
-          key={item.name}
-          to={item.href}
-          onClick={closeAllMenus}
-          className={`block px-4 py-2 text-white hover:bg-gray-800 ${
-            isMobile ? "" : "px-6"
-          }`}
-        >
-          {item.name}
-        </Link>
-      ))}
+      {AccountMenus.map((item) =>
+        item.isLogout ? (
+          <button
+            key={item.name}
+            onClick={() => {
+              closeAllMenus();
+              setShowLogout(true);
+            }}
+            className={`block w-full text-left px-4 py-2 text-white! hover:bg-gray-800 ${
+              isMobile ? "" : "px-6"
+            }`}
+          >
+            {item.name}
+          </button>
+        ) : (
+          <Link
+            key={item.name}
+            to={item.href!}
+            onClick={closeAllMenus}
+            className={`block px-4 py-2 text-white hover:bg-gray-800 ${
+              isMobile ? "" : "px-6"
+            }`}
+          >
+            {item.name}
+          </Link>
+        )
+      )}
     </div>
   );
 
@@ -175,6 +193,8 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {showLogout && <Logout onClose={() => setShowLogout(false)} />}
 
       {/* BACKDROP */}
       {isMenuOpen && (

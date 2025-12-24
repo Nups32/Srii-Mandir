@@ -482,9 +482,9 @@ const EditPujaForm: React.FC = () => {
 
   const handleTimeChange: DatePickerProps["onChange"] = (_, dateTimeString: any) => {
     if (dateTimeString) {
-      const [datePart, timePart] = dateTimeString.split(' ');
-      setDate(datePart);
-      setTime(timePart);
+      // const [ timePart] = dateTimeString.split(' ');
+      // setDate(datePart);
+      setTime(dateTimeString);
     }
   };
 
@@ -536,8 +536,8 @@ const EditPujaForm: React.FC = () => {
 
   // Format combined date and time
   const getDateTimeValue = () => {
-    if (date && time) {
-      return dayjs(`${date} ${time}`);
+    if (time) {
+      return dayjs(`${time}`);
     }
     return null;
   };
@@ -628,12 +628,12 @@ const EditPujaForm: React.FC = () => {
               </Row>
             </Col>
 
-            {/* Offered To */}
+            {/* To */}
             <Col xs={24} sm={24} md={24}>
               <Row className="bg-white mb-4">
                 <Col xs={24} sm={24} md={4} className="flex justify-start mr-4 bg-white">
                   <label className="font-bold">
-                    Offered To <span className="text-danger">*</span>
+                    To <span className="text-danger">*</span>
                   </label>
                 </Col>
                 <Col xs={24} sm={24} md={12}>
@@ -646,7 +646,7 @@ const EditPujaForm: React.FC = () => {
                       size="large"
                       className="rounded border"
                       value={to}
-                      placeholder="e.g., Lord Ganesha"
+                      placeholder="e.g., For Strength to Overcome Hardships and Misfortunes in Life"
                       onChange={(e) => setTo(e.target.value)}
                     />
                   </Form.Item>
@@ -690,7 +690,7 @@ const EditPujaForm: React.FC = () => {
                       size="large"
                       className="rounded border"
                       value={date}
-                      placeholder="YYYY-MM-DD"
+                      placeholder="25 December, Thursday, Pausha Shukla Panchami"
                       onChange={(e) => handleDateChange(e.target.value)}
                     />
                   </Form.Item>

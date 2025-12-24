@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { getAllPooja } from "@/utils/API";
+import { getAllPooja, updatePoojaStatus } from "@/utils/API";
 // import { format } from "date-fns";
 
 interface Puja {
@@ -92,11 +92,11 @@ export const PoojaTable = () => {
         }
     };
 
-    const handleStatusChange = async (_record: Puja, field: 'isActive' | 'isUpcoming') => {
+    const handleStatusChange = async (record: Puja, field: 'isActive' | 'isUpcoming') => {
         try {
-            //   await updatePujaStatus(record._id, {
-            //     [field]: !record[field]
-            //   });
+              await updatePoojaStatus(record._id, {
+                [field]: !record[field]
+              });
             message.success(`Puja ${field === 'isActive' ? 'status' : 'upcoming status'} updated`);
             fetchPujas();
         } catch (error) {

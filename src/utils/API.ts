@@ -3,6 +3,7 @@
 // import { message } from 'antd';
 import axios from "axios";
 import { decryptData } from "./Helper";
+import { message } from "antd";
 // import CryptoJS from "crypto-js";
 // import { constants } from 'fs/promises';
 
@@ -41,7 +42,6 @@ CommanAPI.interceptors.request.use(async (config) => {
 API.interceptors.request.use(async (config) => {
   // const token = localStorage.getItem("token");
   const token = decryptData("token", 'string');
-  console.log("token",token);
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -79,15 +79,26 @@ API.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Check for invalid token response
-      if (error.response.status === 401) {
-        // message.error('Invalid token. Please login again.');
-        // localStorage.removeItem("token");
+      if (error.response.status === 401 || error.response.status === 403) {
+        message.error('Invalid token. Please login again.');
+        localStorage.removeItem("token");
         // window.location.href = "admin-login"; // Adjust the redirect URL as needed
+        // window.location.href = "/login"; // Adjust the redirect URL as needed
       }
     }
     return Promise.reject(error);
   }
 );
+
+
+export const forgetPassword = async (data: any) => {
+  try {
+    const response = await CommanAPI.post("/forget-password", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const contactUs = async (data: any) => {
   try {
@@ -137,6 +148,11 @@ export const storePooja = async (data: any) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const updatePoojaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/pooja/${id}/status`, data);
+  return response;
 };
 
 export const updatePooja = async (id: string, data: any) => {
@@ -484,7 +500,7 @@ export const registerUser = async (data: any) => {
     const response = await CommanAPI.post("/register", data);
     return response.data;
   } catch (error: any) {
-    throw error; 
+    throw error;
   }
 };
 
@@ -536,7 +552,7 @@ export const getAllBookChadhavas = (params?: {
   page?: number;
   limit?: number;
 }) => {
-  return API.get(`/backend/book-chadhava`, { params });
+  return API.get(`/backend/book-chadhavas`, { params });
 };
 
 export const createRazorpayOrder = async (orderData: any) => {
@@ -628,18 +644,58 @@ export const exportBookPujas = (format: 'excel' | 'pdf', filters?: {
   });
 };
 
-export const getBookedChadhava = async () => {
+export const getBookedChadhava = async (page = 1, limit = 10) => {
   try {
-    const response = await API.get("frontend/book-chadhava");
+    const response = await API.get("frontend/book-chadhava", {
+      params: { page, limit },
+    });
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export const getBookedPuja = async () => {
+export const getBookedPuja = async (page = 1, limit = 10) => {
   try {
-    const response = await API.get("frontend/book-puja");
+    const response = await API.get("frontend/book-puja", {
+      params: { page, limit },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateEmail = async (data: any) => {
+  try {
+    const response = await API.post("frontend/profile/email/update", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePassword = async (data: any) => {
+  try {
+    const response = await API.post("frontend/profile/password/update", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const PujaReviewByUser = async (data: any) => {
+  try {
+    const response = await API.post("frontend/puja-review", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateReport = async (data: any) => {
+  try {
+    const response = await API.post("frontend/generate-report", data);
     return response;
   } catch (error) {
     throw error;

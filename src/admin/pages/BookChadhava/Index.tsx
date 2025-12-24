@@ -35,7 +35,7 @@ interface BookChadhava {
   transactionId: string;
   order_id: string;
   method: string;
-  status: string;
+  paymentStatus: string;
   offering: OfferingItem[];
   type: string;
   amount: number;
@@ -48,11 +48,13 @@ export const BookChadhavaTable = () => {
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   // const [chadhavaFilter, setChadhavaFilter] = useState<string>("all");
-//   const [statusFilter, setStatusFilter] = useState<string>("all");
+  //   const [statusFilter, setStatusFilter] = useState<string>("all");
   // const [uniqueChadhavas, setUniqueChadhavas] = useState<{_id: string, name: string}[]>([]);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<BookChadhava | null>(null);
-//   const navigate = useNavigate();
+  const [stats, setStats] = useState<any>();
+
+  //   const navigate = useNavigate();
 
   const fetchBookChadhavas = async () => {
     setLoading(true);
@@ -60,23 +62,10 @@ export const BookChadhavaTable = () => {
       const response = await getAllBookChadhavas();
       if (response.data.status) {
         setDatasource(response.data.data);
-        
-        // // Extract unique chadhavas for filter
-        // const chadhavas = response.data.data
-        //   .filter((item: BookChadhava) => item.chadhavaId)
-        //   .map((item: BookChadhava) => ({
-        //     _id: item.chadhavaId._id,
-        //     name: item.chadhavaId.name
-        //   }));
-        
-        // // Remove duplicates
-        // const unique: any = Array.from(
-        //   new Map(chadhavas.map((c: any) => [c._id, c])).values()
-        // );
-        // setUniqueChadhavas(unique);
+        setStats(response.data.stats);
       }
     } catch (error) {
-        console.log(error);
+      console.log(error);
       message.error("Network error. Please try again.");
     } finally {
       setLoading(false);
@@ -126,8 +115,7 @@ export const BookChadhavaTable = () => {
 
   const formatDate = (dateString: string) => {
     try {
-    //   return format(new Date(dateString), "dd/MM/yyyy HH:mm");
-      return dateString;
+      return dayjs(dateString).format('DD-MM-YYYY hh:mm A');
     } catch {
       return dateString;
     }
@@ -204,7 +192,7 @@ export const BookChadhavaTable = () => {
           )}
         </div>
       ),
-      sorter: (a: BookChadhava, b: BookChadhava) => 
+      sorter: (a: BookChadhava, b: BookChadhava) =>
         (a.userId?.username || "").localeCompare(b.userId?.username || ""),
     },
     {
@@ -224,7 +212,7 @@ export const BookChadhavaTable = () => {
           )}
         </div>
       ),
-      sorter: (a: BookChadhava, b: BookChadhava) => 
+      sorter: (a: BookChadhava, b: BookChadhava) =>
         (a.chadhavaId?.name || "").localeCompare(b.chadhavaId?.name || ""),
     },
     {
@@ -241,9 +229,9 @@ export const BookChadhavaTable = () => {
             <Tag color={getMethodColor(record.method)}>
               {record.method || 'Unknown'}
             </Tag>
-            <Badge 
-              status={getStatusColor(record.status)} 
-              text={getStatusText(record.status)}
+            <Badge
+              status={getStatusColor(record?.paymentStatus)}
+              text={getStatusText(record?.paymentStatus)}
             />
           </div>
         </div>
@@ -280,9 +268,9 @@ export const BookChadhavaTable = () => {
       ),
       dataIndex: "createdAt",
       key: "createdAt",
-    //   render: (text: string) => formatDate(text),
+      //   render: (text: string) => formatDate(text),
       render: (text: string) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
-      sorter: (a: BookChadhava, b: BookChadhava) => 
+      sorter: (a: BookChadhava, b: BookChadhava) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
@@ -310,15 +298,15 @@ export const BookChadhavaTable = () => {
 
   const filteredBookings = getFilteredBookings();
 
-  // Calculate statistics
-  const totalAmount = filteredBookings.reduce((sum, item) => sum + item.amount, 0);
-  const totalBookings = filteredBookings.length;
-  const successBookings = filteredBookings.filter(item => 
-    ['success', 'completed', 'confirmed'].includes(item.status?.toLowerCase())
-  ).length;
-  const pendingBookings = filteredBookings.filter(item => 
-    ['pending', 'processing'].includes(item.status?.toLowerCase())
-  ).length;
+  // // Calculate statistics
+  // const totalAmount = filteredBookings.reduce((sum, item) => sum + item.amount, 0);
+  // const totalBookings = filteredBookings.length;
+  // const successBookings = filteredBookings.filter(item =>
+  //   ['success', 'completed', 'confirmed'].includes(item.paymentStatus?.toLowerCase())
+  // ).length;
+  // const pendingBookings = filteredBookings.filter(item =>
+  //   ['pending', 'processing'].includes(item.paymentStatus?.toLowerCase())
+  // ).length;
 
   return (
     <div className="">
@@ -374,7 +362,7 @@ export const BookChadhavaTable = () => {
             />
           </div>
         </Col> */}
-        
+
         {/* <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">
             <div className="text-xs font-medium text-gray-500">Filter by Status</div>
@@ -418,26 +406,22 @@ export const BookChadhavaTable = () => {
           <div className="flex flex-wrap gap-4">
             <div className="bg-white p-3 rounded shadow-sm border">
               <div className="text-xs text-gray-500">Total Bookings</div>
-              <div className="text-lg font-bold">{totalBookings}</div>
+              <div className="text-lg font-bold">{stats?.totalBookings}</div>
             </div>
             <div className="bg-white p-3 rounded shadow-sm border">
               <div className="text-xs text-gray-500">Total Amount</div>
-              <div className="text-lg font-bold">₹{totalAmount.toLocaleString('en-IN')}</div>
+              <div className="text-lg font-bold">₹{stats?.totalAmount?.toLocaleString('en-IN')}</div>
             </div>
-            <div className="bg-white p-3 rounded shadow-sm border">
+            {/* <div className="bg-white p-3 rounded shadow-sm border">
               <div className="text-xs text-gray-500">Successful</div>
-              <div className="text-lg font-bold text-green-600">{successBookings}</div>
-            </div>
-            <div className="bg-white p-3 rounded shadow-sm border">
-              <div className="text-xs text-gray-500">Pending</div>
-              <div className="text-lg font-bold text-orange-600">{pendingBookings}</div>
+              <div className="text-lg font-bold text-green-600">{stats?.paymentStatusDistribution?.captured}</div>
             </div>
             <div className="bg-white p-3 rounded shadow-sm border">
               <div className="text-xs text-gray-500">Avg. Booking</div>
               <div className="text-lg font-bold">
-                ₹{totalBookings > 0 ? Math.round(totalAmount / totalBookings).toLocaleString('en-IN') : 0}
+                ₹{stats?.totalBookings > 0 ? Math.round(stats?.averageBooking)?.toLocaleString('en-IN') : 0}
               </div>
-            </div>
+            </div> */}
           </div>
         </Col>
       </Row>
@@ -463,7 +447,7 @@ export const BookChadhavaTable = () => {
           </Col>
         </Card>
       </Row>
-      
+
       {/* View Details Modal */}
       <Modal
         title="Booking Details"
@@ -487,9 +471,9 @@ export const BookChadhavaTable = () => {
                     ₹{selectedRecord.amount?.toLocaleString('en-IN')}
                   </div>
                   <div className="flex items-center space-x-2 mt-1">
-                    <Badge 
-                      status={getStatusColor(selectedRecord.status)} 
-                      text={getStatusText(selectedRecord.status)}
+                    <Badge
+                      status={getStatusColor(selectedRecord?.paymentStatus)}
+                      text={getStatusText(selectedRecord?.paymentStatus)}
                     />
                     <Tag color={getMethodColor(selectedRecord.method)}>
                       {selectedRecord.method || 'Unknown'}
@@ -629,16 +613,16 @@ export const BookChadhavaTable = () => {
                     <div className="text-sm">Method: {selectedRecord.method}</div>
                   </Timeline.Item>
                 )}
-                <Timeline.Item 
+                <Timeline.Item
                   color={
-                    ['success', 'completed', 'confirmed'].includes(selectedRecord.status?.toLowerCase()) 
-                      ? 'green' 
-                      : ['pending', 'processing'].includes(selectedRecord.status?.toLowerCase())
-                      ? 'orange'
-                      : 'red'
+                    ['success', 'completed', 'confirmed'].includes(selectedRecord?.paymentStatus?.toLowerCase())
+                      ? 'green'
+                      : ['pending', 'processing'].includes(selectedRecord?.paymentStatus?.toLowerCase())
+                        ? 'orange'
+                        : 'red'
                   }
                 >
-                  <div className="font-medium">Status: {getStatusText(selectedRecord.status)}</div>
+                  <div className="font-medium">Status: {getStatusText(selectedRecord?.paymentStatus)}</div>
                   <div className="text-gray-500 text-sm">
                     Last Updated: {formatDate(selectedRecord.updatedAt)}
                   </div>

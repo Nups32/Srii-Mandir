@@ -1,5 +1,6 @@
 import shaktiSanyasi from "../assets/Sri_Ma_Sarada_Devi.jpg";
 import bg from "../assets/bg.png";
+
 const ShaktiSanyas = () => {
   return (
     <section className="relative  py-20 px-4">

@@ -30,7 +30,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
   // const [loading, setLoading] = useState(false);
 
 
-  const fetchProduct = async () => {
+  const fetchHeroSliders = async () => {
     // setLoading(true);
     try {
         const response = await getHeroSectionByType(type || "");
@@ -45,7 +45,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
   };
 
   useEffect(() => {
-    fetchProduct();
+    fetchHeroSliders();
   }, [type]);
 
   useEffect(() => {

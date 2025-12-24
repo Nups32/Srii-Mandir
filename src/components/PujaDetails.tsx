@@ -29,7 +29,6 @@ const PujaDetail = () => {
   const [, setLoading] = useState(true);
   const [pooja, setPooja] = useState<any>();
 
-
   const fetchProduct = async () => {
     setLoading(true);
     try {
@@ -53,9 +52,11 @@ const PujaDetail = () => {
     setCurrentIndex((prev) => (prev + 1) % pooja?.images?.length);
   };
 
-  console.log("pooja", pooja)
+  console.log("pooja", pooja);
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? pooja?.images?.length - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? pooja?.images?.length - 1 : prev - 1
+    );
   };
 
   const tabs = [
@@ -121,8 +122,6 @@ const PujaDetail = () => {
     return () => observer.disconnect();
   }, [tabs]);
 
-
-
   // useEffect(() => {
   //   const observer = new IntersectionObserver(
   //     (entries) => {
@@ -147,7 +146,6 @@ const PujaDetail = () => {
   //   return () => observer.disconnect();
   // }, []);
 
-
   // const handleClick = (tabId: string) => {
   //   setActiveTab(tabId);
   //   document.getElementById(tabId)?.scrollIntoView({
@@ -161,7 +159,7 @@ const PujaDetail = () => {
     const element = document.getElementById(tabId);
     if (!element) return;
 
-    const offset = 100; // 👈 adjust this value (px)
+    const offset = 100;
     const elementPosition =
       element.getBoundingClientRect().top + window.pageYOffset;
 
@@ -170,7 +168,6 @@ const PujaDetail = () => {
       behavior: "smooth",
     });
   };
-
 
   // }
 
@@ -293,12 +290,15 @@ const PujaDetail = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 pb-16">
         <div className="">
-          <div className="max-w-7xl mx-auto px-4 mt-20 mb-24">
+          {/* <div className="max-w-7xl mx-auto px-4 mt-20 mb-24"> */}
+          <div className="px-4 mt-20 mb-42">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-105">
               {/* left image slider part */}
               <div className="relative rounded-2xl overflow-hidden shadow-lg h-full">
                 <img
-                  src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${pooja?.images?.[currentIndex]}`}
+                  src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${
+                    pooja?.images?.[currentIndex]
+                  }`}
                   alt={`Slide ${currentIndex + 1}`}
                   className="w-full h-full object-cover transition-all duration-500"
                 />
@@ -324,8 +324,9 @@ const PujaDetail = () => {
                     <button
                       key={i}
                       onClick={() => setCurrentIndex(i)}
-                      className={`h-2 w-2 rounded-full ${i === currentIndex ? "bg-white" : "bg-white/40"
-                        }`}
+                      className={`h-2 w-2 rounded-full ${
+                        i === currentIndex ? "bg-white" : "bg-white/40"
+                      }`}
                     />
                   ))}
                 </div>
@@ -543,16 +544,18 @@ const PujaDetail = () => {
             </div>
           </div> */}
           <div className="sticky top-20 z-40 bg-white border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-4">
-              <div className="flex justify-center gap-10 px-4 overflow-x-auto no-scrollbar">
+            <div className="px-4">
+              <div className="flex justify-start md:justify-center gap-6 overflow-x-auto no-scrollbar">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => handleClick(tab.id)}
-                    className={`py-4 border-b-2 text-md transition-colors cursor-pointer ${activeTab === tab.id
-                      ? "border-orange-500 text-orange-500! font-semibold"
-                      : "border-transparent text-gray-600 hover:text-gray-900"
-                      }`}
+                    className={`py-4 whitespace-nowrap border-b-2 text-sm transition-colors
+            ${
+              activeTab === tab.id
+                ? "border-orange-500 text-orange-500! font-semibold"
+                : "border-transparent text-gray-600 hover:text-gray-900"
+            }`}
                   >
                     {tab.name}
                   </button>
