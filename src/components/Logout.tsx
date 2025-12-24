@@ -1,4 +1,5 @@
-import { logoutUser } from "@/store/userSlice";
+import { setUserClearConfig } from "@/store/userConfigSlice";
+// import { logoutUser } from "@/store/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -7,8 +8,9 @@ function Logout({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logoutUser());
-    localStorage.clear();
+    // dispatch(logoutUser());
+    localStorage.clear()
+    dispatch(setUserClearConfig());
     onClose();
     setTimeout(() => navigate("/"), 0);
   };
