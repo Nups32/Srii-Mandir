@@ -29,6 +29,38 @@ const PujaDetail = () => {
   const [, setLoading] = useState(true);
   const [pooja, setPooja] = useState<any>();
 
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    if (!pooja?.time) return;
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const target = new Date(pooja.time).getTime();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        clearInterval(interval);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pooja?.time]);
+
   const fetchProduct = async () => {
     setLoading(true);
     try {
@@ -153,6 +185,7 @@ const PujaDetail = () => {
   //     block: "start",
   //   });
   // };
+
   const handleClick = (tabId: string) => {
     setActiveTab(tabId);
 
@@ -428,7 +461,7 @@ const PujaDetail = () => {
                       <div className="flex items-start gap-2">
                         <Calendar className="w-5 h-5 text-orange-500 mt-0.5" />
                         <span>
-                          {new Date(puja.date).toLocaleDateString("en-IN", {
+                          {new Date(puja.time).toLocaleDateString("en-IN", {
                             day: "numeric",
                             month: "long",
                             year: "numeric",
@@ -443,7 +476,7 @@ const PujaDetail = () => {
                     </div>
 
                     {/* Countdown (Static for now) */}
-                    <div className="bg-orange-50 rounded-lg p-4 mb-5">
+                    {/* <div className="bg-orange-50 rounded-lg p-4 mb-5">
                       <p className="text-sm font-medium text-gray-700 mb-2">
                         Puja booking will close in
                       </p>
@@ -462,10 +495,42 @@ const PujaDetail = () => {
                           </div>
                         ))}
                       </div>
-                      {/* <div className="flex gap-2">
-                        <Clock className="w-5 h-5 text-orange-500 mt-0.5" />
-                        <span>{puja.time}</span>
-                      </div> */}
+                    </div> */}
+
+                    <div className="bg-orange-50 rounded-lg p-4 mb-5">
+                      <p className="text-sm font-medium text-gray-700 mb-2">
+                        Puja booking will close in
+                      </p>
+
+                      <div className="flex gap-3 text-center">
+                        <div>
+                          <p className="text-lg font-bold text-orange-600">
+                            {timeLeft.days}
+                          </p>
+                          <p className="text-xs text-gray-500">Day</p>
+                        </div>
+
+                        <div>
+                          <p className="text-lg font-bold text-orange-600">
+                            {timeLeft.hours}
+                          </p>
+                          <p className="text-xs text-gray-500">Hours</p>
+                        </div>
+
+                        <div>
+                          <p className="text-lg font-bold text-orange-600">
+                            {timeLeft.minutes}
+                          </p>
+                          <p className="text-xs text-gray-500">Mins</p>
+                        </div>
+
+                        <div>
+                          <p className="text-lg font-bold text-orange-600">
+                            {timeLeft.seconds}
+                          </p>
+                          <p className="text-xs text-gray-500">Secs</p>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Rating */}
