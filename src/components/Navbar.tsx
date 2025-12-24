@@ -16,11 +16,11 @@ const NavMenus = [
   { name: "Chadhava", path: "/chadhava" },
   { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
-  { name: "Instant Solution", path: "/instant-solution" },
+  // { name: "Instant Solution", path: "/instant-solution" },
   { name: "Shakti Sanyansi", path: "/shakti-sanyans" },
   { name: "Srii Mandir Mela", path: "/products" },
-  { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
-  { name: "Dhan Basra Potli", path: "/Dhan-basra-potli" },
+  // { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
+  // { name: "Dhan Basra Potli", path: "/dhan-basra-potli" },
 ];
 
 const AccountMenus: AccountMenuItem[] = [

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { getProfile, updateProfile } from "@/utils/API";
 import { message } from "antd";
 import { User } from "lucide-react";
+import UpdateEmail from "./UpdateEmail";
+import UpdatePassword from "./UpdatePassword";
 
 const initialUserData = {
   username: "",
@@ -74,7 +76,9 @@ function Profile() {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
 
@@ -88,7 +92,7 @@ function Profile() {
     e.preventDefault();
     try {
       const res = await updateProfile(formData);
-      console.log("res of update profile", res)
+      console.log("res of update profile", res);
       if (res.status == 200) {
         message.success("Profile Updated Successfully");
       } else {
@@ -99,8 +103,12 @@ function Profile() {
     }
   };
 
+  type EditTab = "profile" | "email" | "password";
+  const [activeTab, setActiveTab] = useState<EditTab>("profile");
+
   const handleEditClick = () => {
     setEditMode(true);
+    setActiveTab("profile");
   };
 
   const handleSaveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -250,7 +258,47 @@ function Profile() {
         )}
 
         {editMode && (
-          <form onSubmit={handleSaveChanges} className="">
+          <div className="flex gap-6 border-b mb-6">
+            <button
+              type="button"
+              onClick={() => setActiveTab("profile")}
+              className={`pb-2 text-sm font-semibold border-b-2 ${
+                activeTab === "profile"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500"
+              }`}
+            >
+              Update Profile
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("email")}
+              className={`pb-2 text-sm font-semibold border-b-2 ${
+                activeTab === "email"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500"
+              }`}
+            >
+              Update Email
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("password")}
+              className={`pb-2 text-sm font-semibold border-b-2 ${
+                activeTab === "password"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500"
+              }`}
+            >
+              Update Password
+            </button>
+          </div>
+        )}
+
+        {editMode && activeTab === "profile" && (
+          <form onSubmit={handleSaveChanges}>
             <fieldset className="border-2 border-[#dddada] shadow-xl rounded-2xl p-4 mb-8">
               <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
                 {accountInfoFields.map((field) => (
@@ -277,6 +325,10 @@ function Profile() {
             </div>
           </form>
         )}
+
+        {editMode && activeTab === "email" && <UpdateEmail />}
+
+        {editMode && activeTab === "password" && <UpdatePassword />}
       </div>
     </section>
   );

@@ -89,7 +89,7 @@ export default function PujaHistory() {
         ) : (
           // <PujaTable bookings={bookings} onReview={setSelectedBooking}/>
           <PujaTable
-            onView={setSelectedBooking}
+            onReview={setSelectedBooking}
           />
         )}
 

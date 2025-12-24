@@ -1,6 +1,6 @@
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 // import React, { useEffect, useState } from "react";
-// import { getProfile, updateProfile, updateUserData } from "@/utils/API";
+// import { getProfile, updateProfile } from "@/utils/API";
 // import { message } from "antd";
 // import { User } from "lucide-react";
 
