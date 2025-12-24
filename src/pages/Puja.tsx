@@ -234,6 +234,7 @@ const Puja: React.FC = () => {
   ];
 
   const [slides, setSlides] = useState<SlideItem[]>([]);
+  
   const fetchHeroSliders = async () => {
     // setLoading(true);
     try {
@@ -370,7 +371,7 @@ const Puja: React.FC = () => {
               <div
                 key={puja._id}
                 className="bg-white flex flex-col justify-between rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
-              >
+              > 
                 {/* Card Image */}
                 <div className="relative h-62">
                   <img
