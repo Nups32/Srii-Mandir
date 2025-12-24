@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getBookedPuja } from "@/utils/API";
 import {
   Col,
@@ -46,6 +47,7 @@ export default function PujaTable({
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchBookedPooja(pagination.current, pagination.pageSize);
   }, []);
 

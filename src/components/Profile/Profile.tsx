@@ -309,15 +309,15 @@ function Profile() {
         )}
 
         {editMode && activeTab === "profile" && (
-          <form onSubmit={handleSaveChanges}>
-            <fieldset className="border-2 border-[#dddada] shadow-xl rounded-2xl p-4 mb-8">
+          <form onSubmit={handleSaveChanges} className="border border-gray-200 shadow-xl rounded-2xl ">
+            <fieldset >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mt-2 p-10">
                 {accountInfoFields.map((field) => (
                   <div key={field.name}>
-                    <label className="text-gray-500 font-bold">
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
                       {field.label}
                       {field.required && (
-                        <span className="text-red-400 ">*</span>
+                        <span className="text-red-400 "> *</span>
                       )}
                     </label>
                     {renderInputField(field)}
@@ -329,7 +329,7 @@ function Profile() {
             <div className="col-span-2 flex justify-center items-center">
               <button
                 type="submit"
-                className="bg-green-500 mt-5! px-6 py-2  hover:bg-green-600 rounded text-white! text-lg font-semibold transition-colors duration-200 cursor-pointer "
+                className="bg-green-500 mt-5! px-6 py-2 mb-4! hover:bg-green-600 rounded text-white! text-lg font-semibold transition-colors duration-200 cursor-pointer "
               >
                 Save Changes
               </button>
