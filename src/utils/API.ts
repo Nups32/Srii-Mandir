@@ -139,6 +139,11 @@ export const storePooja = async (data: any) => {
   }
 };
 
+export const updatePoojaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
+  const response = await API.patch(`/backend/pooja/${id}/status`, data);
+  return response;
+};
+
 export const updatePooja = async (id: string, data: any) => {
   try {
     const response = await API.put(`/backend/pooja/${id}/update`, data);

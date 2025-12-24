@@ -314,7 +314,7 @@ const AddReviewForm: React.FC = () => {
             <Col span={24} className="buttons mt-6">
               <button
                 disabled={loading}
-                className={`btn-brand py-2! px-3! cursor-pointer ${loading && 'bg-gray-800!'}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white! font-bold py-2 px-4 rounded ${loading && 'bg-gray-800!'}`}
                 type="submit"
               >
                 {loading ? (

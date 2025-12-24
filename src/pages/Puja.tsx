@@ -18,7 +18,8 @@ import hero3 from "../assets/Puja/hero/3.jpg";
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
 import { message } from "antd";
-import { getPooja } from "@/utils/API";
+import { getHeroSectionByType, getPooja } from "@/utils/API";
+import type { SlideItem } from "@/components/HeroSlider";
 // import { getPooja } from "@/utils/API";
 // import { message } from "antd";
 
@@ -42,29 +43,29 @@ const Puja: React.FC = () => {
   const [poojas, setPoojas] = useState<any[]>([]);
 
 
-  const heroSlides = [
-    {
-      id: 1,
-      image:
-        hero1,
-      title: "Join Sade Sati and Mahadasha Shanti Maha Puja",
-      buttonText: "BOOK NOW",
-    },
-    {
-      id: 2,
-      image:
-        hero2,
-      title: "Maha Shivaratri Special Puja",
-      buttonText: "BOOK NOW",
-    },
-    {
-      id: 2,
-      image:
-        hero3,
-      title: "Maha Shivaratri Special Puja",
-      buttonText: "BOOK NOW",
-    },
-  ];
+  // const heroSlides = [
+  //   {
+  //     id: 1,
+  //     image:
+  //       hero1,
+  //     title: "Join Sade Sati and Mahadasha Shanti Maha Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       hero2,
+  //     title: "Maha Shivaratri Special Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       hero3,
+  //     title: "Maha Shivaratri Special Puja",
+  //     buttonText: "BOOK NOW",
+  //   },
+  // ];
 
   // const pujaCards: PujaCard[] = [
   //   {
@@ -232,6 +233,21 @@ const Puja: React.FC = () => {
     },
   ];
 
+  const [slides, setSlides] = useState<SlideItem[]>([]);
+  const fetchHeroSliders = async () => {
+    // setLoading(true);
+    try {
+      const response = await getHeroSectionByType("puja");
+      if (response.data.status) {
+        setSlides(response.data.data);
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
   const fetchPooja = async () => {
     setLoading(true);
     try {
@@ -250,16 +266,17 @@ const Puja: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchHeroSliders();
     fetchPooja();
   }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % slides?.length);
   };
 
   const prevSlide = () => {
     setCurrentSlide(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+      (prev) => (prev - 1 + slides?.length) % slides?.length
     );
   };
 
@@ -285,9 +302,9 @@ const Puja: React.FC = () => {
         <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
           <div className="relative h-64 md:h-96">
             <img
-              src={heroSlides[currentSlide].image}
-              alt={heroSlides[currentSlide].title}
-              className="w-full h-full object-cover"
+              src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${slides?.[currentSlide]?.image}`}
+              alt={slides?.[currentSlide]?.title}
+              className="w-full h-full"
             />
             {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
               <div className="h-full flex flex-col justify-center px-8 md:px-16">
@@ -323,7 +340,7 @@ const Puja: React.FC = () => {
 
           {/* Dots */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {heroSlides.map((_, idx) => (
+            {slides?.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
@@ -352,7 +369,7 @@ const Puja: React.FC = () => {
             {poojas?.map((puja) => (
               <div
                 key={puja._id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-white flex flex-col justify-between rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Card Image */}
                 <div className="relative h-62">
@@ -396,17 +413,20 @@ const Puja: React.FC = () => {
                     </div> */}
                   </div>
 
-                  {/* Button */}
+                </div>
+                {/* Button */}
+                <div className="p-4">
                   <button
                     onClick={() => navigate(`/puja-detail/${puja.slug}`)}
                     // onClick={() =>
                     //   window.open(`product/${puja.slug}`, "_blank")
                     // }
-                    className="w-full bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full  bg-green-600 hover:bg-green-700 text-white! font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     PARTICIPATE
                     <ChevronRight className="w-4 h-4" />
                   </button>
+
                 </div>
               </div>
             ))}

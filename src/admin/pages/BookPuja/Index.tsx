@@ -21,14 +21,14 @@ import { getAllBookPujas, getPooja } from "@/utils/API";
 import dayjs from "dayjs";
 // import { format } from "date-fns";
 
-interface OfferingItem {
+export interface OfferingItem {
   name: string;
   price: number;
   qty: number;
   offeringId: string;
 }
 
-interface Address {
+export interface Address {
   pincode: string;
   state: string;
   city: string;
@@ -37,7 +37,7 @@ interface Address {
   landMark: string;
 }
 
-interface PujaParticipateMemberDetail {
+export interface PujaParticipateMemberDetail {
   whatsappNumber: string;
   callingNumber: string;
   members: string[];
@@ -45,17 +45,17 @@ interface PujaParticipateMemberDetail {
   address: Address;
 }
 
-interface PujaPackage {
+export interface PujaPackage {
   _id: string;
   title: string;
   description?: string;
   price?: number;
 }
 
-interface BookPuja {
+export interface BookPuja {
   _id: string;
   userId: { _id: string; username: string; email: string; mobile?: string };
-  pujaId: { _id: string; name: string;};
+  pujaId: { _id: string; name: string; };
   pujaPackage: {
     packageId: PujaPackage;
     person: number;
@@ -76,7 +76,7 @@ interface BookPuja {
 export const BookPujaTable = () => {
   const [datasource, setDatasource] = useState<BookPuja[]>([]);
   const [loading, setLoading] = useState(false);
-//   const [exportLoading, setExportLoading] = useState(false);
+  //   const [exportLoading, setExportLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pujaFilter, setPujaFilter] = useState<string>("all");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState<string>("all");
@@ -131,7 +131,7 @@ export const BookPujaTable = () => {
 
     // Puja filter
     if (pujaFilter !== "all") {
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.pujaId._id === pujaFilter
       );
     }
@@ -139,11 +139,11 @@ export const BookPujaTable = () => {
     // Payment status filter
     if (paymentStatusFilter !== "all") {
       if (paymentStatusFilter === "captured") {
-        filtered = filtered.filter(item => 
+        filtered = filtered.filter(item =>
           item.paymentStatus?.toLowerCase() === "captured"
         );
       } else {
-        filtered = filtered.filter(item => 
+        filtered = filtered.filter(item =>
           item.paymentStatus?.toLowerCase() !== "captured"
         );
       }
@@ -157,42 +157,42 @@ export const BookPujaTable = () => {
     setViewModalVisible(true);
   };
 
-//   const handleExport = async (format: 'excel' | 'pdf') => {
-//     setExportLoading(true);
-//     try {
-//       const filters = {
-//         pujaId: pujaFilter !== "all" ? pujaFilter : undefined,
-//         paymentStatus: paymentStatusFilter !== "all" ? paymentStatusFilter : undefined,
-//         search: searchText || undefined,
-//       };
+  //   const handleExport = async (format: 'excel' | 'pdf') => {
+  //     setExportLoading(true);
+  //     try {
+  //       const filters = {
+  //         pujaId: pujaFilter !== "all" ? pujaFilter : undefined,
+  //         paymentStatus: paymentStatusFilter !== "all" ? paymentStatusFilter : undefined,
+  //         search: searchText || undefined,
+  //       };
 
-//       const response = await exportBookPujas(format, filters);
-      
-//       if (response.data) {
-//         // Create download link
-//         const blob = new Blob([response.data], { 
-//           type: format === 'excel' 
-//             ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-//             : 'application/pdf' 
-//         });
-//         const url = window.URL.createObjectURL(blob);
-//         const link = document.createElement('a');
-//         link.href = url;
-//         link.download = `puja-bookings-${format}-${new Date().getTime()}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//         window.URL.revokeObjectURL(url);
-        
-//         message.success(`Data exported successfully as ${format.toUpperCase()}`);
-//       }
-//     } catch (error) {
-//       console.error("Export error:", error);
-//       message.error("Failed to export data");
-//     } finally {
-//       setExportLoading(false);
-//     }
-//   };
+  //       const response = await exportBookPujas(format, filters);
+
+  //       if (response.data) {
+  //         // Create download link
+  //         const blob = new Blob([response.data], { 
+  //           type: format === 'excel' 
+  //             ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+  //             : 'application/pdf' 
+  //         });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const link = document.createElement('a');
+  //         link.href = url;
+  //         link.download = `puja-bookings-${format}-${new Date().getTime()}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+  //         document.body.appendChild(link);
+  //         link.click();
+  //         document.body.removeChild(link);
+  //         window.URL.revokeObjectURL(url);
+
+  //         message.success(`Data exported successfully as ${format.toUpperCase()}`);
+  //       }
+  //     } catch (error) {
+  //       console.error("Export error:", error);
+  //       message.error("Failed to export data");
+  //     } finally {
+  //       setExportLoading(false);
+  //     }
+  //   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -277,7 +277,7 @@ export const BookPujaTable = () => {
           )}
         </div>
       ),
-      sorter: (a: BookPuja, b: BookPuja) => 
+      sorter: (a: BookPuja, b: BookPuja) =>
         (a.userId?.username || "").localeCompare(b.userId?.username || ""),
     },
     {
@@ -301,7 +301,7 @@ export const BookPujaTable = () => {
           )}
         </div>
       ),
-      sorter: (a: BookPuja, b: BookPuja) => 
+      sorter: (a: BookPuja, b: BookPuja) =>
         (a.pujaPackage?.packageId?.title || "").localeCompare(b.pujaPackage?.packageId?.title || ""),
     },
     {
@@ -318,8 +318,8 @@ export const BookPujaTable = () => {
             <Tag color={getMethodColor(record.method)}>
               {record.method || 'Unknown'}
             </Tag>
-            <Badge 
-              status={getPaymentStatusColor(record.paymentStatus)} 
+            <Badge
+              status={getPaymentStatusColor(record.paymentStatus)}
               text={getPaymentStatusText(record.paymentStatus)}
             />
           </div>
@@ -358,7 +358,7 @@ export const BookPujaTable = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text: string) => formatDate(text),
-      sorter: (a: BookPuja, b: BookPuja) => 
+      sorter: (a: BookPuja, b: BookPuja) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
@@ -369,15 +369,17 @@ export const BookPujaTable = () => {
       ),
       key: "action",
       render: (_text: any, record: BookPuja) => (
-        <Tooltip title="View Details">
+        <div className="flex flex-row items-center space-x-2">
           <Button
             type="link"
             size="small"
             icon={<EyeOutlined />}
             onClick={() => handleViewDetails(record)}
             className="p-0"
-          />
-        </Tooltip>
+          >
+            View
+          </Button>
+        </div>
       ),
       width: 80,
     },
@@ -388,7 +390,7 @@ export const BookPujaTable = () => {
   // Calculate statistics
   const totalAmount = filteredBookings.reduce((sum, item) => sum + item.amount, 0);
   const totalBookings = filteredBookings.length;
-  const capturedBookings = filteredBookings.filter(item => 
+  const capturedBookings = filteredBookings.filter(item =>
     item.paymentStatus?.toLowerCase() === "captured"
   ).length;
   const otherBookings = totalBookings - capturedBookings;
@@ -479,7 +481,7 @@ export const BookPujaTable = () => {
             />
           </div>
         </Col>
-        
+
         <Col xs={24} sm={12} md={8} xl={6} xxl={6}>
           <div className="space-y-2">
             <div className="text-xs font-medium text-gray-500">Filter by Payment Status</div>
@@ -561,7 +563,7 @@ export const BookPujaTable = () => {
           </Col>
         </Card>
       </Row>
-      
+
       {/* View Details Modal */}
       <Modal
         title="Puja Booking Details"
@@ -585,8 +587,8 @@ export const BookPujaTable = () => {
                     ₹{selectedRecord.amount?.toLocaleString('en-IN')}
                   </div>
                   <div className="flex items-center space-x-2 mt-1">
-                    <Badge 
-                      status={getPaymentStatusColor(selectedRecord.paymentStatus)} 
+                    <Badge
+                      status={getPaymentStatusColor(selectedRecord.paymentStatus)}
                       text={getPaymentStatusText(selectedRecord.paymentStatus)}
                     />
                     <Tag color={getMethodColor(selectedRecord.method)}>
@@ -662,7 +664,7 @@ export const BookPujaTable = () => {
                     ) : 'N/A'}
                   </Descriptions.Item>
                 </Descriptions>
-                
+
                 {/* Address Details */}
                 {selectedRecord.pujaParticipateMemberDetail.address && (
                   <>

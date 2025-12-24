@@ -14,7 +14,7 @@ const Footer = () => {
   const footerExplore = [
     { label: "Mandir", href: "/mandir" },
     { label: "Media", href: "/media" },
-    { label: "Live Katha", href: "/live-katha" },
+    { label: "Live Katha", href: "/media/katha" },
     { label: "About Guru", href: "/about-guru" },
   ];
 

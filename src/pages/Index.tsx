@@ -11,6 +11,9 @@ import puja2 from "../assets/Home/1.jpg";
 import puja3 from "../assets/Home/1.jpg";
 import ReviewsRatings from "@/components/Reviews";
 import StatsGrid from "@/components/StatsGrid";
+import { useEffect, useState } from "react";
+import { getPooja } from "@/utils/API";
+import { message } from "antd";
 
 const pujas = [
   {
@@ -77,6 +80,32 @@ const Index = () => {
   //   },
   // ];
 
+  const [, setLoading] = useState(false);
+  const [poojas, setPoojas] = useState<any[]>([]);
+
+  const fetchPooja = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getPooja();
+      // console.log("res from fetchpooja", response)
+      if (response?.data?.status) {
+        // setPoojas(response.data.data);
+        const poojas = response?.data?.data || [];
+        setPoojas(poojas.slice(0, 3));
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPooja();
+  }, []);
+
   return (
     <>
       <main className="">
@@ -121,7 +150,8 @@ const Index = () => {
 
           {/* Puja Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-4">
-            {pujas.map((puja) => (
+            {/* {pujas.map((puja) => ( */}
+            {poojas.map((puja) => (
               <div
                 key={puja.title}
                 className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-sm transition"
@@ -129,7 +159,8 @@ const Index = () => {
                 {/* Image Banner */}
                 <div className="relative">
                   <img
-                    src={puja.image}
+                    // src={puja.image}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/pooja/${puja.image}`}
                     alt={puja.title}
                     className="w-full h-60 object-cover rounded-lg"
                   />

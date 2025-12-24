@@ -133,7 +133,7 @@ export const HeroSectionTable = () => {
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'home': return 'blue';
-      case 'about': return 'green';
+      case 'puja': return 'green';
       default: return 'default';
     }
   };
@@ -141,7 +141,7 @@ export const HeroSectionTable = () => {
   const getTypeText = (type: string) => {
     switch (type) {
       case 'home': return 'Home';
-      case 'about': return 'About';
+      case 'puja': return 'Puja';
       default: return type;
     }
   };
@@ -330,7 +330,7 @@ export const HeroSectionTable = () => {
           >
             <Option value="all">All Types</Option>
             <Option value="home">Home</Option>
-            <Option value="about">About</Option>
+            <Option value="puja">Puja</Option>
           </Select>
         </Col>
       </Row>
