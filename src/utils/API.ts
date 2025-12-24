@@ -41,7 +41,7 @@ CommanAPI.interceptors.request.use(async (config) => {
 API.interceptors.request.use(async (config) => {
   // const token = localStorage.getItem("token");
   const token = decryptData("token", 'string');
-  console.log("token",token);
+  console.log("token", token);
   // const wifiKey = localStorage.getItem("wifiKey");
   // const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
   // // const now = new Date();
@@ -489,7 +489,7 @@ export const registerUser = async (data: any) => {
     const response = await CommanAPI.post("/register", data);
     return response.data;
   } catch (error: any) {
-    throw error; 
+    throw error;
   }
 };
 
@@ -633,18 +633,31 @@ export const exportBookPujas = (format: 'excel' | 'pdf', filters?: {
   });
 };
 
-export const getBookedChadhava = async () => {
+export const getBookedChadhava = async (page = 1, limit = 10) => {
   try {
-    const response = await API.get("frontend/book-chadhava");
+    const response = await API.get("frontend/book-chadhava", {
+      params: { page, limit },
+    });
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export const getBookedPuja = async () => {
+export const getBookedPuja = async (page = 1, limit = 10) => {
   try {
-    const response = await API.get("frontend/book-puja");
+    const response = await API.get("frontend/book-puja", {
+      params: { page, limit },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateEmail = async (data: any) => {
+  try {
+    const response = await API.post("frontend/profile/email/update", data);
     return response;
   } catch (error) {
     throw error;

@@ -20,13 +20,23 @@ export default function PujaTable({
   const [booking, setBooking] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState<BookPuja | null>(null);
   const [viewModalVisible, setViewModalVisible] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
-  const fetchBookedPooja = async () => {
+  const fetchBookedPooja = async (page = 1, limit = 10) => {
     try {
-      const response: any = await getBookedPuja();
+      const response: any = await getBookedPuja(page, limit);
       console.log("res from fetchBookedPooja", response.data.data);
       if (response?.data?.status) {
         setBooking(response.data.data);
+        setPagination({
+          current: response.data.pagination.page,
+          pageSize: response.data.pagination.limit,
+          total: response.data.pagination.total,
+        });
       } else {
         message.error("failed to fetch poojas");
       }
@@ -36,8 +46,12 @@ export default function PujaTable({
   };
 
   useEffect(() => {
-    fetchBookedPooja();
+    fetchBookedPooja(pagination.current, pagination.pageSize);
   }, []);
+
+  const handleTableChange = (pagination: any) => {
+    fetchBookedPooja(pagination.current, pagination.pageSize);
+  };
 
   const handleViewDetails = (record: BookPuja) => {
     setSelectedRecord(record);
@@ -110,76 +124,22 @@ export default function PujaTable({
     },
   ];
 
-  console.log("booking from table", selectedRecord);
-
   return (
     <div className="overflow-x-auto">
-      {/* <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-              #
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-              Puja Name
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-              Date
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-              Selected Package
-            </th>
-            <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
-              Action
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {booking.map((b: any, index) => (
-            <tr key={index} className="border-t hover:bg-gray-50 transition">
-              <td className="px-4 py-3 text-sm text-gray-600">{index + 1}</td>
-
-              <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                {b.pujaId.name}
-              </td>
-
-              <td className="px-4 py-3 text-sm text-gray-700">
-                {formatDate(b.createdAt)}
-              </td>
-
-              <td className="px-4 py-3 text-sm text-gray-700">
-                {b.pujaPackage.packageId.title} -{" "}
-                <span className="font-semibold">₹{b.pujaPackage.price}</span>
-              </td>
-
-              <td className="px-4 py-3 text-center">
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => onReview(b)}
-                    className="text-green-600! text-sm font-medium hover:underline cursor-pointer"
-                  >
-                    Review
-                  </button>
-
-                  <button
-                    onClick={() => handleViewDetails(b)}
-                    className="text-blue-600! text-sm font-medium hover:underline cursor-pointer"
-                  >
-                    View
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-
       <Table
         columns={columns}
         dataSource={booking}
         rowKey={(record: any) => record._id}
-        pagination={{ pageSize: 5 }}
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} bookings`,
+        }}
+        onChange={handleTableChange}
         bordered
         className="rounded-lg"
         scroll={{ x: true }}
