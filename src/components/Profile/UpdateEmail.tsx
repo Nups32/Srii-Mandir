@@ -11,9 +11,9 @@ export default function UpdateEmail() {
       <section className="flex justify-center items-center flex-col">
         <form
           onSubmit={handleSubmit}
-          className="max-w-md bg-white border rounded-2xl p-6 shadow"
+          className="max-w-md border-[#dddada] shadow-xl rounded-2xl p-4 mb-8"
         >
-          <div className="space-y-4">
+          <div className="space-y-4 ">
             {/* <div>
                 <label className="text-gray-500">Current Email</label>
                 <input
@@ -24,11 +24,11 @@ export default function UpdateEmail() {
               </div> */}
 
             <div>
-              <label className="text-gray-500">New Email</label>
+              <label className="text-gray-500 font-bold">New Email<span className="text-red-500">*</span></label>
               <input
                 type="email"
                 required
-                className="w-full p-2 border rounded-xl"
+                className="w-full p-2 border border-slate-300 rounded-xl"
               />
             </div>
           </div>
