@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChadhavaTable from "./ChadhavaTable";
 import ChadhavaEmptyState from "./ChadhavaEmptyState";
+import { message } from "antd";
+import { getBookedChadhava } from "@/utils/API";
 
 export type ChadhavaBooking = {
   id: number;
@@ -9,19 +11,36 @@ export type ChadhavaBooking = {
 };
 
 export default function ChadhavaHistory() {
-  // 🔁 Make this empty [] to see empty state
-  const [bookings] = useState<ChadhavaBooking[]>([
-    // {
-    //   id: 1,
-    //   name: "Modak Offering",
-    //   totalAmount: 501,
-    // },
-    // {
-    //   id: 2,
-    //   name: "Abhishek Samagri",
-    //   totalAmount: 1101,
-    // },
-  ]);
+  const [bookings, setBookings] = useState<ChadhavaBooking[]>([])
+  // const [bookings] = useState<ChadhavaBooking[]>([
+  //   {
+  //     id: 1,
+  //     name: "Modak Offering",
+  //     totalAmount: 501,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Abhishek Samagri",
+  //     totalAmount: 1101,
+  //   },
+  // ]);
+  const fetchBookedChadhava = async () => {
+    try {
+      const response: any = await getBookedChadhava();
+      console.log("res from fetchBookedPooja", response);
+      if (response?.data?.status) {
+        setBookings(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchBookedChadhava();
+  }, []);
 
   return (
     <section className="min-h-screen bg-gray-50 px-6 py-10">
