@@ -176,8 +176,8 @@ export default function Chadhava() {
                     {chadhava?.time}
                   </p>
 
-                  <p className="text-sm text-gray-600 leading-relaxed mb-6! line-clamp-5">
-                    {chadhava?.about}
+                  <p className="text-sm text-gray-600 leading-relaxed mb-6! line-clamp-5" dangerouslySetInnerHTML={{__html: chadhava?.about}}>
+                    {/* {chadhava?.about} */}
                   </p>
 
                   <button

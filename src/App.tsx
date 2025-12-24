@@ -45,7 +45,7 @@ function App({ children }: PropsWithChildren) {
     // if (token && (location.pathname === '/' || location.pathname === '/register' || location.pathname === '/admin-login' || location.pathname === '/forget-password')) {
     //   navigate('/dashboard');
     // } else 
-    if (!token && location.pathname == '/profile' || location.pathname == '/puja/history' || location.pathname == '/chadhava/history') {
+    if (!token && (location.pathname == '/profile' || location.pathname == '/puja/history' || location.pathname == '/chadhava/history')) {
       navigate('/');
     }
   }, [location.pathname]);
