@@ -4,18 +4,19 @@ import EmptyState from "./EmptyState";
 import PujaTable from "./PujaTable";
 import { getBookedPuja } from "@/utils/API";
 import {message } from "antd";
+import type { BookPuja } from "@/admin/pages/BookPuja/Index";
 
-export type PujaBooking = {
-  id: number;
-  pujaName: string;
-  createdAt: string;
-  packageName: string;
-  price: number;
-};
+// export type PujaBooking = {
+//   id: number;
+//   pujaName: string;
+//   createdAt: string;
+//   packageName: string;
+//   price: number;
+// };
 
 export default function PujaHistory() {
-  const [booking, setBooking] = useState<PujaBooking[]>([]);
-  const [selectedBooking, setSelectedBooking] = useState<PujaBooking | null>(
+  const [booking, setBooking] = useState<BookPuja[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<BookPuja | null>(
     null
   );
 
