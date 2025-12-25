@@ -50,12 +50,10 @@ export default function Register() {
       } else {
         setIsLoading(false);
         message.error(res?.error || "Server Error");
-
       }
     } catch (error: any) {
       setIsLoading(false);
       message.error(error?.response?.data?.error || "Server Error");
-
     }
   };
 
@@ -85,6 +83,29 @@ export default function Register() {
     }
   };
 
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const pastedOtp = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "") // allow digits only
+      .slice(0, 4); // OTP length = 4
+
+    if (!pastedOtp) return;
+
+    const newOtp = [...inputOtp];
+
+    pastedOtp.split("").forEach((digit, index) => {
+      newOtp[index] = digit;
+    });
+
+    setInputOtp(newOtp);
+
+    // Focus last filled input
+    const lastIndex = pastedOtp.length - 1;
+    inputRefs.current[lastIndex]?.focus();
+  };
+
   const handleOTPSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
@@ -92,7 +113,7 @@ export default function Register() {
 
       const enteredOtp = inputOtp.join("");
       if (inputOtp.some((digit) => digit === "")) {
-        message.error("Please enter OTP",);
+        message.error("Please enter OTP");
         setIsLoading(false);
         return;
       }
@@ -104,9 +125,9 @@ export default function Register() {
         setIsLoading(false);
         // setAuthData({ token: res?.token, userdata: res?.userData });
         const authData = {
-            token: res.token,
-            ...res.userData,
-          };
+          token: res.token,
+          ...res.userData,
+        };
         dispatch(setUserConfig(authData));
         // localStorage.setItem("token", res?.token);
 
@@ -114,13 +135,12 @@ export default function Register() {
         navigate("/");
       } else {
         setIsLoading(false);
-        message.error(res.error || "Server Error",);
+        message.error(res.error || "Server Error");
       }
     } catch (error: any) {
       setIsLoading(false);
       message.error(error?.response?.data?.error || "Server Error");
-    }
-     finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -241,18 +261,39 @@ export default function Register() {
               className="flex flex-col items-center"
             >
               {/* OTP Inputs */}
+              {/* <div className="flex justify-center gap-4 mb-8">
+                {inputOtp.map((data, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength={1}
+                    ref={(el) => {
+                      inputRefs.current[index] = el;
+                    }}
+                    value={data as string}
+                    onChange={(e) => handleChange(e.target, index)}
+                    onFocus={(e) => e.target.select()}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className="w-12 h-12 text-center text-xl font-semibold border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition "
+                  />
+                ))}
+              </div> */}
               <div className="flex justify-center gap-4 mb-8">
                 {inputOtp.map((data, index) => (
                   <input
                     key={index}
                     type="text"
                     maxLength={1}
-                    // ref={(el) => (inputRefs.current[index] = el)}
+                    inputMode="numeric"
+                    ref={(el) => {
+                      inputRefs.current[index] = el;
+                    }}
                     value={data as string}
                     onChange={(e) => handleChange(e.target, index)}
-                    onFocus={(e) => e.target.select()}
+                    onPaste={handleOtpPaste}
                     onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="w-12 h-12 text-center text-xl font-semibold border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition "
+                    onFocus={(e) => e.target.select()}
+                    className="w-12 h-12 text-center text-xl font-semibold border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition"
                   />
                 ))}
               </div>

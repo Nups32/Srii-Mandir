@@ -24,6 +24,9 @@ import Products from "@/pages/Products";
 import Profile from "@/components/Profile/Profile";
 import ProductDetail from "@/components/Products/ProductDetail";
 import ContactUs from "@/pages/Contact";
+import InstantSolutions from "@/pages/InstantSolution";
+import YogMayaMandir from "@/pages/YogMayaMandir";
+import JanamRashiFinder from "@/components/JanamRashiFinser";
 // import Logout from "@/components/Logout";
 // import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
@@ -106,6 +109,10 @@ const routes: RouteObjectWithLayout[] = [
     element: <NakshatraFinder />,
   },
   {
+    path: "/janam-rashi-finder",
+    element: <JanamRashiFinder />,
+  },
+  {
     path: "/media",
     element: <Library isPaidUser={false} />,
   },
@@ -140,6 +147,14 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/contact",
     element: <ContactUs />,
+  },
+  {
+    path: "/instant-solution",
+    element: <InstantSolutions />,
+  },
+  {
+    path: "/yog-maya-mandir",
+    element: <YogMayaMandir />,
   },
   
   // {

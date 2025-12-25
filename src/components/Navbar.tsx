@@ -18,10 +18,10 @@ const NavMenus = [
   { name: "Chadhava", path: "/chadhava" },
   { name: "Library", path: "/media" },
   { name: "Vedic Science", path: "/vedic-science" },
-  // { name: "Instant Solution", path: "/instant-solution" },
+  { name: "Instant Solution", path: "/instant-solution" },
   { name: "Shakti Sanyansi", path: "/shakti-sanyas" },
   { name: "Srii Mandir Mela", path: "/products" },
-  // { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
+  { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
   // { name: "Dhan Basra Potli", path: "/dhan-basra-potli" },
 ];
 
