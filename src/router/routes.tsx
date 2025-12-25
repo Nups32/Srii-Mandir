@@ -107,7 +107,7 @@ const routes: RouteObjectWithLayout[] = [
   },
   {
     path: "/media",
-    element: <Library isPaidUser={false} />,
+    element: <Library />,
   },
   {
     path: "/media/:type",

@@ -80,13 +80,13 @@ export default function DevotionalSongs() {
                 // />
                 <AudioCard
                   title={song.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
-                    song.file
-                  }`}
-                  free
+                  // audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song.file}`}
+                  audio={song.file}
+                  _id={song._id}
+                  // free
                   premium={song?.isPaid}
                   isPaidUser={authData?.isPaid}
-                  contentType="song"
+                  // contentType="song"
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">

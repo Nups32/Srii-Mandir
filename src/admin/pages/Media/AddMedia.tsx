@@ -112,6 +112,7 @@ const AddMediaForm: React.FC = () => {
     { value: 'vedicMantra', label: 'Vedic Mantra' },
     { value: 'song', label: 'Song' },
     { value: 'katha', label: 'Katha' },
+    { value: 'aarti', label: 'Aarti' },
   ];
 
   return (
@@ -122,15 +123,15 @@ const AddMediaForm: React.FC = () => {
         </Col>
         <Col xs={7} sm={7} md={4} xl={4} xxl={4} className="flex justify-end">
           <Link to={"/admin/media"}>
-            <button className="flex justify-center !py-2 w-full btn-brand">
+            <button className="flex justify-center py-2! w-full btn-brand">
               <FaArrowLeft className="mr-2" />
-              <div className="!mx-2">Back</div>
+              <div className="mx-2!">Back</div>
             </button>
           </Link>
         </Col>
       </Row>
 
-      <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
+      <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
         <Card className="!p-1">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
 

@@ -184,6 +184,7 @@ const EditMediaForm: React.FC = () => {
         { value: 'vedicMantra', label: 'Vedic Mantra' },
         { value: 'song', label: 'Song' },
         { value: 'katha', label: 'Katha' },
+        { value: 'aarti', label: 'Aarti' },
     ];
 
     if (fetching) {
@@ -203,16 +204,16 @@ const EditMediaForm: React.FC = () => {
                 </Col>
                 <Col xs={7} sm={7} md={4} xl={4} xxl={4} className="flex justify-end">
                     <Link to={"/admin/media"}>
-                        <button className="flex justify-center !py-2 w-full btn-brand">
+                        <button className="flex justify-center py-2! w-full btn-brand">
                             <FaArrowLeft className="mr-2" />
-                            <div className="!mx-2">Back</div>
+                            <div className="mx-2!">Back</div>
                         </button>
                     </Link>
                 </Col>
             </Row>
 
-            <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
-                <Card className="!p-1">
+            <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
+                <Card className="p-1!">
                     <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
 
                         {/* Basic Information Section */}
@@ -265,13 +266,13 @@ const EditMediaForm: React.FC = () => {
                                             onChange={(e) => handleMediaTypeChange(e.target.value)}
                                             className="w-full"
                                         >
-                                            <Radio value="video" className="!mb-2 block">
+                                            <Radio value="video" className="mb-2! block">
                                                 <div className="flex items-center">
                                                     <BsLink45Deg className="mr-2" />
                                                     <span>Video (URL)</span>
                                                 </div>
                                             </Radio>
-                                            <Radio value="audio" className="!mb-2 block">
+                                            <Radio value="audio" className="mb-2! block">
                                                 <div className="flex items-center">
                                                     <BsUpload className="mr-2" />
                                                     <span>Audio (Upload)</span>
@@ -484,7 +485,7 @@ const EditMediaForm: React.FC = () => {
                                 {loading ? (
                                     <div className="flex items-center">
                                         <Spin size="small" />
-                                        <span className="!ml-2">Updating Media...</span>
+                                        <span className="ml-2!">Updating Media...</span>
                                     </div>
                                 ) : (
                                     "Update Media"

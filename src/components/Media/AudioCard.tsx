@@ -1,25 +1,52 @@
-import { Lock, Music } from "lucide-react";
+import { DownloadFreeMedia, DownloadPremiumMedia } from "@/utils/API";
+import { message } from "antd";
+import { Download, Lock, Music } from "lucide-react";
+import { useState } from "react";
 
 type AudioCardProps = {
   title: string;
   audio: string;
+  _id: string;
   premium?: boolean;
-  free?: boolean;
+  // free?: boolean;
   isPaidUser: boolean;
-  contentType: "song" | "vedicMantra" | "katha";
+  // contentType: "song" | "vedicMantra" | "katha";
 };
 
 export default function AudioCard({
   title,
   audio,
   premium = false,
-  free = false,
+  _id,
+  // free = false,
   isPaidUser,
-  contentType,
 }: AudioCardProps) {
-  const isVedicMantra = contentType === "vedicMantra";
 
-  const canDownload = free || (!isVedicMantra && premium) || (premium && isPaidUser);
+  // const canDownload = free || (!isVedicMantra && premium) || (premium && isPaidUser);
+  const canDownload = (!premium) || (premium && isPaidUser);
+  const [_loading, setLoading] = useState<any>(false);
+
+
+  const downloadMedia = async () => {
+    setLoading(true);
+    try {
+      const response = premium ? await DownloadPremiumMedia(_id) : await DownloadFreeMedia(_id);
+      const blob = new Blob([response.data], { type: "audio/mpeg" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${title}.mp3`;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      message.error(error?.response?.data?.message || "Download failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
@@ -41,30 +68,34 @@ export default function AudioCard({
 
       <audio
         controls
-        controlsList={premium && !isPaidUser ? "nodownload" : undefined}
-        onContextMenu={premium && !isPaidUser ? undefined : (e) => e.preventDefault()}
+        controlsList={"nodownload"}
+        onContextMenu={(e) => e.preventDefault()}
+        // preload="none"
         className="w-full mb-4"
       >
-        <source src={audio} type="audio/mpeg" />
+        {audio && <source src={`${import.meta.env.VITE_APP_Image_URL}/media/${audio}`} type="audio/mpeg" />}
       </audio>
 
       <div className="flex justify-between items-center">
-        {!canDownload ? (
-          <button
-            disabled
-            className="flex items-center gap-2 text-sm font-medium text-gray-400 bg-gray-100 px-4 py-2 rounded-lg cursor-not-allowed"
-          >
-            <Lock className="w-4 h-4" />
-            Premium Only
+        {canDownload ? (
+          <button onClick={downloadMedia} className="flex items-center gap-2 text-sm font-medium text-white! bg-orange-500 px-4 py-2 my-4! rounded-lg hover:bg-orange-600 transition cursor-pointer">
+            <Download className="w-4 h-4" />
+            Download
           </button>
-        ) : null}
+        ) : <button
+          disabled
+          className="flex items-center gap-2 text-sm font-medium text-gray-400 bg-gray-100 px-4 py-2 rounded-lg cursor-not-allowed"
+        >
+          <Lock className="w-4 h-4" />
+          Premium Only
+        </button>}
 
-        {!isPaidUser && isVedicMantra && (
+        {!isPaidUser && !canDownload && (
           <span className="text-sm text-orange-600 font-medium cursor-pointer">
             Upgrade to download
           </span>
         )}
       </div>
-    </div>
+    </div >
   );
 }

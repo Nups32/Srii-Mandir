@@ -203,6 +203,20 @@ export const deleteMedia = async (id: string) => {
   return response;
 };
 
+export const DownloadFreeMedia = async (id: string) => {
+  const response = await CommanAPI.post(`/media/${id}/free/download`, {}, {
+    responseType: "blob"
+  });
+  return response;
+};
+
+export const DownloadPremiumMedia = async (id: string) => {
+  const response = await API.post(`/frontend/media/${id}/premium/download`, {}, {
+    responseType: "blob"
+  });
+  return response;
+};
+
 export const updateMediaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
   const response = await API.patch(`/backend/media/${id}/status`, data);
   return response;

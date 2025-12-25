@@ -320,7 +320,7 @@ export const MediaTable = () => {
                         placeholder="Filter by Media Type"
                         value={mediaFilter}
                         onChange={setMediaFilter}
-                        // allowClear
+                    // allowClear
                     >
                         <Option value="all">All Media Types</Option>
                         <Option value="video">Video</Option>
@@ -335,11 +335,13 @@ export const MediaTable = () => {
                         placeholder="Filter by Content Type"
                         value={typeFilter}
                         onChange={setTypeFilter}
-                        // allowClear
+                    // allowClear
                     >
                         <Option value="all">All Content Types</Option>
                         <Option value="vedicMantra">Vedic Mantra</Option>
                         <Option value="song">Song</Option>
+                        <Option value="katha">Katha</Option>
+                        <Option value="aarti">Aarti</Option>
                     </Select>
                 </Col>
 
@@ -350,7 +352,7 @@ export const MediaTable = () => {
                         placeholder="Filter by Status"
                         value={statusFilter}
                         onChange={setStatusFilter}
-                        // allowClear
+                    // allowClear
                     >
                         <Option value="all">All Status</Option>
                         <Option value="active">Active</Option>
