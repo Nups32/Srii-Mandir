@@ -117,11 +117,19 @@ const Index = () => {
         {/* marquee section */}
         <div className="marquee-container">
           <div className="marquee-content">
-            <span>Faith of 30 million+ devotees</span>
+            <span>आनंद की यात्रा</span>
+            <span>•</span>
+            <span>आनंद की यात्रा</span>
+            <span>•</span>
+            <span>आनंद की यात्रा</span>
+            <span>•</span>
+            <span>आनंद की यात्रा</span>
+            {/* <span>•</span> */}
+            {/* <span>Faith of 30 million+ devotees</span>
             <span>•</span>
             <span>100% Secure</span>
             <span>•</span>
-            <span>India's Largest place for Hindu Devotees</span>
+            <span>India's Largest place for Hindu Devotees</span> */}
           </div>
         </div>
 

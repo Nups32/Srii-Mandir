@@ -8,18 +8,18 @@ import {
   Spin,
   Modal,
   Button,
-  Tag,
   Switch,
   Select,
   Badge,
 } from "antd";
-import { AiFillDelete } from "react-icons/ai";
+// import { AiFillDelete } from "react-icons/ai";
 import { RiAddBoxFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { getUserData, updateUserStatus } from "@/utils/API";
+import dayjs from "dayjs";
 // import { deleteUser, getAllUsers, updateUserStatus } from "@/utils/API";
 // import { format } from "date-fns";
 
@@ -44,7 +44,7 @@ export const ManageUsers = () => {
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
+  // const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const navigate = useNavigate();
 
@@ -79,10 +79,10 @@ export const ManageUsers = () => {
       );
     }
 
-    // Role filter
-    if (roleFilter !== "all") {
-      filtered = filtered.filter(user => user.role === parseInt(roleFilter));
-    }
+    // // Role filter
+    // if (roleFilter !== "all") {
+    //   filtered = filtered.filter(user => user.role === parseInt(roleFilter));
+    // }
 
     // Status filter
     if (statusFilter !== "all") {
@@ -91,7 +91,7 @@ export const ManageUsers = () => {
     }
 
     // Exclude deleted users
-    filtered = filtered.filter(user => !user.isDeleted);
+    // filtered = filtered.filter(user => !user.isDeleted);
 
     return filtered;
   };
@@ -104,9 +104,9 @@ export const ManageUsers = () => {
   //   navigate(`/admin/user/${record._id}`);
   // };
 
-  const showDeleteConfirmation = (id: string) => {
-    setDeleteId(id);
-  };
+  // const showDeleteConfirmation = (id: string) => {
+  //   setDeleteId(id);
+  // };
 
   const handleDelete = async () => {
     if (deleteId) {
@@ -122,10 +122,10 @@ export const ManageUsers = () => {
     }
   };
 
-  const handleStatusChange = async (record: User) => {
+  const handleStatusChange = async (record: User, field: 'isActive' | 'isDeleted') => {
     try {
       await updateUserStatus(record._id, {
-        isActive: !record.isActive
+        [field]: !record[field]
       });
       message.success(`User ${record.isActive ? 'deactivated' : 'activated'} successfully`);
       fetchUsers();
@@ -146,21 +146,21 @@ export const ManageUsers = () => {
   //   }
   // };
 
-  const getRoleText = (role: number) => {
-    switch (role) {
-      case 1: return "Admin";
-      case 2: return "User";
-      default: return "Unknown";
-    }
-  };
+  // const getRoleText = (role: number) => {
+  //   switch (role) {
+  //     case 1: return "Admin";
+  //     case 2: return "User";
+  //     default: return "Unknown";
+  //   }
+  // };
 
-  const getRoleColor = (role: number) => {
-    switch (role) {
-      case 1: return "red";
-      case 2: return "blue";
-      default: return "default";
-    }
-  };
+  // const getRoleColor = (role: number) => {
+  //   switch (role) {
+  //     case 1: return "red";
+  //     case 2: return "blue";
+  //     default: return "default";
+  //   }
+  // };
 
   const columns = [
     {
@@ -202,11 +202,6 @@ export const ManageUsers = () => {
       ),
       dataIndex: "dob",
       key: "dob",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
-      ),
     },
     {
       title: (
@@ -216,11 +211,6 @@ export const ManageUsers = () => {
       ),
       dataIndex: "state",
       key: "state",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
-      ),
     },
 
     {
@@ -231,11 +221,6 @@ export const ManageUsers = () => {
       ),
       dataIndex: "city",
       key: "city",
-      render: (role: number) => (
-        <Tag color={getRoleColor(role)}>
-          {getRoleText(role)}
-        </Tag>
-      ),
     },
     {
       title: (
@@ -255,12 +240,24 @@ export const ManageUsers = () => {
               size="small"
               className="ml-2!"
               checked={record.isActive}
-              onChange={() => handleStatusChange(record)}
+              onChange={() => handleStatusChange(record, 'isActive')}
             />
           </div>
-          {record.isDeleted && (
+          <div className="flex items-center space-x-2">
+            <Badge
+              status={!record.isDeleted ? "success" : "error"}
+              text={record.isDeleted ? "Deleted" : "Not Delete"}
+            />
+            <Switch
+              size="small"
+              className="ml-2!"
+              checked={record.isDeleted}
+              onChange={() => handleStatusChange(record, 'isDeleted')}
+            />
+          </div>
+          {/* {record.isDeleted && (
             <Tag color="red" className="text-xs">Deleted</Tag>
-          )}
+          )} */}
         </div>
       ),
     },
@@ -272,7 +269,7 @@ export const ManageUsers = () => {
       ),
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text: string) => (text),
+      render: (text: string) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
       sorter: (a: User, b: User) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
@@ -298,11 +295,11 @@ export const ManageUsers = () => {
             onClick={() => handleEditRedirect(record)}
             title="Edit"
           />
-          <AiFillDelete
+          {/* <AiFillDelete
             className="w-4 h-4 text-red-500 cursor-pointer hover:text-red-700"
             onClick={() => showDeleteConfirmation(record._id)}
             title="Delete"
-          />
+          /> */}
         </div>
       ),
     },
@@ -355,7 +352,7 @@ export const ManageUsers = () => {
 
       {/* Filters Row */}
       <Row className="m-2 mt-4" gutter={16}>
-        <Col xs={24} sm={8} md={6} xl={6} xxl={6}>
+        {/* <Col xs={24} sm={8} md={6} xl={6} xxl={6}>
           <Select
             className="w-full"
             size="large"
@@ -368,7 +365,7 @@ export const ManageUsers = () => {
             <Option value="1">Admin</Option>
             <Option value="2">User</Option>
           </Select>
-        </Col>
+        </Col> */}
 
         <Col xs={24} sm={8} md={6} xl={6} xxl={6}>
           <Select
@@ -377,7 +374,7 @@ export const ManageUsers = () => {
             placeholder="Filter by Status"
             value={statusFilter}
             onChange={setStatusFilter}
-            // allowClear
+          // allowClear
           >
             <Option value="all">All Status</Option>
             <Option value="active">Active</Option>
@@ -387,7 +384,7 @@ export const ManageUsers = () => {
       </Row>
 
       <Row>
-        <Card className="container !mt-5">
+        <Card className="container mt-5!">
           <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
             <Spin spinning={loading}>
               <Table

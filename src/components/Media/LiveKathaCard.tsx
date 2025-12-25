@@ -28,12 +28,13 @@ export default function LiveKathaCard({ katha }: any) {
       {katha?.media == "audio" ? (
         <AudioCard
           key={katha?._id}
+          _id={katha?._id}
           title={katha?.name}
           audio={`${import.meta.env.VITE_APP_Image_URL}/media/${katha?.file}`}
-          free
+          // free
           premium={katha?.isPaid || false}
           isPaidUser={false}
-          contentType={"katha"}
+          // contentType={"katha"}
         />
       ) : (
         <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">

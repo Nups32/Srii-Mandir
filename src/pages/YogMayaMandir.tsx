@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Heart, Book, Flower2, Sun, Wind, Eye, Zap } from 'lucide-react';
+import { Sparkles, Heart, Book, Flower2, Sun, Wind, Zap } from 'lucide-react';
 
 const YogMayaMandir: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -52,28 +52,28 @@ const YogMayaMandir: React.FC = () => {
     }
   ];
 
-  const mayaTeachings = [
-    {
-      title: "Understanding Maya",
-      icon: <Eye className="w-12 h-12 text-indigo-500" />,
-      content: "Maya is the cosmic illusion that makes us believe the temporary world is the ultimate reality. Imagine watching a movie and forgetting it's just images on a screen - that's Maya. It creates the appearance of separation, making us feel separate from God and each other, when in truth, we are all one divine consciousness."
-    },
-    {
-      title: "How Maya Works",
-      icon: <Sparkles className="w-12 h-12 text-pink-500" />,
-      content: "Maya works through three qualities (Gunas): Sattva (purity, light), Rajas (passion, activity), and Tamas (darkness, inertia). Like ingredients in a recipe, these mix in different proportions to create everything in the universe. Maya keeps us attached to pleasure and pain, success and failure, making us forget our true divine nature."
-    },
-    {
-      title: "Breaking Free from Maya",
-      icon: <Sun className="w-12 h-12 text-yellow-500" />,
-      content: "To transcend Maya, we must develop Viveka (discrimination) - the ability to distinguish between the real and unreal, permanent and temporary. Regular spiritual practice, meditation, and devotion to God help pierce through the veil of illusion. Like waking from a dream, enlightenment reveals the true nature of reality."
-    },
-    {
-      title: "Living Beyond Illusion",
-      icon: <Heart className="w-12 h-12 text-rose-500" />,
-      content: "Once you understand Maya, you don't escape the world but see it with new eyes. You engage fully in life without attachment, like an actor playing a role while knowing it's just a play. This brings freedom from suffering because you're no longer trapped by the illusion of duality and separation."
-    }
-  ];
+  // const mayaTeachings = [
+  //   {
+  //     title: "Understanding Maya",
+  //     icon: <Eye className="w-12 h-12 text-indigo-500" />,
+  //     content: "Maya is the cosmic illusion that makes us believe the temporary world is the ultimate reality. Imagine watching a movie and forgetting it's just images on a screen - that's Maya. It creates the appearance of separation, making us feel separate from God and each other, when in truth, we are all one divine consciousness."
+  //   },
+  //   {
+  //     title: "How Maya Works",
+  //     icon: <Sparkles className="w-12 h-12 text-pink-500" />,
+  //     content: "Maya works through three qualities (Gunas): Sattva (purity, light), Rajas (passion, activity), and Tamas (darkness, inertia). Like ingredients in a recipe, these mix in different proportions to create everything in the universe. Maya keeps us attached to pleasure and pain, success and failure, making us forget our true divine nature."
+  //   },
+  //   {
+  //     title: "Breaking Free from Maya",
+  //     icon: <Sun className="w-12 h-12 text-yellow-500" />,
+  //     content: "To transcend Maya, we must develop Viveka (discrimination) - the ability to distinguish between the real and unreal, permanent and temporary. Regular spiritual practice, meditation, and devotion to God help pierce through the veil of illusion. Like waking from a dream, enlightenment reveals the true nature of reality."
+  //   },
+  //   {
+  //     title: "Living Beyond Illusion",
+  //     icon: <Heart className="w-12 h-12 text-rose-500" />,
+  //     content: "Once you understand Maya, you don't escape the world but see it with new eyes. You engage fully in life without attachment, like an actor playing a role while knowing it's just a play. This brings freedom from suffering because you're no longer trapped by the illusion of duality and separation."
+  //   }
+  // ];
 
   const meditationPractices = [
     {
@@ -154,14 +154,14 @@ const YogMayaMandir: React.FC = () => {
     }
   ];
 
-  const meditationImages = [
-    { emoji: "🧘‍♂️", label: "Seated Meditation" },
-    { emoji: "🌅", label: "Sunrise Practice" },
-    { emoji: "🌳", label: "Nature Meditation" },
-    { emoji: "🕯️", label: "Candle Gazing" },
-    { emoji: "🙏", label: "Prayer & Devotion" },
-    { emoji: "📿", label: "Mantra Chanting" }
-  ];
+  // const meditationImages = [
+  //   { emoji: "🧘‍♂️", label: "Seated Meditation" },
+  //   { emoji: "🌅", label: "Sunrise Practice" },
+  //   { emoji: "🌳", label: "Nature Meditation" },
+  //   { emoji: "🕯️", label: "Candle Gazing" },
+  //   { emoji: "🙏", label: "Prayer & Devotion" },
+  //   { emoji: "📿", label: "Mantra Chanting" }
+  // ];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-rose-50">
@@ -251,7 +251,7 @@ const YogMayaMandir: React.FC = () => {
         </section>
 
         {/* Maya Teachings Section */}
-        <section className="my-20 bg-linear-to-r from-purple-100 via-pink-100 to-orange-100 rounded-3xl p-8 md:p-12 shadow-xl">
+        {/* <section className="my-20 bg-linear-to-r from-purple-100 via-pink-100 to-orange-100 rounded-3xl p-8 md:p-12 shadow-xl">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-purple-900 mb-4">
             The Mystery of Maya
           </h2>
@@ -276,7 +276,7 @@ const YogMayaMandir: React.FC = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Meditation Practices Section */}
         <section className="my-20">
@@ -288,7 +288,7 @@ const YogMayaMandir: React.FC = () => {
           </p>
 
           {/* Meditation Images */}
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-12">
+          {/* <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-12">
             {meditationImages.map((img, index) => (
               <div
                 key={index}
@@ -298,7 +298,7 @@ const YogMayaMandir: React.FC = () => {
                 <p className="text-sm text-amber-800 font-semibold">{img.label}</p>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Tabs */}
           <div className="flex justify-center gap-4 mb-8 flex-wrap">

@@ -418,8 +418,53 @@ export const updatePujaReviewStatus = (id: string, data: { isActive: boolean }) 
   return API.patch(`/backend/puja-reviews/${id}/status`, data);
 };
 
-// CONTACT API functions
 
+// Puja Review API Functions
+export const getProducts = () => {
+  return CommanAPI.get(`/product`);
+};
+
+export const getOneProductByType = async (type: string) => {
+  const response = await CommanAPI.get(`/product/${type}/one/get`);
+  return response;
+};
+
+export const getAllProductByType = async (type: string) => {
+  const response = await CommanAPI.get(`/product/${type}/all/get`);
+  return response;
+};
+
+export const getAllProducts = async () => {
+  const response = await API.get(`/backend/products/get-all`);
+  return response;
+};
+
+export const getProductById = (id: string) => {
+  return API.get(`/backend/products/${id}/edit`);
+};
+
+export const createProduct = (data: FormData) => {
+  return API.post(`/backend/products`, data);
+};
+
+export const updateProduct = (id: string, data: FormData) => {
+  return API.put(`backend/products/${id}/update`, data);
+};
+
+export const deleteProduct = (id: string) => {
+  return API.delete(`/backend/products/${id}/delete`);
+};
+
+export const updateProductStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/products/${id}/status`, data);
+};
+
+export const getProductStats = () => {
+  return API.get(`/products/stats`);
+};
+
+
+// CONTACT API functions
 export const deleteContact = async (id: any) => {
   try {
     const response = await API.delete(`/contact/${id}/delete`);
@@ -433,7 +478,7 @@ export const deleteContact = async (id: any) => {
 export const getUserData = async (data: any) => {
   try {
     const response = await API.get("/backend/users/get", { params: data });
-    console.log("res of getuserdata", response)
+    // console.log("res of getuserdata", response)
     return response;
   } catch (error) {
     throw error;

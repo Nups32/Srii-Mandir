@@ -26,6 +26,9 @@ import AddPujaReviewForm from "@/admin/pages/PujaReview/AddPujaReview";
 import EditPujaReviewForm from "@/admin/pages/PujaReview/EditPujaReview";
 import BookChadhavaTable from "@/admin/pages/BookChadhava/Index";
 import BookPujaTable from "@/admin/pages/BookPuja/Index";
+import ProductTable from "@/admin/pages/Product/Index";
+import AddProductForm from "@/admin/pages/Product/AddProduct";
+import EditProductForm from "@/admin/pages/Product/EditProduct";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -181,6 +184,21 @@ export const adminRoutes: RouteObjectWithLayout[] = [
   {
     path: "/admin/book-chadhava",
     element: <BookChadhavaTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product",
+    element: <ProductTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product/add",
+    element: <AddProductForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product/:id/edit",
+    element: <EditProductForm />,
     layout: "admin",
   },
   // {

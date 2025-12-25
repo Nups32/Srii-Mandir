@@ -27,6 +27,7 @@ import ContactUs from "@/pages/Contact";
 import InstantSolutions from "@/pages/InstantSolution";
 import YogMayaMandir from "@/pages/YogMayaMandir";
 import JanamRashiFinder from "@/components/JanamRashiFinser";
+import DhanBasraPotli from "@/pages/DhanBasraPotli";
 // import Logout from "@/components/Logout";
 // import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
@@ -155,6 +156,10 @@ const routes: RouteObjectWithLayout[] = [
   {
     path: "/yog-maya-mandir",
     element: <YogMayaMandir />,
+  },
+  {
+    path: "/dhan-basra-potli",
+    element: <DhanBasraPotli />,
   },
   
   // {
