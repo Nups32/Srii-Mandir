@@ -71,10 +71,10 @@ const Footer = () => {
         <div>
           <h4 className="font-bold mb-3 text-white text-xl">Contact</h4>
           <a
-            href="mailto: support@devpuja.com"
+            href="mailto: info.sriimandir@gmail.com"
             className="hover:underline transition text-gray-50 font-semibold"
           >
-            Email: support@sriimandir.com
+            Email: info.sriimandir@gmail.com
           </a>
 
           {/* socials */}
@@ -97,9 +97,15 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t text-center text-sm py-4 text-gray-300">
-        © {new Date().getFullYear()} Srii Mandir. All rights reserved.
+      <div className="border border-gray-300" />
+      <div className=" text-center text-sm py-4 text-gray-100">
+        <p>© {new Date().getFullYear()} Srii Mandir. All rights reserved.</p>
+        <p>
+          Guiding souls on the path to enlightenment May all beings be happy.
+        </p>
+        <p> May all beings be peaceful. May all beings be liberated.</p>
       </div>
+      <div></div>
     </footer>
   );
 };
