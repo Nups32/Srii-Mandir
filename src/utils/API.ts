@@ -423,14 +423,17 @@ export const updatePujaReviewStatus = (id: string, data: { isActive: boolean }) 
 export const getProducts = () => {
   return CommanAPI.get(`/product`);
 };
+export const getLatestProducts = () => {
+  return CommanAPI.get(`/product/latest`);
+};
 
 export const getOneProductByType = async (type: string) => {
   const response = await CommanAPI.get(`/product/${type}/one/get`);
   return response;
 };
 
-export const getAllProductByType = async (type: string) => {
-  const response = await CommanAPI.get(`/product/${type}/all/get`);
+export const getAllProductByCategory = async (category: string) => {
+  const response = await CommanAPI.get(`/product/${category}/all/get`);
   return response;
 };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 type Product = {
   id: number;
   name: string;
+  about: string;
   image: string[];
   price: string;
   description: string;
@@ -38,15 +39,15 @@ export default function ProductDetail() {
           {/* Main Image */}
           <div className="bg-white rounded-xl overflow-hidden ">
             <img
-              src={product.image[activeImage]}
-              alt={product.name}
+              src={product?.image?.[activeImage]}
+              alt={product?.name}
               className="w-full h-105 object-contain"
             />
           </div>
 
           {/* Thumbnails */}
           <div className="grid grid-cols-5 gap-3">
-            {product.image.map((img, index) => (
+            {product?.image?.map((img, index) => (
               <button
                 key={index}
                 onClick={() => setActiveImage(index)}
@@ -70,10 +71,14 @@ export default function ProductDetail() {
 
         {/* RIGHT: PRODUCT DETAILS */}
         <div className="space-y-6">
-          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{product?.name}</h1>
 
           <p className="text-2xl font-semibold text-orange-600">
-            {product.price}
+            {product?.price}
+          </p>
+
+          <p className="text-2xl font-semibold text-orange-600">
+            {product?.about}
           </p>
 
           <div className="flex gap-4 pt-4">
@@ -85,8 +90,7 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-            {product.description}
+          <p className="text-gray-700 leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{__html: product?.description}}>
           </p>
         </div>
       </div>

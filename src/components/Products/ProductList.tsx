@@ -1,5 +1,7 @@
+import { getAllProductByCategory } from "@/utils/API";
+import { message } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Product = {
   _id: number;
@@ -9,16 +11,32 @@ type Product = {
   description: string;
 };
 
-type Props = {
-  title: string;
-  subtitle: string;
-  products: Product[];
-  link: string;
-};
 
-export function ProductSection({ title, subtitle, products, link }: Props) {
+export function ProductList() {
   const [index, setIndex] = useState(0);
   const [step, setStep] = useState(100); // %
+  const [products, setProducts] = useState<Product[]>([]);
+  const [_loading, setLoading] = useState<any>();
+  const { category } = useParams<{ category: string }>();
+
+  const fetchProduct = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllProductByCategory(category || "");
+      if (response.data.status) {
+        setProducts(response.data.data);
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [category]);
+
 
   useEffect(() => {
     const updateStep = () => {
@@ -39,20 +57,13 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
 
   return (
     <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="mb-14">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl md:text-3xl font-bold text-gray-900">
-            {title}
+            {category}
           </h3>
-          <a
-            href={link}
-            className="text-orange-600 text-xs md:text-base font-semibold hover:underline"
-          >
-            View All
-          </a>
         </div>
-        <p className="text-lg text-gray-600 max-w-3xl">{subtitle}</p>
+        {/* <p className="text-lg text-gray-600 max-w-3xl">{subtitle}</p> */}
       </div>
 
       <div className="relative md:hidden">
@@ -66,7 +77,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
             {products.map((product) => (
               <div
                 key={product?._id}
-                className="flex-shrink-0 w-full sm:w-1/2 px-2"
+                className="shrink-0 w-full sm:w-1/2 px-2"
               >
                 <ProductCard product={product} />
               </div>

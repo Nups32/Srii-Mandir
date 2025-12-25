@@ -28,6 +28,7 @@ import InstantSolutions from "@/pages/InstantSolution";
 import YogMayaMandir from "@/pages/YogMayaMandir";
 import JanamRashiFinder from "@/components/JanamRashiFinser";
 import DhanBasraPotli from "@/pages/DhanBasraPotli";
+import { ProductList } from "@/components/Products/ProductList";
 // import Logout from "@/components/Logout";
 // import ProfileEditForm from "@/components/Profile/ProfileEdit";
 const Index = lazy(() => import("../pages/Index"));
@@ -138,8 +139,8 @@ const routes: RouteObjectWithLayout[] = [
     element: <Products />,
   },
   {
-    path: "/products/jap-mala",
-    element: <Products />,
+    path: "/products/category/:category",
+    element: <ProductList />,
   },
   {
     path: "/products/detail",
