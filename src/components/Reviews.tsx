@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getReviews } from "@/utils/API";
 import { message } from "antd";
-
 // interface Review {
 //   id: number;
 //   name: string;
@@ -17,7 +16,6 @@ const ReviewsRatings = () => {
   const [visibleCount, setVisibleCount] = useState(3);
   const [reviews, setReviews] = useState<any>([]);
   const [, setLoading] = useState<any>([]);
-
   // const reviews: Review[] = [
   //   {
   //     id: 1,
@@ -84,28 +82,25 @@ const ReviewsRatings = () => {
   useEffect(() => {
     const updateVisibleCount = () => {
       let count = 3;
-
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < 768) { 
         count = 1;
-      } else if (window.innerWidth < 1024) {
+      } else if (window.innerWidth < 1024) { 
         count = 2;
-      }
+      }  
 
       setVisibleCount((prev) => {
         if (prev !== count) {
           setCurrentIndex(0);
-        }
+        }  
         return count;
       });
     };
 
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount);
-
     return () => window.removeEventListener("resize", updateVisibleCount);
   }, []);
-
-  // const nextReview = () => {
+    // const nextReview = () => {
   //   setCurrentIndex((prevIndex) =>
   //     prevIndex + 3 >= reviews.length ? 0 : prevIndex + 1
   //   );
@@ -116,8 +111,7 @@ const ReviewsRatings = () => {
       prev + visibleCount >= reviews.length ? 0 : prev + visibleCount
     );
   };
-
-  // const prevReview = () => {
+    // const prevReview = () => {
   //   setCurrentIndex((prevIndex) =>
   //     prevIndex === 0 ? Math.max(0, reviews.length - 3) : prevIndex - 1
   //   );
@@ -130,7 +124,6 @@ const ReviewsRatings = () => {
         : prev - visibleCount
     );
   };
-
   // useEffect(() => {
   //   const updateVisibleCount = () => {
   //     if (window.innerWidth < 768) {
@@ -160,14 +153,56 @@ const ReviewsRatings = () => {
     Math.min(currentIndex, reviews.length - visibleCount) + visibleCount
   );
 
+  /* FEEDBACK FORM STATE  */
+  const [feedback, setFeedback] = useState({
+    name: "",
+    mobile: "",
+    rating: 0,
+    comment: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFeedback({ ...feedback, [e.target.name]: e.target.value });
+  };
+
+  const handleRating = (value: number) => {
+    setFeedback({ ...feedback, rating: value });
+  };
+
+  const submitFeedback = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !feedback.name ||
+      !feedback.mobile ||
+      !feedback.rating ||
+      !feedback.comment
+    ) {
+      message.warning("Please fill all fields");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(feedback.mobile)) {
+      message.error("Enter a valid 10-digit mobile number");
+      return;
+    }
+
+    console.log("Feedback submitted:", feedback);
+    message.success("Thank you for your feedback 🙏");
+
+    setFeedback({ name: "", mobile: "", rating: 0, comment: "" });
+  };
+
   return (
     <>
+      
       <section
         id="reviews"
         className="w-full bg-gray-50 rounded-2xl py-16 my-6 px-8"
       >
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
               Reviews & Ratings
@@ -177,7 +212,6 @@ const ReviewsRatings = () => {
             </p>
           </div>
 
-          {/* Reviews Grid */}
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {visibleReviews.map((review: any) => (
@@ -185,44 +219,19 @@ const ReviewsRatings = () => {
                   key={review._id}
                   className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
                 >
-                  {/* Video Thumbnail */}
-                  {/* {review.videoThumbnail && (
-                  <div className="relative h-48 bg-gray-200">
-                    <img
-                      src={review.videoThumbnail}
-                      alt={`${review.name} testimonial`}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-                      <button className="w-16 h-16 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors">
-                        <Play className="w-8 h-8 text-orange-500 hover:text-white ml-1" fill="currentColor" />
-                      </button>
-                    </div>
-                  </div>
-                )} */}
-
-                  {/* Review Content */}
                   <div className="p-6">
                     <p className="text-gray-700 text-sm leading-relaxed mb-6">
                       "{review.comment}"
                     </p>
 
-                    {/* User Info */}
-                    <div className="flex items-center">
-                      {/* <img
-                      src={review.image}
-                      alt={review.name}
-                      className="w-12 h-12 rounded-full object-cover mr-4"
-                    /> */}
-                      <div>
-                        <h4 className="font-semibold text-gray-800">
-                          {review.name}
-                        </h4>
-                        <div className="flex text-yellow-400">
-                          {[...Array(review.rating)].map((_, i) => (
-                            <span key={i}>★</span>
-                          ))}
-                        </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800">
+                        {review.name}
+                      </h4>
+                      <div className="flex text-yellow-400">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <span key={i}>★</span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -231,56 +240,76 @@ const ReviewsRatings = () => {
             </div>
 
             <div className="flex justify-center items-center gap-4">
-              {/* Navigation Buttons */}
-              <button
-                onClick={prevReview}
-                disabled={currentIndex === 0}
-                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-orange-500 hover:text-white! hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5" />
+              <button onClick={prevReview} className="nav-btn">
+                <ChevronLeft />
               </button>
-
-              {/* Dots Indicator */}
-              {/* <div className="flex gap-2">
-                {Array.from({ length: Math.ceil(reviews.length / 3) }).map(
-                  (_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentIndex(idx * 3)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        Math.floor(currentIndex / 3) === idx
-                          ? "bg-orange-500 w-8"
-                          : "bg-gray-300"
-                      }`}
-                    />
-                  )
-                )}
-              </div> */}
-
-              <div className="flex gap-2">
-                {Array.from({
-                  length: Math.ceil(reviews.length / visibleCount),
-                }).map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentIndex(idx * visibleCount)}
-                    className={`h-2 rounded-full transition-all ${Math.floor(currentIndex / visibleCount) === idx
-                        ? "bg-orange-500 w-8"
-                        : "bg-gray-300 w-2"
-                      }`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={nextReview}
-                disabled={currentIndex + visibleCount >= reviews.length}
-                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-orange-500 hover:text-white! hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronRight className="w-5 h-5" />
+              <button onClick={nextReview} className="nav-btn">
+                <ChevronRight />
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FEEDBACK FORM */}
+      <section className="max-w-3xl mx-auto my-16 px-6">
+        <div className="bg-white p-8 rounded-xl shadow-md">
+          <h3 className="text-2xl font-bold text-center mb-6">
+            Share Your Experience
+          </h3>
+
+          <form onSubmit={submitFeedback} className="space-y-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={feedback.name}
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <input
+              type="tel"
+              name="mobile"
+              placeholder="Mobile Number"
+              value={feedback.mobile}
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+            />
+
+            {/* STAR RATING */}
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => handleRating(star)}
+                  className={`cursor-pointer text-2xl ${
+                    star <= feedback.rating
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <textarea
+              name="comment"
+              placeholder="Your Feedback"
+              rows={4}
+              value={feedback.comment}
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <button
+              type="submit"
+              className="w-full bg-orange-500 text-white py-3 rounded hover:bg-orange-600 transition"
+            >
+              Submit Feedback
+            </button>
+          </form>
         </div>
       </section>
     </>
