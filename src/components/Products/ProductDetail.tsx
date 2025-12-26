@@ -75,7 +75,7 @@ export default function ProductDetail() {
           <h1 className="text-3xl font-bold text-gray-900">{product?.name}</h1>
 
           <p className="text-2xl font-semibold text-orange-600">
-            {product?.price}
+            ₹{product?.price}
           </p>
 
           <p className="text-2xl font-semibold text-orange-600">

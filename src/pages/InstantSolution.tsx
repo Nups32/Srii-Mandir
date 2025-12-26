@@ -19,11 +19,11 @@ export default function InstantSolutions() {
       <header className="relative bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 text-white overflow-hidden shadow-2xl">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img 
+          {/* <img 
             src="https://i.postimg.cc/k5K4DnwL/instant-solutions-banner.jpg"
             alt="Instant Solutions for Your Life Problems"
             className="w-full h-full object-cover opacity-50"
-          />
+          /> */}
           <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 via-orange-800/80 to-amber-900/90"></div>
         </div>
 
