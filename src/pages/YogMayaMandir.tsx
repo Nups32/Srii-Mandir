@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Heart, Book, Flower2 } from 'lucide-react';
+import { Sparkles, Heart, Book, Flower2, X, MessageCircle } from 'lucide-react';
 import { getActiveYogMayaMandir } from '@/utils/API';
 import { message } from 'antd';
 
 const YogMayaMandir: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState('beginner');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // State for the Question Form
+  const [formData, setFormData] = useState({
+    name: '',
+    fatherName: '',
+    spouseName: '',
+    childrenNames: '',
+    dobPlace: '',
+    email: '',
+    question: ''
+  });
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -39,6 +51,27 @@ const YogMayaMandir: React.FC = () => {
   useEffect(() => {
     fetchYogMayaData();
   }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Question Submitted:", formData);
+    message.success("Thank you. Your question has been submitted to the Mandir.");
+    setIsModalOpen(false);
+    setFormData({
+      name: '',
+      fatherName: '',
+      spouseName: '',
+      childrenNames: '',
+      dobPlace: '',
+      email: '',
+      question: ''
+    });
+  };
 
   const features = [
     {
@@ -449,7 +482,7 @@ const YogMayaMandir: React.FC = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="text-center my-16">
+        <section className="text-center my-8">
           <div className="bg-linear-to-br from-orange-100 to-rose-100 rounded-3xl p-12 shadow-xl">
             <Book className="w-20 h-20 text-amber-700 mx-auto mb-6 animate-bounce-slow" />
             <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
@@ -464,7 +497,91 @@ const YogMayaMandir: React.FC = () => {
             </button>
           </div>
         </section>
+
+        {/* New Ask Question Section */}
+        <section className="text-center my-16">
+          <div className="bg-white rounded-3xl p-12 shadow-xl border border-amber-100">
+            <MessageCircle className="w-20 h-20 text-orange-600 mx-auto mb-6 opacity-80" />
+            <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
+              Have a Spiritual Question?
+            </h2>
+            <p className="text-lg text-amber-900 mb-8 max-w-2xl mx-auto">
+              Our swamis are here to guide you. If you are seeking clarity on your path or have 
+              specific questions about your practice, we are here to help.
+            </p>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white! font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
+            >
+              Ask Question
+            </button>
+          </div>
+        </section>
       </div>
+
+      {/* Ask Question Popup Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden transform transition-all">
+            {/* Modal Header */}
+            <div className="bg-linear-to-r from-amber-800 to-orange-700 p-6 flex justify-between items-center text-white">
+              <h3 className="text-2xl font-bold flex items-center gap-2">
+                <Sparkles className="w-6 h-6" /> Spiritual Inquiry
+              </h3>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition cursor-pointer"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Modal Form */}
+            <form onSubmit={handleSubmit} className="p-8 space-y-4 max-h-[75vh] overflow-y-auto">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-amber-800 mb-1">Name</label>
+                  <input required name="name" value={formData.name} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Your full name" />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-amber-800 mb-1">Father's Name</label>
+                  <input required name="fatherName" value={formData.fatherName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Father's name" />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-amber-800 mb-1">Spouse's Name</label>
+                  <input name="spouseName" value={formData.spouseName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="If applicable" />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-amber-800 mb-1">Children's Names</label>
+                  <input name="childrenNames" value={formData.childrenNames} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Names of children" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-amber-800 mb-1">Date & Place of Birth</label>
+                <input required name="dobPlace" value={formData.dobPlace} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="DD/MM/YYYY, City" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-amber-800 mb-1">Email</label>
+                <input required name="email" value={formData.email} onChange={handleInputChange} type="email" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="email@example.com" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-amber-800 mb-1">Ask Question</label>
+                <textarea required name="question" value={formData.question} onChange={handleInputChange} rows={3} className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none" placeholder="Write your question here..."></textarea>
+              </div>
+
+              <button type="submit" className="w-full bg-linear-to-r from-orange-500 to-rose-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform transition hover:scale-[1.01] cursor-pointer">
+                Submit Inquiry
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
