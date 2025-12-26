@@ -53,7 +53,7 @@ const EditPurohitForm: React.FC = () => {
     const [isActive, setIsActive] = useState<boolean>(true);
     const [existingImage, setExistingImage] = useState<string>("");
     const [newFile, setNewFile] = useState<UploadFileType | null>(null);
-    const [uploading, setUploading] = useState<boolean>(false);
+    // const [uploading, setUploading] = useState<boolean>(false);
 
     // Fetch existing purohit data
     useEffect(() => {
@@ -521,16 +521,16 @@ const EditPurohitForm: React.FC = () => {
                         {/* Submit Button */}
                         <Col span={24} className="buttons mt-6">
                             <button
-                                disabled={loading || uploading}
-                                className={`btn-brand !py-2 !px-3 cursor-pointer ${(loading || uploading) && "!bg-gray-800"
+                                disabled={loading}
+                                className={`btn-brand !py-2 !px-3 cursor-pointer ${(loading) && "!bg-gray-800"
                                     }`}
                                 type="submit"
                             >
-                                {loading || uploading ? (
+                                {loading ? (
                                     <div className="flex items-center">
                                         <Spin size="small" />
                                         <span className="!ml-2">
-                                            {uploading ? "Uploading..." : "Updating Purohit..."}
+                                            {loading ? "Uploading..." : "Updating Purohit..."}
                                         </span>
                                     </div>
                                 ) : (
