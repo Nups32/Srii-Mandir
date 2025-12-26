@@ -5,7 +5,7 @@ type Product = {
   id: number;
   name: string;
   about: string;
-  image: string[];
+  images: string[];
   price: string;
   description: string;
 };
@@ -39,7 +39,8 @@ export default function ProductDetail() {
           {/* Main Image */}
           <div className="bg-white rounded-xl overflow-hidden ">
             <img
-              src={product?.image?.[activeImage]}
+              // src={product?.images?.[activeImage]}
+              src={`${import.meta.env.VITE_APP_Image_URL}/product/${product?.images?.[activeImage]}`}
               alt={product?.name}
               className="w-full h-105 object-contain"
             />
@@ -47,20 +48,20 @@ export default function ProductDetail() {
 
           {/* Thumbnails */}
           <div className="grid grid-cols-5 gap-3">
-            {product?.image?.map((img, index) => (
+            {product?.images?.map((img, index) => (
               <button
                 key={index}
                 onClick={() => setActiveImage(index)}
                 className={`border rounded-lg overflow-hidden p-1 bg-white transition
-                  ${
-                    activeImage === index
-                      ? "border-orange-500 ring-2 ring-orange-400"
-                      : "border-gray-200 hover:border-gray-400"
+                  ${activeImage === index
+                    ? "border-orange-500 ring-2 ring-orange-400"
+                    : "border-gray-200 hover:border-gray-400"
                   }
                 `}
               >
                 <img
-                  src={img}
+                  src={`${import.meta.env.VITE_APP_Image_URL}/product/${img}`}
+                  // src={img}
                   alt={`Thumbnail ${index + 1}`}
                   className="h-16 w-full object-contain"
                 />
@@ -90,7 +91,7 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{__html: product?.description}}>
+          <p className="text-gray-700 leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{ __html: product?.description }}>
           </p>
         </div>
       </div>

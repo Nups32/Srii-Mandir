@@ -185,6 +185,7 @@ const EditMediaForm: React.FC = () => {
         { value: 'song', label: 'Song' },
         { value: 'katha', label: 'Katha' },
         { value: 'aarti', label: 'Aarti' },
+        { value: 'live-temple-darshan', label: 'Live Temple Darshan' },
     ];
 
     if (fetching) {

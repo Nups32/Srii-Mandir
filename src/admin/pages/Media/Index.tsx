@@ -25,8 +25,8 @@ const { Option } = Select;
 interface Media {
     _id: string;
     name: string;
-    media: 'video' | 'Media';
-    type: 'vedicMantra' | 'song';
+    media: 'video' | 'audio';
+    type: 'vedicMantra' | 'song' | 'katha' | 'aarti' | 'live-temple-darshan';
     file: string;
     isPaid: boolean;
     isActive: boolean;
@@ -139,7 +139,7 @@ export const MediaTable = () => {
     const getMediaTypeColor = (type: string) => {
         switch (type) {
             case 'video': return 'blue';
-            case 'Media': return 'green';
+            case 'audio': return 'green';
             default: return 'default';
         }
     };
@@ -342,6 +342,7 @@ export const MediaTable = () => {
                         <Option value="song">Song</Option>
                         <Option value="katha">Katha</Option>
                         <Option value="aarti">Aarti</Option>
+                        <Option value="live-temple-darshan">Live Temple Darshan</Option>
                     </Select>
                 </Col>
 

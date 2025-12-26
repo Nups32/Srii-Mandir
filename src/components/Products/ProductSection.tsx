@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 type Product = {
   _id: number;
   name: string;
-  image: string[];
+  images: string[];
   price: string;
   description: string;
 };
@@ -66,7 +66,7 @@ export function ProductSection({ title, subtitle, products, link }: Props) {
             {products.map((product) => (
               <div
                 key={product?._id}
-                className="flex-shrink-0 w-full sm:w-1/2 px-2"
+                className="shrink-0 w-full sm:w-1/2 px-2"
               >
                 <ProductCard product={product} />
               </div>
@@ -110,7 +110,7 @@ function ProductCard({ product }: { product: Product }) {
       <div className="relative overflow-hidden bg-gray-100">
         <img
           // src={product?.image?.[0]}
-          src={`${import.meta.env.VITE_APP_Image_URL}/product/${product?.image?.[0]}`}
+          src={`${import.meta.env.VITE_APP_Image_URL}/product/${product?.images?.[0]}`}
           alt={product?.name}
           className="h-64 w-full object-cover group-hover:scale-110 transition-transform duration-500"
         />

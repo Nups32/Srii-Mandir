@@ -31,7 +31,7 @@ interface HeroSection {
   description: string;
   btnText: string;
   btnRedirect: string;
-  type: 'home' | 'about';
+  type: 'home' | 'about' | 'wallpaper';
   orderIndex: number;
   isActive: boolean;
   createdAt: string;
@@ -135,6 +135,7 @@ export const HeroSectionTable = () => {
     switch (type) {
       case 'home': return 'blue';
       case 'puja': return 'green';
+      case 'wallpaper': return 'yellow';
       default: return 'default';
     }
   };
@@ -143,6 +144,7 @@ export const HeroSectionTable = () => {
     switch (type) {
       case 'home': return 'Home';
       case 'puja': return 'Puja';
+      case 'wallpaper': return 'Wallpaper';
       default: return type;
     }
   };
@@ -332,6 +334,7 @@ export const HeroSectionTable = () => {
             <Option value="all">All Types</Option>
             <Option value="home">Home</Option>
             <Option value="puja">Puja</Option>
+            <Option value="wallpaper">Wallpaper</Option>
           </Select>
         </Col>
       </Row>

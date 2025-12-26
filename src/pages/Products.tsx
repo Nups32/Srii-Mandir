@@ -33,7 +33,6 @@ export default function Products() {
     try {
       const response = await getLatestProducts();
       if (response.data.status) {
-        console.log("response.data.data", response.data.data);
         // setProducts(response.data.data);
         response.data.data.map((product?: any) => {
           product?.category == "puja" ? setPujaProducts(product?.items) : product?.category == "yantra" ? setYantraProducts(product?.items) : product?.category == "rudraksha" ? setRudrakshaProducts(product?.items) : product?.category == "idol" ? setIdolProducts(product?.items) : product?.category == "book" ? setBookProducts(product?.items) : product?.category == "spiritual-kit" ? setSpiritualKitProducts(product?.items) : null;
@@ -65,9 +64,10 @@ export default function Products() {
           </p>
         </div>
 
-        {category?.map((cat) => (
+        {category?.map((cat, index) => (
           cat?.data?.length > 0 && (
             <ProductSection
+              key={index}
               title={`${cat.name} Collection`}
               subtitle="For Meditation, Mantra Jaap & Spiritual Discipline"
               products={cat.data}

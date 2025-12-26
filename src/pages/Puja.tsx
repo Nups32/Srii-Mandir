@@ -18,7 +18,7 @@ import slide4 from "../assets/Puja/1/4.webp";
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
 import { message } from "antd";
-import { getHeroSectionByType, getPooja } from "@/utils/API";
+import { getActivePurohits, getHeroSectionByType, getPooja } from "@/utils/API";
 import type { SlideItem } from "@/components/HeroSlider";
 // import { getPooja } from "@/utils/API";
 // import { message } from "antd";
@@ -41,6 +41,7 @@ const Puja: React.FC = () => {
   const navigate = useNavigate();
   const [, setLoading] = useState(false);
   const [poojas, setPoojas] = useState<any[]>([]);
+  const [purohits, setPurohits] = useState<any>([]);
 
 
   // const heroSlides = [
@@ -200,41 +201,41 @@ const Puja: React.FC = () => {
     },
   ];
 
-  const purohits = [
-    {
-      name: "Acharya Ramjoo Dwivedi",
-      place: "Prayagraj",
-      exp: 15,
-      image: slide1,
-    },
-    {
-      name: "Pandit Ashish Bhatt",
-      place: "Haridwar",
-      exp: 5,
-      image: slide1,
-    },
-    {
-      name: "Pandit Hanshul Dutt",
-      place: "Haridwar",
-      exp: 5,
-      image: slide1,
-    },
-    {
-      name: "Pandit Ravi Dubey",
-      place: "Ujjain",
-      exp: 5,
-      image: slide1,
-    },
-    {
-      name: "Pandit Saurabh Gautam",
-      place: "Varanasi",
-      exp: 4,
-      image: slide1,
-    },
-  ];
+  // const purohits = [
+  //   {
+  //     name: "Acharya Ramjoo Dwivedi",
+  //     place: "Prayagraj",
+  //     exp: 15,
+  //     image: slide1,
+  //   },
+  //   {
+  //     name: "Pandit Ashish Bhatt",
+  //     place: "Haridwar",
+  //     exp: 5,
+  //     image: slide1,
+  //   },
+  //   {
+  //     name: "Pandit Hanshul Dutt",
+  //     place: "Haridwar",
+  //     exp: 5,
+  //     image: slide1,
+  //   },
+  //   {
+  //     name: "Pandit Ravi Dubey",
+  //     place: "Ujjain",
+  //     exp: 5,
+  //     image: slide1,
+  //   },
+  //   {
+  //     name: "Pandit Saurabh Gautam",
+  //     place: "Varanasi",
+  //     exp: 4,
+  //     image: slide1,
+  //   },
+  // ];
 
   const [slides, setSlides] = useState<SlideItem[]>([]);
-  
+
   const fetchHeroSliders = async () => {
     // setLoading(true);
     try {
@@ -265,10 +266,27 @@ const Puja: React.FC = () => {
       setLoading(false);
     }
   };
+  const fetchPurohit = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getActivePurohits();
+      // console.log("res from fetchpooja", response)
+      if (response?.data?.status) {
+        setPurohits(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchHeroSliders();
     fetchPooja();
+    fetchPurohit();
   }, []);
 
   const nextSlide = () => {
@@ -371,7 +389,7 @@ const Puja: React.FC = () => {
               <div
                 key={puja._id}
                 className="bg-white flex flex-col justify-between rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
-              > 
+              >
                 {/* Card Image */}
                 <div className="relative h-62">
                   <img
@@ -535,21 +553,22 @@ const Puja: React.FC = () => {
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {purohits.map((purohit, idx) => (
+              {purohits?.map((purohit: any, idx: any) => (
                 <div
                   key={idx}
                   className="bg-white rounded-xl shadow-lg overflow-hidden text-center p-4"
                 >
                   <img
-                    src={purohit.image}
-                    alt={purohit.name}
+                    src={`${import.meta.env.VITE_APP_Image_URL}/purohit/${purohit?.image}`}
+                    alt={purohit?.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />
                   <h3 className="text-lg font-semibold text-gray-900">
-                    {purohit.name}
+                    {purohit?.name}
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    {purohit.place} • Exp: {purohit.exp} years
+                    {/* {purohit?.place} • Exp: {purohit?.exp} years */}
+                    {purohit?.location} • Exp: {purohit?.experience}
                   </p>
                 </div>
               ))}

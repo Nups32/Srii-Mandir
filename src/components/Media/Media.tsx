@@ -117,9 +117,9 @@ export default function Library() {
         {/* Free Devotional Songs */}
         {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
         <SectionTitle
-          title="Devotional Songs"
+          title="Daily Aarti"
           badge="Free Access"
-          viewAllPath="/media/song"
+          viewAllPath="/media/aarti"
           showViewAll={songs.length > 1}
         />
 

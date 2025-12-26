@@ -52,7 +52,7 @@ export default function DevotionalSongs() {
             ? "All Devotional Songs"
             : type === "vedicMantra"
             ? "All Vedic Sutra Mantras"
-            : "Kathas"}
+            : type === "katha" ? "Katha" : "Aarti"}
         </h1>
 
         <div className="grid md:grid-cols-2 gap-6">

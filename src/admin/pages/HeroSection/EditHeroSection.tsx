@@ -29,7 +29,7 @@ interface HeroSectionData {
   btnText: string;
   image: string;
   btnRedirect: string;
-  type: 'home' | 'about';
+  type: 'home' | 'about' | 'wallpaper';
   orderIndex: number;
   isActive: boolean;
   createdAt: string;
@@ -400,6 +400,7 @@ const EditHeroSectionForm: React.FC = () => {
                     >
                       <Radio value="home" className="mb-2! block">Home Page</Radio>
                       <Radio value="puja" className="mb-2! block">Puja Page</Radio>
+                      <Radio value="wallpaper" className="mb-2! block">Wallpaper</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Col>

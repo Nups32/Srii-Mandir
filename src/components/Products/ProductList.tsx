@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 type Product = {
   _id: number;
   name: string;
-  image: string[];
+  images: string[];
   price: string;
   description: string;
 };
@@ -14,7 +14,7 @@ type Product = {
 
 export function ProductList() {
   const [index, setIndex] = useState(0);
-  const [step, setStep] = useState(100); // %
+  const [step, setStep] = useState(100);
   const [products, setProducts] = useState<Product[]>([]);
   const [_loading, setLoading] = useState<any>();
   const { category } = useParams<{ category: string }>();
@@ -121,7 +121,7 @@ function ProductCard({ product }: { product: Product }) {
       <div className="relative overflow-hidden bg-gray-100">
         <img
           // src={product?.image?.[0]}
-          src={`${import.meta.env.VITE_APP_Image_URL}/product/${product?.image?.[0]}`}
+          src={`${import.meta.env.VITE_APP_Image_URL}/product/${product?.images?.[0]}`}
           alt={product?.name}
           className="h-64 w-full object-cover group-hover:scale-110 transition-transform duration-500"
         />

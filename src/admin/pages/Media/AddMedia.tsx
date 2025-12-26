@@ -113,6 +113,7 @@ const AddMediaForm: React.FC = () => {
     { value: 'song', label: 'Song' },
     { value: 'katha', label: 'Katha' },
     { value: 'aarti', label: 'Aarti' },
+    { value: 'live-temple-darshan', label: 'Live Temple Darshan' },
   ];
 
   return (
@@ -132,7 +133,7 @@ const AddMediaForm: React.FC = () => {
       </Row>
 
       <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
-        <Card className="!p-1">
+        <Card className="p-1!">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
 
             {/* Basic Information Section */}
@@ -184,13 +185,13 @@ const AddMediaForm: React.FC = () => {
                       onChange={(e) => handleMediaTypeChange(e.target.value)}
                       className="w-full"
                     >
-                      <Radio value="video" className="!mb-2 block">
+                      <Radio value="video" className="mb-2! block">
                         <div className="flex items-center">
                           <BsLink45Deg className="mr-2" />
                           <span>Video (URL)</span>
                         </div>
                       </Radio>
-                      <Radio value="audio" className="!mb-2 block">
+                      <Radio value="audio" className="mb-2! block">
                         <div className="flex items-center">
                           <BsUpload className="mr-2" />
                           <span>Audio (Upload)</span>
@@ -373,7 +374,7 @@ const AddMediaForm: React.FC = () => {
                 {loading ? (
                   <div className="flex items-center">
                     <Spin size="small" />
-                    <span className="!ml-2">Adding Media...</span>
+                    <span className="ml-2!">Adding Media...</span>
                   </div>
                 ) : (
                   "Add Media"

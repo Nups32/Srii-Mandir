@@ -12,8 +12,9 @@ import HeroSlider from "../components/HeroSlider";
 import ReviewsRatings from "@/components/Reviews";
 import StatsGrid from "@/components/StatsGrid";
 import { useEffect, useState } from "react";
-import { getPooja } from "@/utils/API";
-import { message } from "antd";
+import { getHeroSectionByType, getMediaByType, getPooja } from "@/utils/API";
+import { message, Modal } from "antd";
+import { getYouTubeEmbedUrl } from "@/utils/Helper";
 
 // const pujas = [
 //   {
@@ -82,6 +83,18 @@ const Index = () => {
 
   const [, setLoading] = useState(false);
   const [poojas, setPoojas] = useState<any[]>([]);
+  const [templeDarshan, setTempleDarshan] = useState<any[]>([]);
+  const [wallpaper, setWallpaper] = useState<any[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [type, setType] = useState("");
+  const [activeData, setActiveData] = useState<any>(null);
+
+  const openPreview = (item: any, type: string) => {
+    // setActiveVideo(item);
+    setActiveData(item);
+    setPreviewOpen(true);
+    setType(type);
+  };
 
   const fetchPooja = async () => {
     setLoading(true);
@@ -102,8 +115,44 @@ const Index = () => {
     }
   };
 
+  const fetchLiveTempleDarshn = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getMediaByType("live-temple-darshan");
+      if (response?.data?.status) {
+        const poojas = response?.data?.data || [];
+        setTempleDarshan(poojas.slice(0, 2));
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchWallpaper = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getHeroSectionByType("wallpaper");
+      if (response?.data?.status) {
+        const poojas = response?.data?.data || [];
+        setWallpaper(poojas.slice(0, 2));
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchPooja();
+    fetchLiveTempleDarshn();
+    fetchWallpaper();
   }, []);
 
   return (
@@ -117,13 +166,9 @@ const Index = () => {
         {/* marquee section */}
         <div className="marquee-container">
           <div className="marquee-content">
-            <span>आनंद की यात्रा</span>
-            <span>•</span>
-            <span>आनंद की यात्रा</span>
-            <span>•</span>
-            <span>आनंद की यात्रा</span>
-            <span>•</span>
-            <span>आनंद की यात्रा</span>
+            <span>आनंद की यात्रा</span><span>•</span><span>Anand Ki Yatra</span><span>•</span>
+            <span>आनंद की यात्रा</span><span>•</span><span>Anand Ki Yatra</span><span>•</span>
+            <span>आनंद की यात्रा</span><span>•</span><span>Anand Ki Yatra</span>
             {/* <span>•</span> */}
             {/* <span>Faith of 30 million+ devotees</span>
             <span>•</span>
@@ -233,24 +278,134 @@ const Index = () => {
           </div>
         </section>
 
-        {/* media */}
-        <section className="bg-orange-50 py-16">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-2xl font-semibold">
-              Bhajans, Aarti & Live Katha
-            </h2>
-            <p className="text-gray-600 mt-2">
-              Audio & Video devotional content
-            </p>
+        {/* Daily Spiritual Guidance */}
+        <section className="bg-gradient-to-b from-orange-50 via-white to-purple-50 py-20">
+          <div className="max-w-[1500px] mx-auto px-4">
 
-            <Link
-              to="/media"
-              className="inline-block mt-6 bg-orange-400 text-white px-8 py-3 rounded-full text-sm font-medium"
-            >
-              Explore Media
-            </Link>
+            {/* Section Header */}
+            <div className="text-center mb-14">
+              <h2 className="text-4xl font-extrabold text-gray-900">
+                Daily Spiritual Guidance
+              </h2>
+              <p className="text-gray-600 mt-4 max-w-2xl mx-auto leading-relaxed">
+                Stay spiritually connected every day through sacred live temple darshan
+                and divine wallpapers that fill your life with peace, devotion, and
+                positive energy.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* <div className="flex gap-5"> */}
+
+              {/* Live Temple Darshan */}
+              <div className="bg-white rounded-2xl shadow-md p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-orange-700 flex items-center gap-2">
+                    🔴 Live Temple Darshan
+                  </h3>
+                  <a
+                    href="/live-darshan"
+                    className="text-sm font-medium text-orange-600 hover:underline"
+                  >
+                    View All →
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-8">
+                  {templeDarshan.length > 0 ? (
+                    templeDarshan.map((item) => (
+                      // darshan.length > 0 ? (
+                      // darshan.map((item: any) => (
+                      <div
+                        key={item?._id}
+                        onClick={() => openPreview(item, 'darshan')}
+                        className="cursor-pointer bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+                      >
+                        <div className="relative aspect-video">
+                          <iframe
+                            src={getYouTubeEmbedUrl(item?.url)}
+                            title={item?.title}
+                            frameBorder="0"
+                            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                            className="absolute inset-0 w-full h-full pointer-events-none"
+                          />
+                        </div>
+
+                        <div className="p-4">
+                          <h3 className="text-lg font-semibold text-gray-800 truncate">
+                            {item?.name}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Tap to watch in full screen
+                          </p>
+                        </div>
+                      </div>
+                      // ))
+                      // ) : (
+                      //   <p className="text-center text-gray-500 col-span-full">
+                      //     Live darshan will be available soon.
+                      //   </p>
+                      // )
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">
+                      Live darshan will be available soon.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Divine Wallpapers */}
+              <div className="bg-white rounded-2xl shadow-md p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-purple-700 flex items-center gap-2">
+                    🌸 Divine Wallpapers
+                  </h3>
+                  <a
+                    href="/wallpapers"
+                    className="text-sm font-medium text-purple-600 hover:underline"
+                  >
+                    View All →
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-5">
+                  {wallpaper.length > 0 ? (
+                    wallpaper.map((item, index) => (
+                      <div
+                        key={index}
+                        onClick={() => openPreview(index, 'wallpaper')}
+                        className="group rounded-xl overflow-hidden shadow hover:shadow-xl transition bg-white"
+                      >
+                        <div className="relative w-full h-[200px]">
+                          <img
+                            src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${item?.image}`}
+                            alt={item?.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition" />
+                        </div>
+
+                        <div className="p-3 text-center">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {item?.title}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">
+                      Wallpapers will be available soon.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
+
+
 
         {/* CTA */}
         <section className="max-w-7xl mx-auto px-4 pb-24">
@@ -274,6 +429,38 @@ const Index = () => {
         <ReviewsRatings />
         <StatsGrid />
       </main>
+      {/* Video Modal */}
+      <Modal
+        open={previewOpen}
+        onCancel={() => { setPreviewOpen(false); setActiveData(null); }}
+        footer={null}
+        centered
+        width="80%"
+        destroyOnClose
+      >
+        {type === "darshan" ?
+          activeData && (
+            <div className="relative w-full aspect-video">
+              <iframe
+                src={`${getYouTubeEmbedUrl(activeData?.url)}?autoplay=1`}
+                title={activeData?.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full rounded-lg"
+              />
+            </div>
+          )
+          : (
+            <div key={"index"} className="flex justify-center">
+              <img
+                src={`${import.meta.env.VITE_APP_Image_URL}/hero-section/${wallpaper?.[activeData]?.image}`}
+                className="max-h-[80vh] object-contain mx-auto rounded-lg"
+              />
+            </div>
+          )
+        }
+      </Modal>
     </>
   );
 };

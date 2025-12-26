@@ -167,6 +167,18 @@ const Sidebar = () => {
         },
         {
           icon: <PackageOpen />,
+          name: "Yog Maya Mandir",
+          label: t("Yog Maya Mandir"),
+          link: "/admin/yog-maya-mandir",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Manage Purohit",
+          label: t("Purohit"),
+          link: "/admin/purohit",
+        },
+        {
+          icon: <PackageOpen />,
           name: "Product",
           label: t("Manage Product"),
           link: "/admin/product",

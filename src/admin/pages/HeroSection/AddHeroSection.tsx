@@ -97,16 +97,16 @@ const AddHeroSectionForm: React.FC = () => {
         </Col>
         <Col xs={7} sm={7} md={4} xl={4} xxl={4} className="flex justify-end">
           <Link to={"/admin/hero-section"}>
-            <button className="flex justify-center !py-2 w-full btn-brand">
+            <button className="flex justify-center py-2! w-full btn-brand">
               <FaArrowLeft className="mr-2" />
-              <div className="!mx-2">Back</div>
+              <div className="mx-2!">Back</div>
             </button>
           </Link>
         </Col>
       </Row>
 
-      <Form form={form} className="bg-white !border-0" onFinish={handleSubmit}>
-        <Card className="!p-1">
+      <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
+        <Card className="p-1!">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
             
             {/* Content Section */}
@@ -302,8 +302,9 @@ const AddHeroSectionForm: React.FC = () => {
                       onChange={(e) => setType(e.target.value)}
                       className="w-full"
                     >
-                      <Radio value="home" className="!mb-2 block">Home Page</Radio>
-                      <Radio value="puja" className="!mb-2 block">Puja Page</Radio>
+                      <Radio value="home" className="mb-2! block">Home Page</Radio>
+                      <Radio value="puja" className="mb-2! block">Puja Page</Radio>
+                      <Radio value="wallpaper" className="mb-2! block">Wallpaper</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Col>
