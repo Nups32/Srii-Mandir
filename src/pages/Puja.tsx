@@ -568,7 +568,7 @@ const Puja: React.FC = () => {
                   </h3>
                   <p className="text-gray-500 text-sm">
                     {/* {purohit?.place} • Exp: {purohit?.exp} years */}
-                    {purohit?.location} • Exp: {purohit?.experience}
+                    {purohit?.location} {purohit?.experience && `• Exp: ${purohit?.experience}`}
                   </p>
                 </div>
               ))}

@@ -868,3 +868,12 @@ export const generateReport = async (data: any) => {
     throw error;
   }
 };
+
+export const userFeedbackStore = async (data: any) => {
+  try {
+    const response = await API.post("frontend/review", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

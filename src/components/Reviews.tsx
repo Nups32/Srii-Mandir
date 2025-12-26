@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getReviews } from "@/utils/API";
+import { getReviews, userFeedbackStore } from "@/utils/API";
 import { message } from "antd";
+import { useSelector } from "react-redux";
+import type { IRootState } from "@/store";
 // interface Review {
 //   id: number;
 //   name: string;
@@ -16,6 +18,7 @@ const ReviewsRatings = () => {
   const [visibleCount, setVisibleCount] = useState(3);
   const [reviews, setReviews] = useState<any>([]);
   const [, setLoading] = useState<any>([]);
+  const authData = useSelector((state: IRootState) => state.userConfig);
   // const reviews: Review[] = [
   //   {
   //     id: 1,
@@ -82,16 +85,16 @@ const ReviewsRatings = () => {
   useEffect(() => {
     const updateVisibleCount = () => {
       let count = 3;
-      if (window.innerWidth < 768) { 
+      if (window.innerWidth < 768) {
         count = 1;
-      } else if (window.innerWidth < 1024) { 
+      } else if (window.innerWidth < 1024) {
         count = 2;
-      }  
+      }
 
       setVisibleCount((prev) => {
         if (prev !== count) {
           setCurrentIndex(0);
-        }  
+        }
         return count;
       });
     };
@@ -100,7 +103,7 @@ const ReviewsRatings = () => {
     window.addEventListener("resize", updateVisibleCount);
     return () => window.removeEventListener("resize", updateVisibleCount);
   }, []);
-    // const nextReview = () => {
+  // const nextReview = () => {
   //   setCurrentIndex((prevIndex) =>
   //     prevIndex + 3 >= reviews.length ? 0 : prevIndex + 1
   //   );
@@ -111,7 +114,7 @@ const ReviewsRatings = () => {
       prev + visibleCount >= reviews.length ? 0 : prev + visibleCount
     );
   };
-    // const prevReview = () => {
+  // const prevReview = () => {
   //   setCurrentIndex((prevIndex) =>
   //     prevIndex === 0 ? Math.max(0, reviews.length - 3) : prevIndex - 1
   //   );
@@ -171,33 +174,37 @@ const ReviewsRatings = () => {
     setFeedback({ ...feedback, rating: value });
   };
 
-  const submitFeedback = (e: React.FormEvent) => {
-    e.preventDefault();
+  const submitFeedback = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
 
-    if (
-      !feedback.name ||
-      !feedback.mobile ||
-      !feedback.rating ||
-      !feedback.comment
-    ) {
-      message.warning("Please fill all fields");
-      return;
+      if (!feedback.name || !feedback.mobile || !feedback.rating || !feedback.comment) {
+        message.warning("Please fill all fields");
+        return;
+      }
+
+      if (!/^[6-9]\d{9}$/.test(feedback.mobile)) {
+        message.error("Enter a valid 10-digit mobile number");
+        return;
+      }
+      const res = await userFeedbackStore({...feedback, userId: authData._id});
+      if (res.data.status) {
+        message.success("Thank you for your feedback 🙏");
+      } else {
+        message.error(res.data.message || "Server Error");
+      }
+    } catch (error: any) {
+      console.error("Error creating puja review:", error);
+      message.error(error.response?.data?.message || "Failed to create review. Please try again.");
+    } finally {
+      // setLoading(false);
+      setFeedback({ name: "", mobile: "", rating: 0, comment: "" });
     }
-
-    if (!/^[6-9]\d{9}$/.test(feedback.mobile)) {
-      message.error("Enter a valid 10-digit mobile number");
-      return;
-    }
-
-    console.log("Feedback submitted:", feedback);
-    message.success("Thank you for your feedback 🙏");
-
-    setFeedback({ name: "", mobile: "", rating: 0, comment: "" });
   };
 
   return (
     <>
-      
+
       <section
         id="reviews"
         className="w-full bg-gray-50 rounded-2xl py-16 my-6 px-8"
@@ -251,67 +258,69 @@ const ReviewsRatings = () => {
         </div>
       </section>
 
-      {/* FEEDBACK FORM */}
-      <section className="max-w-3xl mx-auto my-16 px-6">
-        <div className="bg-white p-8 rounded-xl shadow-md">
-          <h3 className="text-2xl font-bold text-center mb-6">
-            Share Your Experience
-          </h3>
+      {authData.token && (
+        <section className="max-w-3xl mx-auto my-16 px-6">
+          <div className="bg-white p-8 rounded-xl shadow-md">
+            <h3 className="text-2xl font-bold text-center mb-6">
+              Share Your Experience
+            </h3>
 
-          <form onSubmit={submitFeedback} className="space-y-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              value={feedback.name}
-              onChange={handleChange}
-              className="w-full border p-3 rounded"
-            />
+            <form onSubmit={submitFeedback} className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={feedback.name}
+                onChange={handleChange}
+                className="w-full border p-3 rounded"
+              />
 
-            <input
-              type="tel"
-              name="mobile"
-              placeholder="Mobile Number"
-              value={feedback.mobile}
-              onChange={handleChange}
-              className="w-full border p-3 rounded"
-            />
+              <input
+                type="tel"
+                name="mobile"
+                placeholder="Mobile Number"
+                value={feedback.mobile}
+                onChange={handleChange}
+                className="w-full border p-3 rounded"
+              />
 
-            {/* STAR RATING */}
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  onClick={() => handleRating(star)}
-                  className={`cursor-pointer text-2xl ${
-                    star <= feedback.rating
+              {/* STAR RATING */}
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => handleRating(star)}
+                    className={`cursor-pointer text-2xl ${star <= feedback.rating
                       ? "text-yellow-400"
                       : "text-gray-300"
-                  }`}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
+                      }`}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
 
-            <textarea
-              name="comment"
-              placeholder="Your Feedback"
-              rows={4}
-              value={feedback.comment}
-              onChange={handleChange}
-              className="w-full border p-3 rounded"
-            />
+              <textarea
+                name="comment"
+                placeholder="Your Feedback"
+                rows={4}
+                value={feedback.comment}
+                onChange={handleChange}
+                className="w-full border p-3 rounded"
+              />
 
-            <button
-              type="submit"
-              className="w-full bg-orange-500 text-white py-3 rounded hover:bg-orange-600 transition"
-            >
-              Submit Feedback
-            </button>
-          </form>
-        </div>
-      </section>
+              <button
+                type="submit"
+                className="w-full bg-orange-500 text-white py-3 rounded hover:bg-orange-600 transition"
+              >
+                Submit Feedback
+              </button>
+            </form>
+          </div>
+        </section>
+
+      )}
+
     </>
   );
 };
