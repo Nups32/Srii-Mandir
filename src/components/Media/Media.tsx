@@ -116,12 +116,14 @@ export default function Library() {
 
         {/* Free Devotional Songs */}
         {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
-        <SectionTitle
-          title="Daily Aarti"
-          badge="Free Access"
-          viewAllPath="/media/aarti"
-          showViewAll={songs.length > 1}
-        />
+        {aartis?.length > 0 &&
+          <SectionTitle
+            title="Daily Aarti"
+            badge="Free Access"
+            viewAllPath="/media/aarti"
+            showViewAll={songs.length > 1}
+          />
+        }
 
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {devotionalSongs.map((song, index) => ( */}
@@ -138,7 +140,7 @@ export default function Library() {
                   // free={!song?.isPaid || false}
                   premium={song?.isPaid || false}
                   isPaidUser={false}
-                  // contentType={"song"}
+                // contentType={"song"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -159,13 +161,14 @@ export default function Library() {
 
         {/* Free Devotional Songs */}
         {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
-        <SectionTitle
-          title="Devotional Songs"
-          badge="Free Access"
-          viewAllPath="/media/song"
-          showViewAll={songs.length > 1}
-        />
-
+        {songs?.length > 0 &&
+          <SectionTitle
+            title="Devotional Songs"
+            badge="Free Access"
+            viewAllPath="/media/song"
+            showViewAll={songs.length > 1}
+          />
+        }
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {devotionalSongs.map((song, index) => ( */}
           {/* {songs?.map((song) => ( */}
@@ -181,7 +184,7 @@ export default function Library() {
                   // free
                   premium={song?.isPaid || false}
                   isPaidUser={false}
-                  // contentType={"song"}
+                // contentType={"song"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -202,12 +205,14 @@ export default function Library() {
 
         {/* Premium Vedic Mantras */}
         {/* <SectionTitle title="Vedic Sutra Mantras" badge="Premium Content" /> */}
-        <SectionTitle
-          title="Vedic Sutra Mantras"
-          badge="Premium Content"
-          viewAllPath="/media/vedicMantra"
-          showViewAll={mantras.length > 1}
-        />
+        {mantras?.length > 0 &&
+          <SectionTitle
+            title="Vedic Sutra Mantras"
+            badge="Premium Content"
+            viewAllPath="/media/vedicMantra"
+            showViewAll={mantras.length > 1}
+          />
+        }
 
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {vedicMantras.map((mantra, index) => (
@@ -232,7 +237,7 @@ export default function Library() {
                   audio={mantra?.file}
                   premium={mantra?.isPaid}
                   isPaidUser={false}
-                  // contentType={"vedicMantra"}
+                // contentType={"vedicMantra"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -253,12 +258,14 @@ export default function Library() {
 
         {/* Live Katha Section */}
         {/* <SectionTitle title="Live Katha & Pravachan" badge="Live / Upcoming" /> */}
-        <SectionTitle
-          title="Live Katha & Pravachan"
-          badge="Live / Upcoming"
-          viewAllPath="/media/katha"
-          showViewAll={kathas.length > 1}
-        />
+        {kathas?.length > 0 &&
+          <SectionTitle
+            title="Live Katha & Pravachan"
+            badge="Live / Upcoming"
+            viewAllPath="/media/katha"
+            showViewAll={kathas.length > 1}
+          />
+        }
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* {liveKathas.map((katha, index) => ( */}

@@ -7,7 +7,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 
-import slide1 from "../assets/Puja/1/1.webp";
+// import slide1 from "../assets/Puja/1/1.webp";
 import slide2 from "../assets/Puja/1/2.webp";
 import slide3 from "../assets/Puja/1/3.webp";
 import slide4 from "../assets/Puja/1/4.webp";
@@ -176,7 +176,7 @@ const Puja: React.FC = () => {
   //   },
   // ];
 
-  const pujaWorkSlides = [slide1, slide2, slide3, slide4];
+  const pujaWorkSlides = [slide2, slide3, slide4];
 
   const pujaWork = [
     {

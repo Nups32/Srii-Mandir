@@ -161,7 +161,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <YogMayaMandir />,
   },
   {
-    path: "/dhan-basra-potli",
+    path: "/product/dhan-basra-potli",
     element: <DhanBasraPotli />,
   },
   {

@@ -20,6 +20,7 @@ const NavMenus = [
   { name: "Vedic Science", path: "/vedic-science" },
   { name: "Instant Solution", path: "/instant-solution" },
   { name: "Shakti Sanyansi", path: "/shakti-sanyas" },
+  { name: "Dhan Basra Potli", path: "/product/dhan-basra-potli" },
   { name: "Srii Mandir Mela", path: "/products" },
   { name: "Yog Maya Mandir", path: "/yog-maya-mandir" },
   // { name: "Dhan Basra Potli", path: "/dhan-basra-potli" },

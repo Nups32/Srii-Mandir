@@ -52,13 +52,12 @@ const HeroSection: React.FC = () => {
                             <button
                                 key={index}
                                 onClick={() => setActiveImage(index)}
-                                className={`h-20 w-20 rounded-xl overflow-hidden border-2 ${activeImage === index
+                                className={`h-full w-full rounded-xl overflow-hidden border-2 ${activeImage === index
                                     ? "border-yellow-600"
                                     : "border-transparent"
                                     }`}
                             >
                                 <img
-                                    // src={img}
                                     src={`${import.meta.env.VITE_APP_Image_URL}/product/${img}`}
                                     alt="thumbnail"
                                     className="h-full w-full object-cover"
