@@ -35,6 +35,9 @@ import EditYogMayaMandirForm from "@/admin/pages/YogMayaMandir/EditYogMayaMandir
 import PurohitTable from "@/admin/pages/Purohit/Index";
 import AddPurohitForm from "@/admin/pages/Purohit/AddPurohit";
 import EditPurohitForm from "@/admin/pages/Purohit/EditPurohit";
+import TempleTable from "@/admin/pages/Temple/Index";
+import AddTempleForm from "@/admin/pages/Temple/AddTemple";
+import EditTempleForm from "@/admin/pages/Temple/EditTemple";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -235,6 +238,21 @@ export const adminRoutes: RouteObjectWithLayout[] = [
   {
     path: "/admin/purohit/:id/edit",
     element: <EditPurohitForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/temple",
+    element: <TempleTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/temple/add",
+    element: <AddTempleForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/temple/:id/edit",
+    element: <EditTempleForm />,
     layout: "admin",
   },
   // {

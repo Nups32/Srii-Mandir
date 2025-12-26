@@ -466,6 +466,74 @@ export const getProductStats = () => {
   return API.get(`/products/stats`);
 };
 
+// Temple API Functions for all users (public)
+export const getTemples = () => {
+  return CommanAPI.get(`/temples`);
+};
+
+export const getLatestTemples = () => {
+  return CommanAPI.get(`/temples/latest`);
+};
+
+export const getOneTempleById = async (id: string) => {
+  const response = await CommanAPI.get(`/temples/${id}`);
+  return response;
+};
+
+export const getAllTemplesByPlace = async (place: string) => {
+  const response = await CommanAPI.get(`/temples/place/${place}`);
+  return response;
+};
+
+// Temple Admin API functions (protected)
+export const getAllTemplesAdmin = async () => {
+  const response = await API.get(`/backend/temples/get-all`);
+  return response;
+};
+
+export const getTempleById = (id: string) => {
+  return API.get(`/backend/temples/${id}/edit`);
+};
+
+export const createTemple = (data: any) => {
+  return API.post(`/backend/temples`, data);
+};
+
+export const updateTemple = (id: string, data: any) => {
+  return API.put(`/backend/temples/${id}`, data);
+};
+
+export const deleteTemple = (id: string) => {
+  return API.delete(`/backend/temples/${id}`);
+};
+
+export const toggleTempleStatus = (id: string) => {
+  return API.patch(`/backend/temples/${id}/toggle-status`);
+};
+
+export const submitQuestion = (data: {userId: string;name: string;fatherName?: string;spouseName?: string;childrenNames?: string[];email?: string;dob?: string;birthPlace?: string;question: string;}) => {
+  return API.post(`/frontend/ask-question`, data);
+};
+
+// Admin API Functions - Protected access
+export const getAllQuestions = async () => {
+  const response = await API.get(`/backend/ask-questions`);
+  return response;
+};
+
+export const getQuestionById = (id: string) => {
+  return API.get(`/backend/ask-questions/${id}`);
+};
+
+export const deleteQuestion = (id: string) => {
+  return API.delete(`/backend/ask-questions/${id}`);
+};
+
+// Optional: Get questions for specific user
+export const getUserQuestions = (userId: string) => {
+  return API.get(`/backend/ask-questions/user/${userId}`);
+};
+
 
 // CONTACT API functions
 export const deleteContact = async (id: any) => {

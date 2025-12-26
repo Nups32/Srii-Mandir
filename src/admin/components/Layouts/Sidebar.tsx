@@ -180,8 +180,14 @@ const Sidebar = () => {
         {
           icon: <PackageOpen />,
           name: "Product",
-          label: t("Manage Product"),
+          label: t("Manage Products"),
           link: "/admin/product",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Manage Temples",
+          label: t("Manage Temples"),
+          link: "/admin/temple",
         },
         // {
         //   icon: <FileBadge2 />,

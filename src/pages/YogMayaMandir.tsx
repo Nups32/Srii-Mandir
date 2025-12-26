@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, Heart, Book, Flower2, X, MessageCircle } from 'lucide-react';
 import { getActiveYogMayaMandir } from '@/utils/API';
 import { message } from 'antd';
+import { useSelector } from 'react-redux';
+import type { IRootState } from '@/store';
 
 const YogMayaMandir: React.FC = () => {
+  const authData = useSelector((state: IRootState) => state.userConfig);
   const [scrollY, setScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState('beginner');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   // State for the Question Form
   const [formData, setFormData] = useState({
     name: '',
@@ -499,24 +502,26 @@ const YogMayaMandir: React.FC = () => {
         </section>
 
         {/* New Ask Question Section */}
-        <section className="text-center my-16">
-          <div className="bg-white rounded-3xl p-12 shadow-xl border border-amber-100">
-            <MessageCircle className="w-20 h-20 text-orange-600 mx-auto mb-6 opacity-80" />
-            <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
-              Have a Spiritual Question?
-            </h2>
-            <p className="text-lg text-amber-900 mb-8 max-w-2xl mx-auto">
-              Our swamis are here to guide you. If you are seeking clarity on your path or have 
-              specific questions about your practice, we are here to help.
-            </p>
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white! font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
-            >
-              Ask Question
-            </button>
-          </div>
-        </section>
+        {(authData.token && (authData.token != null && authData.token != "")) && (
+          <section className="text-center my-16">
+            <div className="bg-white rounded-3xl p-12 shadow-xl border border-amber-100">
+              <MessageCircle className="w-20 h-20 text-orange-600 mx-auto mb-6 opacity-80" />
+              <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
+                Have a Spiritual Question?
+              </h2>
+              <p className="text-lg text-amber-900 mb-8 max-w-2xl mx-auto">
+                Our swamis are here to guide you. If you are seeking clarity on your path or have
+                specific questions about your practice, we are here to help.
+              </p>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white! font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
+              >
+                Ask Question
+              </button>
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Ask Question Popup Modal */}
@@ -528,7 +533,7 @@ const YogMayaMandir: React.FC = () => {
               <h3 className="text-2xl font-bold flex items-center gap-2">
                 <Sparkles className="w-6 h-6" /> Spiritual Inquiry
               </h3>
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 hover:bg-white/20 rounded-full transition cursor-pointer"
               >
