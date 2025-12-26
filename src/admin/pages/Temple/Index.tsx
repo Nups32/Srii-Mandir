@@ -131,10 +131,6 @@ export const TempleTable = () => {
     });
   };
 
-  const getStatusColor = (isActive: boolean) => {
-    return isActive ? "green" : "red";
-  };
-
   const getPurposeColor = (purpose: string) => {
     if (!purpose) return "default";
     

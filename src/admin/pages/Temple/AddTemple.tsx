@@ -8,7 +8,6 @@ import {
   Card,
   Spin,
   Switch,
-  Space,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
