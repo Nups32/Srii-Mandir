@@ -61,6 +61,34 @@ export default function FAQs({ type = "puja" }) {
     },
   ];
 
+  const janamRashiFaqs = [
+    {
+      question: "What is Janma Rashi and how is it different from Sun Sign?",
+      answer:
+        "Janma Rashi is your Moon Sign, calculated based on the position of the Moon at the time of your birth. It is used in Vedic astrology. In contrast, the Sun Sign (used in Western astrology) is based on the Sun's position. Janma Rashi is considered more accurate for predictions in Indian astrology.",
+    },
+    {
+      question: "What details do I need to use the Janma Rashi Calculator?",
+      answer:
+        "You need to enter your date of birth, exact time of birth, and place of birth. These details help calculate the precise position of the Moon at your birth and determine your Janma Rashi.",
+    },
+    {
+      question: "Can I find my Janma Rashi without knowing the exact time of birth?",
+      answer:
+        "Yes, but the result may not be fully accurate. Since the Moon changes signs every 2.25 days, even a few hours' difference can change the Rashi. For best results, use your correct birth time.",
+    },
+    {
+      question: "Is Janma Rashi used for daily horoscopes?",
+      answer:
+        "Yes. In Vedic astrology, daily, weekly, and yearly Rashifal (horoscopes) are based on your Janma Rashi, not your Sun Sign. It gives more personalized predictions.",
+    },
+    {
+      question: "Why is Janma Rashi important in Hindu rituals and astrology?",
+      answer:
+        "Janma Rashi is used in making the Kundali, choosing letters for Naamkaran, matching horoscopes for marriage, selecting auspicious muhurats, and for various astrological remedies. It is one of the most important elements in Vedic astrology.",
+    },
+    
+  ];
   const nakshtraFaqs = [
     {
       question: "What is a Nakshatra Finder?",
@@ -115,6 +143,8 @@ export default function FAQs({ type = "puja" }) {
     faqsToShow = chadhavaFaqs;
   } else if (type === "nakshtra") {
     faqsToShow = nakshtraFaqs;
+  } else if (type === "janamRashi") {
+    faqsToShow = janamRashiFaqs;
   } else {
     faqsToShow = pujaFaqs;
   }

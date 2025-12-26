@@ -8,8 +8,7 @@ import { message } from "antd";
 import { useEffect, useState } from "react";
 import { getYouTubeEmbedUrl } from "@/utils/Helper";
 
-export default function Library({ isPaidUser }: any) {
-  console.log("isPaidUser", isPaidUser);
+export default function Library() {
   // const devotionalSongs = [
   //   {
   //     title: "Shree Ganesh Aarti",
@@ -67,10 +66,11 @@ export default function Library({ isPaidUser }: any) {
   const [songs, setSongs] = useState<any[]>([]);
   const [mantras, setMantras] = useState<any[]>([]);
   const [kathas, setKathas] = useState<any[]>([]);
+  const [aartis, setAartis] = useState<any[]>([]);
 
-  console.log("soungs", songs);
-  console.log("mantras", mantras);
-  console.log("kathas", kathas);
+  // console.log("soungs", songs);
+  // console.log("mantras", mantras);
+  // console.log("kathas", kathas);
 
   const fetchMedia = async () => {
     // setLoading(true);
@@ -80,11 +80,7 @@ export default function Library({ isPaidUser }: any) {
         // console.log("response.data.data", response.data.data);
         response.data.data.map((media: any) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          media.type == "katha"
-            ? setKathas(media.items)
-            : media.type == "song"
-            ? setSongs(media.items)
-            : setMantras(media.items);
+          media.type == "katha" ? setKathas(media.items) : media.type == "song" ? setSongs(media.items) : media.type == "aarti" ? setAartis(media.items) : setMantras(media.items);
         });
         // setSlides(response.data.data);
       }
@@ -99,9 +95,10 @@ export default function Library({ isPaidUser }: any) {
     fetchMedia();
   }, []);
 
-  const allSongs = [...songs, ...songs];
-  const allMantras = [...mantras, mantras];
-  const allKathas = [...kathas, ...kathas];
+  // const songs = [...songs];
+  // const mantras = [...mantras];
+  // const kathas = [...kathas];
+  // const allAartis = [...aartis];
 
   return (
     <section className="min-h-screen bg-linear-to-b from-orange-50 to-white py-16">
@@ -120,6 +117,49 @@ export default function Library({ isPaidUser }: any) {
         {/* Free Devotional Songs */}
         {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
         <SectionTitle
+          title="Daily Aarti"
+          badge="Free Access"
+          viewAllPath="/media/aarti"
+          showViewAll={songs.length > 1}
+        />
+
+        <div className="grid md:grid-cols-2 gap-6 mb-16">
+          {/* {devotionalSongs.map((song, index) => ( */}
+          {/* {songs?.map((song) => ( */}
+          {aartis.slice(0, 2).map((song) => (
+            <div key={song?._id}>
+              {song?.media == "audio" ? (
+                <AudioCard
+                  // key={song?._id}
+                  _id={song?._id}
+                  title={song?.name}
+                  // audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song?.file}`}
+                  audio={song?.file}
+                  // free={!song?.isPaid || false}
+                  premium={song?.isPaid || false}
+                  isPaidUser={false}
+                  // contentType={"song"}
+                />
+              ) : (
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
+                  <iframe
+                    key={song?._id}
+                    src={getYouTubeEmbedUrl(song?.url)}
+                    title={song?.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Free Devotional Songs */}
+        {/* <SectionTitle title="Devotional Songs" badge="Free Access" /> */}
+        <SectionTitle
           title="Devotional Songs"
           badge="Free Access"
           viewAllPath="/media/song"
@@ -129,19 +169,19 @@ export default function Library({ isPaidUser }: any) {
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* {devotionalSongs.map((song, index) => ( */}
           {/* {songs?.map((song) => ( */}
-          {allSongs.slice(0, 2).map((song) => (
+          {songs.slice(0, 2).map((song) => (
             <div key={song?._id}>
               {song?.media == "audio" ? (
                 <AudioCard
                   key={song?._id}
+                  _id={song?._id}
                   title={song?.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
-                    song?.file
-                  }`}
-                  free
+                  // audio={`${import.meta.env.VITE_APP_Image_URL}/media/${song?.file}`}
+                  audio={song?.file}
+                  // free
                   premium={song?.isPaid || false}
                   isPaidUser={false}
-                  contentType={"song"}
+                  // contentType={"song"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -181,18 +221,18 @@ export default function Library({ isPaidUser }: any) {
             />
           ))} */}
           {/* {mantras?.map((mantra) => ( */}
-          {allMantras.slice(0, 2).map((mantra) => (
+          {mantras.slice(0, 2).map((mantra) => (
             <div key={mantra?._id}>
               {mantra?.media == "audio" ? (
                 <AudioCard
                   key={mantra?._id}
+                  _id={mantra?._id}
                   title={mantra?.name}
-                  audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
-                    mantra?.file
-                  }`}
+                  // audio={`${import.meta.env.VITE_APP_Image_URL}/media/${mantra?.file}`}
+                  audio={mantra?.file}
                   premium={mantra?.isPaid}
                   isPaidUser={false}
-                  contentType={"vedicMantra"}
+                  // contentType={"vedicMantra"}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4!">
@@ -223,7 +263,7 @@ export default function Library({ isPaidUser }: any) {
         <div className="grid md:grid-cols-2 gap-6">
           {/* {liveKathas.map((katha, index) => ( */}
           {/* {kathas.map((katha, index) => ( */}
-          {allKathas.slice(0, 2).map((katha, i) => (
+          {kathas.slice(0, 2).map((katha, i) => (
             <LiveKathaCard key={i} katha={katha} />
           ))}
         </div>

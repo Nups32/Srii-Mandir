@@ -31,12 +31,13 @@ export default function Mantras({ isPaidUser }: any) {
 
             <AudioCard
               title={mantra.name}
+              _id={mantra._id}
               audio={`${import.meta.env.VITE_APP_Image_URL}/media/${
                 mantra.file
               }`}
               premium={mantra.isPaid}
               isPaidUser={isPaidUser}
-              contentType="vedicMantra"
+              // contentType="vedicMantra"
             />
           ))}
         </div>

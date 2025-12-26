@@ -203,6 +203,20 @@ export const deleteMedia = async (id: string) => {
   return response;
 };
 
+export const DownloadFreeMedia = async (id: string) => {
+  const response = await CommanAPI.post(`/media/${id}/free/download`, {}, {
+    responseType: "blob"
+  });
+  return response;
+};
+
+export const DownloadPremiumMedia = async (id: string) => {
+  const response = await API.post(`/frontend/media/${id}/premium/download`, {}, {
+    responseType: "blob"
+  });
+  return response;
+};
+
 export const updateMediaStatus = async (id: string, data: { isActive?: boolean; isPaid?: boolean }) => {
   const response = await API.patch(`/backend/media/${id}/status`, data);
   return response;
@@ -404,8 +418,56 @@ export const updatePujaReviewStatus = (id: string, data: { isActive: boolean }) 
   return API.patch(`/backend/puja-reviews/${id}/status`, data);
 };
 
-// CONTACT API functions
 
+// Puja Review API Functions
+export const getProducts = () => {
+  return CommanAPI.get(`/product`);
+};
+export const getLatestProducts = () => {
+  return CommanAPI.get(`/product/latest`);
+};
+
+export const getOneProductByType = async (type: string) => {
+  const response = await CommanAPI.get(`/product/${type}/one/get`);
+  return response;
+};
+
+export const getAllProductByCategory = async (category: string) => {
+  const response = await CommanAPI.get(`/product/${category}/all/get`);
+  return response;
+};
+
+export const getAllProducts = async () => {
+  const response = await API.get(`/backend/products/get-all`);
+  return response;
+};
+
+export const getProductById = (id: string) => {
+  return API.get(`/backend/products/${id}/edit`);
+};
+
+export const createProduct = (data: FormData) => {
+  return API.post(`/backend/products`, data);
+};
+
+export const updateProduct = (id: string, data: FormData) => {
+  return API.put(`backend/products/${id}/update`, data);
+};
+
+export const deleteProduct = (id: string) => {
+  return API.delete(`/backend/products/${id}/delete`);
+};
+
+export const updateProductStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/products/${id}/status`, data);
+};
+
+export const getProductStats = () => {
+  return API.get(`/products/stats`);
+};
+
+
+// CONTACT API functions
 export const deleteContact = async (id: any) => {
   try {
     const response = await API.delete(`/contact/${id}/delete`);
@@ -419,7 +481,7 @@ export const deleteContact = async (id: any) => {
 export const getUserData = async (data: any) => {
   try {
     const response = await API.get("/backend/users/get", { params: data });
-    console.log("res of getuserdata", response)
+    // console.log("res of getuserdata", response)
     return response;
   } catch (error) {
     throw error;
@@ -642,6 +704,111 @@ export const exportBookPujas = (format: 'excel' | 'pdf', filters?: {
     params: { format, ...filters },
     responseType: 'blob' // Important for file downloads
   });
+};
+
+// YogMayaMandir API Functions
+export const getAllYogMayaMandir = (params?: {
+  status?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return API.get(`/backend/yog-maya-mandir/get-all`, { params });
+};
+
+export const getYogMayaMandirById = (id: string) => {
+  return API.get(`/backend/yog-maya-mandir/${id}/edit`);
+};
+
+export const createYogMayaMandir = (data: {
+  understandingYog: Array<{ title: string; description: string }>;
+  meditationPractices: Array<{ type: 'beginner' | 'intermediate' | 'advanced'; title: string; duration: string; step: string[]; benefit: string; }>;
+  wisdoms: Array<{ title: string; wisdom: string; understanding?: string }>;
+  isActive: boolean;
+}) => {
+  return API.post(`/backend/yog-maya-mandir`, data);
+};
+
+export const updateYogMayaMandir = (
+  id: string,
+  data: {
+    understandingYog?: Array<{ title: string; description: string }>;
+    meditationPractices?: Array<{ type: 'beginner' | 'intermediate' | 'advanced'; title: string; duration: string; step: string[]; benefit: string; }>;
+    wisdoms?: Array<{ title: string; wisdom: string; understanding?: string }>;
+    isActive?: boolean;
+  }
+) => {
+  return API.put(`/backend/yog-maya-mandir/${id}/update`, data);
+};
+
+export const deleteYogMayaMandir = (id: string) => {
+  return API.delete(`/backend/yog-maya-mandir/${id}/delete`);
+};
+
+export const updateYogMayaMandirStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/yog-maya-mandir/${id}/status`, data);
+};
+
+// Public API functions
+export const getActiveYogMayaMandir = () => {
+  return API.get(`/yog-maya-mandir`);
+};
+
+export const getYogMayaMandirStats = () => {
+  return API.get(`/backend/yog-maya-mandir/stats`);
+};
+
+export const getMeditationsByType = (type: 'beginner' | 'intermediate' | 'advanced', params?: { level?: string }) => {
+  return API.get(`/yog-maya-mandir/meditations/${type}`, { params });
+};
+
+
+// Purohit API Functions
+export const getAllPurohits = (params?: {
+  status?: string; search?: string; page?: number; limit?: number; sortBy?: string; sortOrder?: string;
+}) => {
+  return API.get(`/backend/purohits`, { params });
+};
+
+export const getPurohitById = (id: string) => {
+  return API.get(`/backend/purohits/${id}`);
+};
+
+export const createPurohit = (data: FormData) => {
+  return API.post(`/backend/purohits`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updatePurohit = (id: string, data: FormData) => {
+  return API.put(`/backend/purohits/${id}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const deletePurohit = (id: string) => {
+  return API.delete(`/backend/purohits/${id}`);
+};
+
+export const updatePurohitStatus = (id: string, data: { isActive: boolean }) => {
+  return API.patch(`/backend/purohits/${id}/status`, data);
+};
+
+export const updatePurohitOrder = (orders: Array<{ id: string; orderIndex: number }>) => {
+  return API.patch(`/backend/purohits/order/update`, { orders });
+};
+
+// Public API functions
+export const getActivePurohits = () => {
+  return CommanAPI.get(`/purohits`);
+};
+
+export const getPurohitStats = () => {
+  return API.get(`/backend/purohits/stats`);
 };
 
 export const getBookedChadhava = async (page = 1, limit = 10) => {

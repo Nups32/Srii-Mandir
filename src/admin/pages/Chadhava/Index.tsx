@@ -17,6 +17,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { deleteChadhava, getAllChadhava, updateChadhavaStatus } from "@/utils/API";
+import dayjs from "dayjs";
 // import { format } from "date-fns";
 
 interface OfferingItem {
@@ -221,7 +222,7 @@ export const ChadhavaTable = () => {
       dataIndex: "createdAt",
       key: "createdAt",
     //   render: (text: string) => formatDate(text),
-      render: (text: string) => (text),
+      render: (text: string) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
       sorter: (a: Chadhava, b: Chadhava) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
@@ -301,7 +302,7 @@ export const ChadhavaTable = () => {
       </Row>
 
       <Row>
-        <Card className="container !mt-5">
+        <Card className="container mt-5!">
           <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
             <Spin spinning={loading}>
               <Table

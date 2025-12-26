@@ -21,9 +21,9 @@ export default function ContactUs() {
               <br />
               {/* Intellect Application, <br /> */}
               {/* 305-306 - 3rd floor, Tower A, */}
-              #305-306 - 3rd floor, Tower A, Spazedge - Sector 46, Sohna Road,
+              305-306 - 3rd floor, Tower A, Spazedge - Sector 47, Sohna Road,
               <br />
-              Gurgaon, Haryana 122018
+              Gurgaon, Haryana 122001
               <br />
             </p>
           </div>

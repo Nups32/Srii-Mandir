@@ -68,6 +68,28 @@ function ForgetPassword() {
     }
   };
 
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const pastedOtp = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "") // digits only
+      .slice(0, 4); // OTP length = 4
+
+    if (!pastedOtp) return;
+
+    const newOtp = [...inputOtp];
+
+    pastedOtp.split("").forEach((digit, index) => {
+      newOtp[index] = digit;
+    });
+
+    setInputOtp(newOtp);
+
+    // Focus last filled box
+    inputRefs.current[pastedOtp.length - 1]?.focus();
+  };
+
   const handleNewPassword = async (e: any) => {
     try {
       e.preventDefault();
@@ -181,7 +203,7 @@ function ForgetPassword() {
                 </h3>
 
                 <form onSubmit={handleOTPSubmit} className="flex flex-col">
-                  <div className="flex justify-between gap-2 mb-6">
+                  {/* <div className="flex justify-between gap-2 mb-6">
                     {inputOtp.map((data, index) => (
                       <input
                         key={index}
@@ -196,6 +218,29 @@ function ForgetPassword() {
                              bg-transparent text-white!
                              border-b-2 border-white/60
                              focus:border-white focus:outline-none"
+                      />
+                    ))}
+                  </div> */}
+
+                  <div className="flex justify-between gap-2 mb-6">
+                    {inputOtp.map((data, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        maxLength={1}
+                        inputMode="numeric"
+                        ref={(el) => {
+                          inputRefs.current[index] = el;
+                        }}
+                        value={data as string}
+                        onChange={(e) => handleChange(e.target, index)}
+                        onPaste={handleOtpPaste}
+                        onFocus={(e) => e.target.select()}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        className="w-12 h-14 text-center text-2xl font-bold 
+                 bg-transparent text-white!
+                 border-b-2 border-white/60
+                 focus:border-white focus:outline-none"
                       />
                     ))}
                   </div>

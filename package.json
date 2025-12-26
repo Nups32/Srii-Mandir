@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/antd": "^0.12.32",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",

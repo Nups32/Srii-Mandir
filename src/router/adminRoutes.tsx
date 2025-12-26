@@ -26,6 +26,15 @@ import AddPujaReviewForm from "@/admin/pages/PujaReview/AddPujaReview";
 import EditPujaReviewForm from "@/admin/pages/PujaReview/EditPujaReview";
 import BookChadhavaTable from "@/admin/pages/BookChadhava/Index";
 import BookPujaTable from "@/admin/pages/BookPuja/Index";
+import ProductTable from "@/admin/pages/Product/Index";
+import AddProductForm from "@/admin/pages/Product/AddProduct";
+import EditProductForm from "@/admin/pages/Product/EditProduct";
+import YogMayaMandirTable from "@/admin/pages/YogMayaMandir/Index";
+import AddYogMayaMandirForm from "@/admin/pages/YogMayaMandir/AddYogMayaMandir";
+import EditYogMayaMandirForm from "@/admin/pages/YogMayaMandir/EditYogMayaMandir";
+import PurohitTable from "@/admin/pages/Purohit/Index";
+import AddPurohitForm from "@/admin/pages/Purohit/AddPurohit";
+import EditPurohitForm from "@/admin/pages/Purohit/EditPurohit";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -181,6 +190,51 @@ export const adminRoutes: RouteObjectWithLayout[] = [
   {
     path: "/admin/book-chadhava",
     element: <BookChadhavaTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product",
+    element: <ProductTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product/add",
+    element: <AddProductForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/product/:id/edit",
+    element: <EditProductForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/yog-maya-mandir",
+    element: <YogMayaMandirTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/yog-maya-mandir/add",
+    element: <AddYogMayaMandirForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/yog-maya-mandir/:id/edit",
+    element: <EditYogMayaMandirForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/purohit",
+    element: <PurohitTable />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/purohit/add",
+    element: <AddPurohitForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/purohit/:id/edit",
+    element: <EditPurohitForm />,
     layout: "admin",
   },
   // {

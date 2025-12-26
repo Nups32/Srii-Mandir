@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import nakshtra from "../assets/nakshtra.jpg";
+// import janamaRashi from "../assets/janama-rashi.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function VedicScience() {
@@ -51,6 +52,34 @@ export default function VedicScience() {
               className="w-50 h-50 object-fit"
             />
           </div>
+
+          {/* janma rashi finder */}
+          {/* <div className="group border border-gray-200 rounded-2xl p-10 flex justify-between items-center transition-all hover:shadow-lg hover:border-purple-200">
+            <div>
+              <h3 className="text-2xl font-semibold text-purple-700 mb-3">
+                Janma Rashi Finder
+              </h3>
+
+              <p className="text-gray-600 mb-8 max-w-xs">
+                Find your Janma Rashi (Moon Sign) based on your date, time, and place of birth,
+                and understand how it influences your emotions, nature, and life direction.
+              </p>
+
+
+              <button
+                onClick={() => navigate("/janam-rashi-finder")}
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-purple-600 text-white! transition-transform group-hover:translate-x-1 cursor-pointer"
+              >
+                <ArrowRight size={20} />
+              </button>
+            </div>
+
+            <img
+              src={janamaRashi}
+              alt="Nakshatra Finder"
+              className="w-50 h-50 object-fit"
+            />
+          </div> */}
 
           {/* Future card placeholder */}
           <div className="border border-dashed border-gray-200 rounded-2xl p-10 flex items-center justify-center text-gray-400 text-sm">

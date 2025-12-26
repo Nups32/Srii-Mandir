@@ -17,6 +17,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { deletePoojaPackage, getPoojaPackages } from "@/utils/API";
+import dayjs from "dayjs";
 // import { format } from "date-fns";
 
 interface PujaPackage {
@@ -187,7 +188,7 @@ export const PoojaPackageTable = () => {
       dataIndex: "createdAt",
       key: "createdAt",
     //   render: (text: string) => formatDate(text),
-      render: (text: string) => (text),
+      render: (text: string) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
       sorter: (a: PujaPackage, b: PujaPackage) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
@@ -259,7 +260,7 @@ export const PoojaPackageTable = () => {
       </Row>
 
       <Row>
-        <Card className="container !mt-5">
+        <Card className="container mt-5!">
           <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
             <Spin spinning={loading}>
               <Table
