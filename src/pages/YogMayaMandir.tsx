@@ -7,8 +7,6 @@ const YogMayaMandir: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState('beginner');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDhamsModalOpen, setIsDhamsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
 
   // State for the Question Form
   const [formData, setFormData] = useState({
@@ -92,42 +90,6 @@ const YogMayaMandir: React.FC = () => {
     }
   ];
 
-  const allMandirs = [
-    { sr: 1, name: "Yog Maya Dham", place: "Vrindavan, Uttar Pradesh", purpose: "Property Relative Issue" },
-    { sr: 2, name: "Shri Garud Govind Temple", place: "Shri Vrindavan, Uttar Pradesh", purpose: "Desired Wish" },
-    { sr: 3, name: "Neem Karoli Baba Ashram", place: "Vrindavan, Uttar Pradesh", purpose: "Happiness" },
-    { sr: 4, name: "Sapt Sundari Dham", place: "Orchha, Madhya Pradesh", purpose: "Baby Conceive Problem" },
-    { sr: 5, name: "Tripura Sundari Dham", place: "Tripuri, Madhya Pradesh", purpose: "Tantra Vidya" },
-    { sr: 6, name: "Maharshi Vibhu Manokamna Dham", place: "Ballia, Uttar Pradesh", purpose: "Property Relative Issue / Happiness" },
-    { sr: 7, name: "Vindhyachal Dham", place: "Uttar Pradesh", purpose: "(Main pilgrimage for Child Birth / Putra Prapti)" },
-    { sr: 8, name: "Sankat Mochan Hanuman Dham", place: "Banaras (Varanasi), Uttar Pradesh", purpose: "Freedom From Debt" },
-    { sr: 9, name: "Maa Jwalamukhi Karj Mukti Dham", place: "Durg, Chhattisgarh", purpose: "(Debt / Loan relief)" },
-    { sr: 10, name: "Kamakhya Shakti Dham", place: "Guwahati, Assam", purpose: "(Grah Kalesh / Family disputes)" },
-    { sr: 11, name: "Sapt Sarovar Mukti Dham", place: "Muzaffarnagar, Uttar Pradesh", purpose: "(Mukti / Spiritual liberation)" },
-    { sr: 12, name: "Maa Jagdamba Pawan Dham", place: "Dibrugarh, Assam", purpose: "(Justice related)" },
-    { sr: 13, name: "Swayam Bhav Har Mahadev Dham", place: "Banaskantha, Rajasthan", purpose: "Problems In Relationships" },
-    { sr: 14, name: "Shree Sadhana Durga Peeth – 24 Parganas", place: "West Bengal", purpose: "(Manokamna Poorti – Wish fulfillment)" },
-    { sr: 15, name: "Jag Janani Sita Shruti Dham – Janakpur Dham", place: "Dhanusha District, Nepal", purpose: "Good marriage life" },
-    { sr: 16, name: "Shri Radha Rani Kirti Mandir", place: "Barsana, Uttar Pradesh", purpose: "(Marriage related issues)" },
-    { sr: 17, name: "Bhuteshwar Tantra Vidya Dham", place: "Rourkela, Odisha", purpose: "(Atma Shanti, Bhut-Pret, Mukti)" },
-    { sr: 18, name: "Shree Navlakha Yojana Dham", place: "Jharkhand", purpose: "(Talaq / Divorce related problems)" },
-    { sr: 19, name: "Bagalamukhi Temple", place: "Nalkheda, Madhya Pradesh", purpose: "(Justice, legal victory)" },
-    { sr: 20, name: "Beri Wala Siddh Peeth Mandir", place: "Noida, Uttar Pradesh", purpose: "(Child health issues)" },
-    { sr: 21, name: "Anusuya Devi Mandir", place: "Udaipur, Rajasthan", purpose: "(Personal problems)" },
-    { sr: 22, name: "Siddh Peeth Dhameshwari Devi", place: "Chittorgarh", purpose: "(Mental peace & solutions)" },
-    { sr: 23, name: "Shri Bhaktivedanta Gau Seva Dham", place: "Jharkhand", purpose: "(Mother, Father & family related work)" },
-    { sr: 24, name: "Jeevan Chhaya Shakti Peeth", place: "Bihar", purpose: "(Children speech problems)" },
-    { sr: 25, name: "Maya Shakti Sarovar Dham", place: "Buxar, Bihar", purpose: "(BP, Sugar, Thyroid, Cancer, Hair problems)" },
-    { sr: 26, name: "Ganpati Mandir", place: "Mahakaleshwar - Ujjain", purpose: "Vighna Nashak" },
-    { sr: 27, name: "Laxmi Mandir", place: "Vrindavan, Uttar Pradesh", purpose: "Dhan Prapti" }
-  ];
-
-  const displayedMandirs = allMandirs.slice(0, 3);
-  const filteredMandirs = allMandirs.filter(mandir =>
-    mandir.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    mandir.purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    mandir.place.toLowerCase().includes(searchTerm.toLowerCase())
-  );
   // const yogTeachings = [
   //   {
   //     title: "What is Yog?",
@@ -447,37 +409,6 @@ const YogMayaMandir: React.FC = () => {
           ))}
         </section>
 
-        {/* Spiritual Dhams Section - Only 3 shown */}
-        <section className="my-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-amber-800 mb-12">
-            List of Spiritual Dham / Shakti Peeth
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {displayedMandirs.map((mandir) => (
-              <div key={mandir.sr} className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition duration-500 group">
-                <h3 className="text-2xl font-bold text-amber-800 mb-4 text-center">
-                  {mandir.name}
-                </h3>
-                <p className="text-amber-900 leading-relaxed text-center">
-                  Place: {mandir.place}
-                </p>
-                <p className="text-amber-900 leading-relaxed text-center mt-3">
-                  Purpose: {mandir.purpose}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <button
-              onClick={() => setIsDhamsModalOpen(true)}
-              className="bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
-            >
-              View All
-            </button>
-          </div>
-        </section>
-
         {/* Divine Wisdom */}
         <section className="my-20">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-amber-800 mb-4">
@@ -584,58 +515,6 @@ const YogMayaMandir: React.FC = () => {
                 Submit Inquiry
               </button>
             </form>
-          </div>
-        </div>
-      )}
-
-      {/* NEW: View All Modal - Exactly like your screenshot */}
-      {isDhamsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 backdrop-blur-sm overflow-y-auto pt-10 pb-10">
-          <div className="w-full max-w-7xl bg-gradient-to-b from-maroon-800 to-maroon-900 text-white rounded-t-3xl overflow-hidden">
-            {/* Header */}
-            <div className="px-8 py-6 flex justify-between items-center">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold">List of Spiritual Dham / Shakti Peeth</h1>
-                <p className="text-lg opacity-90 mt-1">Discover sacred destinations for specific life purposes</p>
-              </div>
-              <button onClick={() => { setIsDhamsModalOpen(false); setSearchTerm(''); }} className="p-3 hover:bg-white/20 rounded-full transition">
-                <X className="w-8 h-8" />
-              </button>
-            </div>
-
-            {/* Search Bar */}
-            <div className="px-8 pb-6">
-              <div className="relative max-w-md">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search by name or purpose..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-full bg-white/20 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50"
-                />
-              </div>
-            </div>
-
-            {/* Cards Grid */}
-            <div className="bg-gradient-to-b from-gray-100 to-gray-200 px-8 pb-12 pt-6">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredMandirs.map((mandir) => (
-                  <div key={mandir.sr} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">🕉️</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 text-lg">{mandir.name}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{mandir.place}</p>
-                        <p className="text-sm font-medium text-orange-700 mt-3">{mandir.purpose}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       )}

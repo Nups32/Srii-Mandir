@@ -5,6 +5,8 @@ import {
   Calendar,
   ChevronRight,
   ChevronLeft,
+  X,
+  Search,
 } from "lucide-react";
 
 // import slide1 from "../assets/Puja/1/1.webp";
@@ -14,6 +16,8 @@ import slide4 from "../assets/Puja/1/4.webp";
 // import hero1 from "../assets/Puja/hero/1.jpg";
 // import hero2 from "../assets/Puja/hero/2.jpg";
 // import hero3 from "../assets/Puja/hero/3.jpg";
+
+import mandirImage from "../assets/mandir.jpg";
 
 import { useNavigate } from "react-router-dom";
 import ReviewsRatings from "@/components/Reviews";
@@ -43,6 +47,8 @@ const Puja: React.FC = () => {
   const [poojas, setPoojas] = useState<any[]>([]);
   const [purohits, setPurohits] = useState<any>([]);
 
+  const [isDhamsModalOpen, setIsDhamsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // const heroSlides = [
   //   {
@@ -236,6 +242,43 @@ const Puja: React.FC = () => {
 
   const [slides, setSlides] = useState<SlideItem[]>([]);
 
+  const allMandirs = [
+    { sr: 1, name: "Yog Maya Dham", place: "Vrindavan, Uttar Pradesh", purpose: "Property Relative Issue", image: mandirImage },
+    { sr: 2, name: "Shri Garud Govind Temple", place: "Shri Vrindavan, Uttar Pradesh", purpose: "Desired Wish", image: mandirImage },
+    { sr: 3, name: "Neem Karoli Baba Ashram", place: "Vrindavan, Uttar Pradesh", purpose: "Happiness", image: mandirImage },
+    { sr: 4, name: "Sapt Sundari Dham", place: "Orchha, Madhya Pradesh", purpose: "Baby Conceive Problem", image: mandirImage },
+    { sr: 5, name: "Tripura Sundari Dham", place: "Tripuri, Madhya Pradesh", purpose: "Tantra Vidya", image: mandirImage },
+    { sr: 6, name: "Maharshi Vibhu Manokamna Dham", place: "Ballia, Uttar Pradesh", purpose: "Property Relative Issue / Happiness", image: mandirImage },
+    { sr: 7, name: "Vindhyachal Dham", place: "Uttar Pradesh", purpose: "(Main pilgrimage for Child Birth / Putra Prapti)", image: mandirImage },
+    { sr: 8, name: "Sankat Mochan Hanuman Dham", place: "Banaras (Varanasi), Uttar Pradesh", purpose: "Freedom From Debt", image: mandirImage },
+    { sr: 9, name: "Maa Jwalamukhi Karj Mukti Dham", place: "Durg, Chhattisgarh", purpose: "(Debt / Loan relief)", image: mandirImage },
+    { sr: 10, name: "Kamakhya Shakti Dham", place: "Guwahati, Assam", purpose: "(Grah Kalesh / Family disputes)", image: mandirImage },
+    { sr: 11, name: "Sapt Sarovar Mukti Dham", place: "Muzaffarnagar, Uttar Pradesh", purpose: "(Mukti / Spiritual liberation)", image: mandirImage },
+    { sr: 12, name: "Maa Jagdamba Pawan Dham", place: "Dibrugarh, Assam", purpose: "(Justice related)", image: mandirImage },
+    { sr: 13, name: "Swayam Bhav Har Mahadev Dham", place: "Banaskantha, Rajasthan", purpose: "Problems In Relationships", image: mandirImage },
+    { sr: 14, name: "Shree Sadhana Durga Peeth – 24 Parganas", place: "West Bengal", purpose: "(Manokamna Poorti – Wish fulfillment)", image: mandirImage },
+    { sr: 15, name: "Jag Janani Sita Shruti Dham – Janakpur Dham", place: "Dhanusha District, Nepal", purpose: "Good marriage life", image: mandirImage },
+    { sr: 16, name: "Shri Radha Rani Kirti Mandir", place: "Barsana, Uttar Pradesh", purpose: "(Marriage related issues)", image: mandirImage },
+    { sr: 17, name: "Bhuteshwar Tantra Vidya Dham", place: "Rourkela, Odisha", purpose: "(Atma Shanti, Bhut-Pret, Mukti)", image: mandirImage },
+    { sr: 18, name: "Shree Navlakha Yojana Dham", place: "Jharkhand", purpose: "(Talaq / Divorce related problems)", image: mandirImage },
+    { sr: 19, name: "Bagalamukhi Temple", place: "Nalkheda, Madhya Pradesh", purpose: "(Justice, legal victory)", image: mandirImage },
+    { sr: 20, name: "Beri Wala Siddh Peeth Mandir", place: "Noida, Uttar Pradesh", purpose: "(Child health issues)", image: mandirImage },
+    { sr: 21, name: "Anusuya Devi Mandir", place: "Udaipur, Rajasthan", purpose: "(Personal problems)", image: mandirImage },
+    { sr: 22, name: "Siddh Peeth Dhameshwari Devi", place: "Chittorgarh", purpose: "(Mental peace & solutions)", image: mandirImage },
+    { sr: 23, name: "Shri Bhaktivedanta Gau Seva Dham", place: "Jharkhand", purpose: "(Mother, Father & family related work)", image: mandirImage },
+    { sr: 24, name: "Jeevan Chhaya Shakti Peeth", place: "Bihar", purpose: "(Children speech problems)", image: mandirImage },
+    { sr: 25, name: "Maya Shakti Sarovar Dham", place: "Buxar, Bihar", purpose: "(BP, Sugar, Thyroid, Cancer, Hair problems)", image: mandirImage },
+    { sr: 26, name: "Ganpati Mandir", place: "Mahakaleshwar - Ujjain", purpose: "Vighna Nashak", image: mandirImage },
+    { sr: 27, name: "Laxmi Mandir", place: "Vrindavan, Uttar Pradesh", purpose: "Dhan Prapti", image: mandirImage }
+  ];
+
+  const displayedMandirs = allMandirs.slice(0, 3);
+  const filteredMandirs = allMandirs.filter(mandir =>
+    mandir.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    mandir.purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    mandir.place.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const fetchHeroSliders = async () => {
     // setLoading(true);
     try {
@@ -369,6 +412,35 @@ const Puja: React.FC = () => {
             ))}
           </div>
         </div>
+
+        {/* ADDED SECTION: Spiritual Dham / Shakti Peeth */}
+        <section className="my-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10 text-center">
+            List of Spiritual Dham / Shakti Peeth
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+            {displayedMandirs.map((mandir) => (
+              <div key={mandir.sr} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
+                <img src={mandir.image} alt={mandir.name} className="w-full h-64 object-cover" />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">{mandir.name}</h3>
+                  <p className="text-gray-600 text-center"><strong>Place:</strong> {mandir.place}</p>
+                  <p className="text-gray-600 text-center mt-3"><strong>Purpose:</strong> {mandir.purpose}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => setIsDhamsModalOpen(true)}
+              className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transition"
+            >
+              View All
+            </button>
+          </div>
+        </section>
 
         {/* Upcoming Pujas Section */}
         <div className="mb-8">
@@ -576,6 +648,48 @@ const Puja: React.FC = () => {
           </section>
         </div>
       </main>
+
+      {/* Full-screen modal for All Mandirs (acts like a new page) */}
+      {isDhamsModalOpen && (
+        <div className="fixed inset-0 z-50 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 overflow-y-auto">
+          <div className="min-h-screen px-4 py-12">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-4xl md:text-5xl font-bold text-amber-800">
+                  All Spiritual Dhams & Shakti Peeths
+                </h1>
+                <button onClick={() => { setIsDhamsModalOpen(false); setSearchTerm(""); }} className="p-3 bg-white/80 hover:bg-white rounded-full shadow-lg transition">
+                  <X className="w-8 h-8 text-amber-800" />
+                </button>
+              </div>
+
+              <div className="relative max-w-md mx-auto mb-10">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by name, place or purpose..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 rounded-full bg-white shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredMandirs.map((mandir) => (
+                  <div key={mandir.sr} className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 overflow-hidden">
+                    <img src={mandir.image} alt={mandir.name} className="w-full h-64 object-cover" />
+                    <div className="p-6">
+                      <h3 className="text-2xl font-bold text-amber-800 mb-3">{mandir.name}</h3>
+                      <p className="text-amber-900 text-lg"><strong>Place:</strong> {mandir.place}</p>
+                      <p className="text-amber-900 text-lg mt-3"><strong>Purpose:</strong> {mandir.purpose}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
