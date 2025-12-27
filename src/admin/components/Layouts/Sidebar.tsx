@@ -185,6 +185,18 @@ const Sidebar = () => {
         },
         {
           icon: <PackageOpen />,
+          name: "Shakti Sanyansi",
+          label: t("Manage Shakti Sanyansi"),
+          link: "/admin/shakti-sanyansi",
+        },
+        {
+          icon: <PackageOpen />,
+          name: "Ask Question",
+          label: t("Ask Question"),
+          link: "/admin/ask-question",
+        },
+        {
+          icon: <PackageOpen />,
           name: "Manage Temples",
           label: t("Manage Temples"),
           link: "/admin/temple",
@@ -247,7 +259,7 @@ const Sidebar = () => {
         > */}
       <nav
         // className={`sidebar !overflow-x-visible fixed h-full z-40 transition-all duration-300 bg-gradient-to-l from-green-200 to-blue-200  shadow-sm ${themeConfig.sidebar ? "sm:w-2/5 md:w-1/5" : "w-0 lg:w-1/20 "} min-w-0`}
-        className={`sidebar overflow-x-visible! fixed h-full z-40 transition-all duration-300 bg-orange-400  shadow-sm ${themeConfig.sidebar ? "w-[240px] sm:w-1/5! md:w-1/5" : "w-0 lg:w-1/20 "} min-w-0`}
+        className={`sidebar overflow-y-scroll! fixed h-full z-40 transition-all duration-300 bg-orange-400  shadow-sm ${themeConfig.sidebar ? "w-[240px] sm:w-1/5! md:w-1/5" : "w-0 lg:w-1/20 "} min-w-0`}
       >
         {/* logo */}
         {/* <div>

@@ -8,10 +8,13 @@ import {
   Card,
   Spin,
   Switch,
+  Upload,
 } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { getTempleById, updateTemple } from "@/utils/API";
+import type { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import { BsUpload } from "react-icons/bs";
 
 const { TextArea } = Input;
 
@@ -27,6 +30,12 @@ const EditTempleForm: React.FC = () => {
   const [place, setPlace] = useState<string>("");
   const [purpose, setPurpose] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(true);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const handleImage = ({ fileList }: UploadChangeParam<UploadFile>) => {
+    // setFileList(fileList);
+    setFileList(fileList.slice(-1));
+  };
 
   // Fetch temple data on component mount
   useEffect(() => {
@@ -46,7 +55,17 @@ const EditTempleForm: React.FC = () => {
           setPlace(temple.place || "");
           setPurpose(temple.purpose || "");
           setIsActive(temple.isActive ?? true);
-          
+          if (res.data.data.image) {
+            const imageFiles = [
+              {
+                uid: res.data.data.image?.toString(),
+                name: res.data.data.image,
+                url: `${import.meta.env.VITE_APP_Image_URL}/temple/${res.data.data.image}`,
+              },
+            ];
+            setFileList(imageFiles);
+          }
+
           // Set form fields
           form.setFieldsValue({
             name: temple.name,
@@ -93,12 +112,19 @@ const EditTempleForm: React.FC = () => {
 
     setLoading(true);
     try {
-      const formData = {
-        name: name.trim(),
-        place: place.trim(),
-        purpose: purpose.trim(),
-        isActive,
-      };
+      // const formData = {
+      //   name: name.trim(),
+      //   place: place.trim(),
+      //   purpose: purpose.trim(),
+      //   isActive,
+      // };
+
+      const formData: any = new FormData();
+      formData.append("name", name.trim());
+      formData.append("place", place.trim());
+      formData.append("purpose", purpose.trim());
+      formData.append("isActive", isActive);
+      formData.append("image", fileList[0].originFileObj as RcFile);
 
       const res = await updateTemple(id, formData);
       if (res.data.status) {
@@ -143,7 +169,7 @@ const EditTempleForm: React.FC = () => {
       <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
         <Card className="p-1!">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Temple Information */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">
@@ -264,6 +290,56 @@ const EditTempleForm: React.FC = () => {
               </Row>
             </Col>
 
+
+            {/* image */}
+            <Col span={24}>
+              <Row>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={4}
+                  className="flex justify-start me-4 bg-white lg:mb-5"
+                >
+                  <label className="font-bold">
+                    Image <span className="text-danger">*</span>
+                  </label>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  className="flex justify-center align-items-center"
+                >
+                  <Form.Item
+                    name="images"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please upload at least one image",
+                  //   },
+                  // ]}
+                  >
+                    <Upload
+                      // multiple
+                      name="image"
+                      listType="picture-card"
+                      fileList={fileList}
+                      beforeUpload={() => false}
+                      onChange={handleImage}
+                      maxCount={1} // Adjust the maximum number of images you want to allow
+                      accept=".png, .jpg, .jpeg"
+                    >
+                      {fileList.length! == 0 &&
+                        <div>
+                          <BsUpload style={{ fontSize: "20px" }} />
+                        </div>
+                      }
+                    </Upload>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+
             {/* Settings Section */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">Settings</h3>
@@ -312,9 +388,9 @@ const EditTempleForm: React.FC = () => {
               </button>
             </Col>
           </Row>
-        </Card>
-      </Form>
-    </div>
+        </Card >
+      </Form >
+    </div >
   );
 };
 

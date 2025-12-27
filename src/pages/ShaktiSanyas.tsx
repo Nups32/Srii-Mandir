@@ -1,9 +1,12 @@
 import bg from "../assets/bg.png";
 
-import saradaDevi from "../assets/Sri_Ma_Sarada_Devi.jpg";
-import anandamayiMa from "../assets/AnandamayiMa.jpg";
-import ramakrishna from "../assets/SriRamakrishna.jpg";
-import nityananda from "../assets/SwamiNityanand.png";
+// import saradaDevi from "../assets/Sri_Ma_Sarada_Devi.jpg";
+// import anandamayiMa from "../assets/AnandamayiMa.jpg";
+// import ramakrishna from "../assets/SriRamakrishna.jpg";
+// import nityananda from "../assets/SwamiNityanand.png";
+import { useEffect, useState } from "react";
+import { message } from "antd";
+import { getShaktiSanyansis } from "@/utils/API";
 
 /*TYPES*/
 
@@ -13,15 +16,41 @@ interface ShaktiSectionProps {
   quote: string;
   legacy: string[];
   teachings: string[];
-  mantraPractice: string;
-  tantra: string;
-  yoga: string;
-  rituals: string[];
+  practice: any,
+  // mantraPractice: string;
+  // tantra: string;
+  // yoga: string;
+  // rituals: string[];
 }
 
-/*MAIN COMPONENT*/
-
 const ShaktiSanyas = () => {
+
+
+  const [shaktiSanyansis, setShaktiSanyansis] = useState<any>([]);
+  const [, setLoading] = useState(false);
+
+  const fetchShaktiSanyansis = async () => {
+    setLoading(true);
+    try {
+      const response: any = await getShaktiSanyansis();
+      if (response?.data?.status) {
+        setShaktiSanyansis(response.data.data);
+      } else {
+        message.error("failed to fetch poojas");
+      }
+    } catch (error) {
+      message.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchShaktiSanyansis();
+  }, []);
+
+  /*MAIN COMPONENT*/
+
   return (
     <section className="relative py-20 px-4">
       {/* Background */}
@@ -32,6 +61,33 @@ const ShaktiSanyas = () => {
 
       <div className="max-w-7xl mx-auto space-y-36">
 
+        {shaktiSanyansis?.length > 0 && (
+          shaktiSanyansis?.map((sanyansi: any, index: any) => (
+            <ShaktiSection
+              key={index}
+              image={sanyansi?.image}
+              name="Holy Mother Sarada Devi"
+              quote={`"I am the mother of the wicked, as I am the mother of the virtuous.
+  Never fear. Whenever you are in distress, just say to yourself 'I have a mother.'"`}
+              legacy={[
+                "Sarada Devi, affectionately known as the Holy Mother, was the spiritual consort of Sri Ramakrishna and is regarded as one of the foremost spiritual figures of modern India.",
+                "She embodied divine motherhood through simplicity, humility, and boundless compassion.",
+                "Her life emphasized purity, patience, and universal acceptance beyond caste or gender."
+              ]}
+              teachings={sanyansi?.teaching}
+              practice={sanyansi?.practice}
+            // mantraPractice="Silent repetition of the Divine Mother’s name with emphasis on inner purity."
+            // tantra="Shakta discipline expressed through devotion and restraint rather than ritual complexity."
+            // yoga="Bhakti Yoga — lived devotion through service and unconditional love."
+            // rituals={[
+            //   "Simple daily worship",
+            //   "Fasting and holy observances",
+            //   "Initiation and guidance of disciples",
+            // ]}
+            />
+          ))
+        )}
+        {/* 
         <ShaktiSection
           image={saradaDevi}
           name="Holy Mother Sarada Devi"
@@ -131,7 +187,7 @@ Never fear. Whenever you are in distress, just say to yourself 'I have a mother.
             "Fire rituals (homa)",
             "Silent transmission",
           ]}
-        />
+        /> */}
 
       </div>
     </section>
@@ -145,18 +201,20 @@ const ShaktiSection: React.FC<ShaktiSectionProps> = ({
   name,
   quote,
   legacy,
+  practice,
   teachings,
-  mantraPractice,
-  tantra,
-  yoga,
-  rituals,
+  // mantraPractice,
+  // tantra,
+  // yoga,
+  // rituals,
 }) => {
   return (
     <div className="grid lg:grid-cols-2 gap-16 items-start">
       {/* Image */}
       <div className="flex flex-col items-center gap-5">
         <img
-          src={image}
+          // src={image}
+          src={`${import.meta.env.VITE_APP_Image_URL}/shakti-sanyansi/${image}`}
           alt={name}
           className="rounded-2xl shadow-md max-w-sm w-full object-cover"
         />
@@ -193,11 +251,12 @@ const ShaktiSection: React.FC<ShaktiSectionProps> = ({
 
         {/* Practices */}
         <div className="mt-8 space-y-4">
-          <PracticeCard title="Mantra Practice" text={mantraPractice} />
+          {/* <PracticeCard title="Mantra Practice" text={mantraPractice} />
           <PracticeCard title="Tantric Discipline" text={tantra} />
-          <PracticeCard title="Yogic Path" text={yoga} />
+          <PracticeCard title="Yogic Path" text={yoga} /> */}
+          {practice?.map((item: any, index: any) => <PracticeCard key={index} title={item.title} description={item.description} />)}
 
-          <div className="bg-white rounded-xl shadow-sm p-4 border">
+          {/* <div className="bg-white rounded-xl shadow-sm p-4 border">
             <h4 className="font-semibold text-gray-800 mb-2">
               Ancient Ritual Practices
             </h4>
@@ -206,7 +265,8 @@ const ShaktiSection: React.FC<ShaktiSectionProps> = ({
                 <li key={index}>{ritual}</li>
               ))}
             </ul>
-          </div>
+          </div> */}
+
         </div>
       </div>
     </div>
@@ -215,10 +275,15 @@ const ShaktiSection: React.FC<ShaktiSectionProps> = ({
 
 /*SMALL CARD*/
 
-const PracticeCard = ({ title, text }: { title: string; text: string }) => (
+const PracticeCard = ({ title, description }: { title: string; description: any }) => (
   <div className="bg-white rounded-xl shadow-sm p-4 border">
     <h4 className="font-semibold text-gray-800 mb-1">{title}</h4>
-    <p className="text-gray-700 text-sm md:text-base">{text}</p>
+    {/* <p className="text-gray-700 text-sm md:text-base">{description}</p> */}
+    <ul className="list-disc list-inside space-y-1 text-gray-700">
+      {description?.map((ritual: any, index: any) => (
+        <li key={index}>{ritual}</li>
+      ))}
+    </ul>
   </div>
 );
 

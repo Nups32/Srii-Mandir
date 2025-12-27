@@ -8,10 +8,13 @@ import {
   Card,
   Spin,
   Switch,
+  Upload,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { createTemple } from "@/utils/API";
+import { BsUpload } from "react-icons/bs";
+import type { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 
 const { TextArea } = Input;
 
@@ -25,7 +28,12 @@ const AddTempleForm: React.FC = () => {
   const [place, setPlace] = useState<string>("");
   const [purpose, setPurpose] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(true);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  const handleImage = ({ fileList }: UploadChangeParam<UploadFile>) => {
+    // setFileList(fileList);
+    setFileList(fileList.slice(-1));
+  };
   const handleSubmit = async () => {
     // Validate required fields
     if (!name.trim()) {
@@ -45,12 +53,18 @@ const AddTempleForm: React.FC = () => {
 
     setLoading(true);
     try {
-      const formData = {
-        name: name.trim(),
-        place: place.trim(),
-        purpose: purpose.trim(),
-        isActive,
-      };
+      const formData = new FormData();
+      formData.append("name", name.trim());
+      formData.append("place", place.trim());
+      formData.append("purpose", purpose.trim());
+      formData.append("image", fileList[0].originFileObj as RcFile);
+
+      // const formData = {
+      //   name: name.trim(),
+      //   place: place.trim(),
+      //   purpose: purpose.trim(),
+      //   isActive,
+      // };
 
       const res = await createTemple(formData);
       if (res.data.status) {
@@ -86,7 +100,7 @@ const AddTempleForm: React.FC = () => {
       <Form form={form} className="bg-white border-0!" onFinish={handleSubmit}>
         <Card className="p-1!">
           <Row className="bg-white rounded-md" style={{ marginLeft: 0, marginRight: 0 }}>
-            
+
             {/* Temple Information */}
             <Col span={24}>
               <h3 className="text-lg font-bold mb-4 border-b pb-2">
@@ -206,6 +220,55 @@ const AddTempleForm: React.FC = () => {
                   <div className="text-xs text-gray-500 mt-1">
                     Describe why this temple is important, what ceremonies are performed, etc.
                   </div>
+                </Col>
+              </Row>
+            </Col>
+
+            {/* image */}
+            <Col span={24}>
+              <Row>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={4}
+                  className="flex justify-start me-4 bg-white lg:mb-5"
+                >
+                  <label className="font-bold">
+                    Image <span className="text-danger">*</span>
+                  </label>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  className="flex justify-center align-items-center"
+                >
+                  <Form.Item
+                    name="images"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please upload at least one image",
+                      },
+                    ]}
+                  >
+                    <Upload
+                      // multiple
+                      name="image"
+                      listType="picture-card"
+                      fileList={fileList}
+                      beforeUpload={() => false}
+                      onChange={handleImage}
+                      maxCount={1} // Adjust the maximum number of images you want to allow
+                      accept=".png, .jpg, .jpeg"
+                    >
+                      {fileList.length == 0 &&
+                        <div>
+                          <BsUpload style={{ fontSize: "20px" }} />
+                        </div>
+                      }
+                    </Upload>
+                  </Form.Item>
                 </Col>
               </Row>
             </Col>

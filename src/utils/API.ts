@@ -511,7 +511,7 @@ export const toggleTempleStatus = (id: string) => {
   return API.patch(`/backend/temples/${id}/toggle-status`);
 };
 
-export const submitQuestion = (data: {userId: string;name: string;fatherName?: string;spouseName?: string;childrenNames?: string[];email?: string;dob?: string;birthPlace?: string;question: string;}) => {
+export const submitQuestion = (data: { userId: string; name: string; fatherName?: string; spouseName?: string; childrenNames?: string[]; email?: string; dob?: string; birthPlace?: string; question: string; }) => {
   return API.post(`/frontend/ask-question`, data);
 };
 
@@ -888,6 +888,49 @@ export const getBookedChadhava = async (page = 1, limit = 10) => {
   } catch (error) {
     throw error;
   }
+};
+
+
+// Frontend APIs
+export const getShaktiSanyansis = () => {
+  return CommanAPI.get(`/shakti-sanyansis`);
+};
+
+export const getShaktiSanyansiById = (id: string) => {
+  return CommanAPI.get(`/shakti-sanyansis/${id}`);
+};
+
+// Admin APIs
+export const getAllShaktiSanyansis = () => {
+  return API.get(`/backend/shakti-sanyansi`);
+};
+
+export const getShaktiSanyansiForEdit = (id: string) => {
+  return API.get(`/backend/shakti-sanyansi/${id}`);
+};
+
+export const createShaktiSanyansi = (formData: FormData) => {
+  return API.post(`/backend/shakti-sanyansi`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updateShaktiSanyansi = (id: string, formData: FormData) => {
+  return API.put(`/backend/shakti-sanyansi/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const deleteShaktiSanyansi = (id: string) => {
+  return API.delete(`/backend/shakti-sanyansi/${id}`);
+};
+
+export const toggleShaktiSanyansiStatus = (id: string) => {
+  return API.patch(`/backend/shakti-sanyansi/${id}/toggle-status`);
 };
 
 export const getBookedPuja = async (page = 1, limit = 10) => {

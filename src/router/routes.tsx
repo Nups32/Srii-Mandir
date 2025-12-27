@@ -133,7 +133,7 @@ const routes: RouteObjectWithLayout[] = [
     element: <LiveKatha />,
   },
   {
-    path: "/shakti-sanyas",
+    path: "/shakti-sanyasis",
     element: <ShaktiSanyas />,
   },
   {

@@ -38,6 +38,10 @@ import EditPurohitForm from "@/admin/pages/Purohit/EditPurohit";
 import TempleTable from "@/admin/pages/Temple/Index";
 import AddTempleForm from "@/admin/pages/Temple/AddTemple";
 import EditTempleForm from "@/admin/pages/Temple/EditTemple";
+import AskQuestionsIndex from "@/admin/pages/AskQuestion/Index";
+import ShaktiSanyansiIndex from "@/admin/pages/ShaktiSanyansi/Index";
+import AddShaktiSanyansi from "@/admin/pages/ShaktiSanyansi/AddShaktiSanyansi";
+import EditShaktiSanyansi from "@/admin/pages/ShaktiSanyansi/EditShaktiSanyansi";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 
 export const adminRoutes: RouteObjectWithLayout[] = [
@@ -253,6 +257,26 @@ export const adminRoutes: RouteObjectWithLayout[] = [
   {
     path: "/admin/temple/:id/edit",
     element: <EditTempleForm />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/shakti-sanyansi",
+    element: <ShaktiSanyansiIndex />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/shakti-sanyansi/add",
+    element: <AddShaktiSanyansi />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/shakti-sanyansi/:id/edit",
+    element: <EditShaktiSanyansi />,
+    layout: "admin",
+  },
+  {
+    path: "/admin/ask-question",
+    element: <AskQuestionsIndex />,
     layout: "admin",
   },
   // {
