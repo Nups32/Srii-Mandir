@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Heart, Book, Flower2, X, MessageCircle } from 'lucide-react';
+import { Sparkles, Heart, Book, Flower2, X, MessageCircle, Search } from 'lucide-react';
 import { getActiveYogMayaMandir } from '@/utils/API';
 import { message } from 'antd';
-import { useSelector } from 'react-redux';
-import type { IRootState } from '@/store';
 
 const YogMayaMandir: React.FC = () => {
-  const authData = useSelector((state: IRootState) => state.userConfig);
   const [scrollY, setScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState('beginner');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDhamsModalOpen, setIsDhamsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // State for the Question Form
   const [formData, setFormData] = useState({
@@ -17,7 +16,8 @@ const YogMayaMandir: React.FC = () => {
     fatherName: '',
     spouseName: '',
     childrenNames: '',
-    dobPlace: '',
+    dob: '',
+    birthPlace: '',
     email: '',
     question: ''
   });
@@ -35,11 +35,8 @@ const YogMayaMandir: React.FC = () => {
     setLoading(true);
     try {
       const response: any = await getActiveYogMayaMandir();
-      // console.log("res from fetchpooja", response)
       if (response?.data?.status) {
-        // setPoojas(response.data.data);
-        const data = response?.data?.data || [];
-        setData(data);
+        setData(response?.data?.data || []);
       } else {
         message.error("failed to fetch Data");
       }
@@ -66,34 +63,71 @@ const YogMayaMandir: React.FC = () => {
     message.success("Thank you. Your question has been submitted to the Mandir.");
     setIsModalOpen(false);
     setFormData({
-      name: '',
-      fatherName: '',
-      spouseName: '',
+      name: '', 
+      fatherName: '', 
+      spouseName: '', 
       childrenNames: '',
-      dobPlace: '',
-      email: '',
+      dob: '', 
+      birthPlace: '', 
+      email: '', 
       question: ''
     });
   };
 
   const features = [
-    {
-      icon: <Flower2 className="w-16 h-16 text-orange-600" />,
-      title: "Yog Practices",
-      description: "Discover ancient yogic wisdom and practices that unite body, mind, and soul in perfect harmony."
+    { 
+      icon: <Flower2 className="w-16 h-16 text-orange-600" />, 
+      title: "Yog Practices", 
+      description: "Discover ancient yogic wisdom and practices that unite body, mind, and soul in perfect harmony." 
     },
-    {
-      icon: <Sparkles className="w-16 h-16 text-amber-600" />,
-      title: "Maya Understanding",
-      description: "Transcend the illusions of material world and perceive the eternal truth beyond appearances."
+    { 
+      icon: <Sparkles className="w-16 h-16 text-amber-600" />, 
+      title: "Maya Understanding", 
+      description: "Transcend the illusions of material world and perceive the eternal truth beyond appearances." 
     },
-    {
-      icon: <Heart className="w-16 h-16 text-rose-600" />,
-      title: "Meditation Guidance",
-      description: "Experience profound inner peace through guided meditation techniques passed down through generations."
+    { 
+      icon: <Heart className="w-16 h-16 text-rose-600" />, 
+      title: "Meditation Guidance", 
+      description: "Experience profound inner peace through guided meditation techniques passed down through generations." 
     }
   ];
 
+  const allMandirs = [
+    { sr: 1, name: "Yog Maya Dham", place: "Vrindavan, Uttar Pradesh", purpose: "Property Relative Issue" },
+    { sr: 2, name: "Shri Garud Govind Temple", place: "Shri Vrindavan, Uttar Pradesh", purpose: "Desired Wish" },
+    { sr: 3, name: "Neem Karoli Baba Ashram", place: "Vrindavan, Uttar Pradesh", purpose: "Happiness" },
+    { sr: 4, name: "Sapt Sundari Dham", place: "Orchha, Madhya Pradesh", purpose: "Baby Conceive Problem" },
+    { sr: 5, name: "Tripura Sundari Dham", place: "Tripuri, Madhya Pradesh", purpose: "Tantra Vidya" },
+    { sr: 6, name: "Maharshi Vibhu Manokamna Dham", place: "Ballia, Uttar Pradesh", purpose: "Property Relative Issue / Happiness" },
+    { sr: 7, name: "Vindhyachal Dham", place: "Uttar Pradesh", purpose: "(Main pilgrimage for Child Birth / Putra Prapti)" },
+    { sr: 8, name: "Sankat Mochan Hanuman Dham", place: "Banaras (Varanasi), Uttar Pradesh", purpose: "Freedom From Debt" },
+    { sr: 9, name: "Maa Jwalamukhi Karj Mukti Dham", place: "Durg, Chhattisgarh", purpose: "(Debt / Loan relief)" },
+    { sr: 10, name: "Kamakhya Shakti Dham", place: "Guwahati, Assam", purpose: "(Grah Kalesh / Family disputes)" },
+    { sr: 11, name: "Sapt Sarovar Mukti Dham", place: "Muzaffarnagar, Uttar Pradesh", purpose: "(Mukti / Spiritual liberation)" },
+    { sr: 12, name: "Maa Jagdamba Pawan Dham", place: "Dibrugarh, Assam", purpose: "(Justice related)" },
+    { sr: 13, name: "Swayam Bhav Har Mahadev Dham", place: "Banaskantha, Rajasthan", purpose: "Problems In Relationships" },
+    { sr: 14, name: "Shree Sadhana Durga Peeth – 24 Parganas", place: "West Bengal", purpose: "(Manokamna Poorti – Wish fulfillment)" },
+    { sr: 15, name: "Jag Janani Sita Shruti Dham – Janakpur Dham", place: "Dhanusha District, Nepal", purpose: "Good marriage life" },
+    { sr: 16, name: "Shri Radha Rani Kirti Mandir", place: "Barsana, Uttar Pradesh", purpose: "(Marriage related issues)" },
+    { sr: 17, name: "Bhuteshwar Tantra Vidya Dham", place: "Rourkela, Odisha", purpose: "(Atma Shanti, Bhut-Pret, Mukti)" },
+    { sr: 18, name: "Shree Navlakha Yojana Dham", place: "Jharkhand", purpose: "(Talaq / Divorce related problems)" },
+    { sr: 19, name: "Bagalamukhi Temple", place: "Nalkheda, Madhya Pradesh", purpose: "(Justice, legal victory)" },
+    { sr: 20, name: "Beri Wala Siddh Peeth Mandir", place: "Noida, Uttar Pradesh", purpose: "(Child health issues)" },
+    { sr: 21, name: "Anusuya Devi Mandir", place: "Udaipur, Rajasthan", purpose: "(Personal problems)" },
+    { sr: 22, name: "Siddh Peeth Dhameshwari Devi", place: "Chittorgarh", purpose: "(Mental peace & solutions)" },
+    { sr: 23, name: "Shri Bhaktivedanta Gau Seva Dham", place: "Jharkhand", purpose: "(Mother, Father & family related work)" },
+    { sr: 24, name: "Jeevan Chhaya Shakti Peeth", place: "Bihar", purpose: "(Children speech problems)" },
+    { sr: 25, name: "Maya Shakti Sarovar Dham", place: "Buxar, Bihar", purpose: "(BP, Sugar, Thyroid, Cancer, Hair problems)" },
+    { sr: 26, name: "Ganpati Mandir", place: "Mahakaleshwar - Ujjain", purpose: "Vighna Nashak" },
+    { sr: 27, name: "Laxmi Mandir", place: "Vrindavan, Uttar Pradesh", purpose: "Dhan Prapti" }
+  ];
+
+  const displayedMandirs = allMandirs.slice(0, 3);
+  const filteredMandirs = allMandirs.filter(mandir =>
+    mandir.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    mandir.purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    mandir.place.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   // const yogTeachings = [
   //   {
   //     title: "What is Yog?",
@@ -229,13 +263,10 @@ const YogMayaMandir: React.FC = () => {
   // ];
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-rose-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
       {/* Header */}
-      <header className="relative bg-linear-to-r from-amber-800 via-orange-700 to-amber-800 text-white py-16 overflow-hidden shadow-2xl">
-        <div
-          className="absolute inset-0 opacity-10 text-9xl flex items-center justify-center"
-          style={{ transform: `rotate(${scrollY * 0.1}deg)` }}
-        >
+      <header className="relative bg-gradient-to-r from-amber-800 via-orange-700 to-amber-800 text-white py-16 overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 opacity-10 text-9xl flex items-center justify-center" style={{ transform: `rotate(${scrollY * 0.1}deg)` }}>
           🕉️
         </div>
         <div className="container mx-auto px-4 relative z-10">
@@ -262,7 +293,7 @@ const YogMayaMandir: React.FC = () => {
             Here, the timeless teachings of Yog and the profound understanding of Maya illuminate
             your path to enlightenment.
           </p>
-          <button className="bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white! font-bold py-4 px-10 rounded-full text-lg shadow-lg transform transition hover:scale-105 hover:shadow-xl animate-pulse cursor-pointer">
+          <button className="bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg transform transition hover:scale-105 hover:shadow-xl animate-pulse cursor-pointer">
             Begin Your Journey
           </button>
         </section>
@@ -270,10 +301,9 @@ const YogMayaMandir: React.FC = () => {
         {/* Features Grid */}
         <section className="grid md:grid-cols-3 gap-8 my-16">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition duration-500 group"
-            >
+            <div 
+            key={index} 
+            className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition duration-500 group">
               <div className="flex justify-center mb-6 animate-bounce-slow group-hover:scale-110 transition duration-300">
                 {feature.icon}
               </div>
@@ -297,10 +327,9 @@ const YogMayaMandir: React.FC = () => {
           </p>
           <div className="grid md:grid-cols-2 gap-8">
             {data?.understandingYog?.map((teaching: any, index: any) => (
-              <div
-                key={index}
-                className="bg-linear-to-br from-white to-orange-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300 border-l-4 border-orange-500"
-              >
+              <div 
+              key={index} 
+              className="bg-gradient-to-br from-white to-orange-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300 border-l-4 border-orange-500">
                 <div className="flex items-center gap-4 mb-4">
                   {teaching?.icon}
                   <h3 className="text-2xl font-bold text-amber-800">
@@ -314,8 +343,7 @@ const YogMayaMandir: React.FC = () => {
             ))}
           </div>
         </section>
-
-        {/* Maya Teachings Section */}
+         {/* Maya Teachings Section */}
         {/* <section className="my-20 bg-linear-to-r from-purple-100 via-pink-100 to-orange-100 rounded-3xl p-8 md:p-12 shadow-xl">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-purple-900 mb-4">
             The Mystery of Maya
@@ -351,8 +379,7 @@ const YogMayaMandir: React.FC = () => {
           <p className="text-center text-amber-900 text-lg mb-8 max-w-3xl mx-auto">
             Choose a practice that matches your experience level. Start where you are and progress at your own pace.
           </p>
-
-          {/* Meditation Images */}
+{/* Meditation Images */}
           {/* <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-12">
             {meditationImages.map((img, index) => (
               <div
@@ -367,41 +394,19 @@ const YogMayaMandir: React.FC = () => {
 
           {/* Tabs */}
           <div className="flex justify-center gap-4 mb-8 flex-wrap">
-            <button
-              onClick={() => setActiveTab('beginner')}
-              className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'beginner'
-                ? 'bg-linear-to-r from-green-500 to-emerald-500 text-white! shadow-lg'
-                : 'bg-white text-amber-800! hover:shadow-lg'
-                }`}
-            >
+            <button onClick={() => setActiveTab('beginner')} className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'beginner' ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg' : 'bg-white text-amber-800 hover:shadow-lg'}`}>
               Beginner
             </button>
-            <button
-              onClick={() => setActiveTab('intermediate')}
-              className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'intermediate'
-                ? 'bg-linear-to-r from-blue-500 to-cyan-500 text-white! shadow-lg'
-                : 'bg-white text-amber-800! hover:shadow-lg'
-                }`}
-            >
+            <button onClick={() => setActiveTab('intermediate')} className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'intermediate' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg' : 'bg-white text-amber-800 hover:shadow-lg'}`}>
               Intermediate
             </button>
-            <button
-              onClick={() => setActiveTab('advanced')}
-              className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'advanced'
-                ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white! shadow-lg'
-                : 'bg-white text-amber-800! hover:shadow-lg'
-                }`}
-            >
+            <button onClick={() => setActiveTab('advanced')} className={`px-8 py-3 rounded-full font-bold transition ${activeTab === 'advanced' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'bg-white text-amber-800 hover:shadow-lg'}`}>
               Advanced
             </button>
           </div>
 
-          {/* Meditation Practice Card */}
           {data?.meditationPractices?.filter((practice: any) => practice?.type === activeTab)?.map((practice: any, index: any) => (
-            <div
-              key={index}
-              className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-4xl mx-auto"
-            >
+            <div key={index} className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-4xl mx-auto">
               <div className="text-center mb-8">
                 <div className="text-7xl mb-4">{practice?.image}</div>
                 <h3 className="text-3xl font-bold text-amber-800 mb-2">
@@ -418,11 +423,8 @@ const YogMayaMandir: React.FC = () => {
                 </h4>
                 <ol className="space-y-4">
                   {practice?.step?.map((step: any, idx: any) => (
-                    <li
-                      key={idx}
-                      className="flex gap-4 items-start"
-                    >
-                      <span className="shrink-0 w-8 h-8 bg-linear-to-r from-orange-500 to-rose-500 text-white rounded-full flex items-center justify-center font-bold">
+                    <li key={idx} className="flex gap-4 items-start">
+                      <span className="shrink-0 w-8 h-8 bg-gradient-to-r from-orange-500 to-rose-500 text-white rounded-full flex items-center justify-center font-bold">
                         {idx + 1}
                       </span>
                       <p className="text-amber-900 leading-relaxed text-lg pt-1">
@@ -433,9 +435,9 @@ const YogMayaMandir: React.FC = () => {
                 </ol>
               </div>
 
-              <div className="bg-linear-to-r from-amber-100 to-orange-100 rounded-xl p-6">
+              <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl p-6">
                 <h4 className="text-xl font-bold text-amber-800 mb-2">
-                  ✨ Benefits:
+                  Benefits:
                 </h4>
                 <p className="text-amber-900 text-lg">
                   {practice?.benefit}
@@ -445,7 +447,38 @@ const YogMayaMandir: React.FC = () => {
           ))}
         </section>
 
-        {/* Wisdom Teachings */}
+        {/* Spiritual Dhams Section - Only 3 shown */}
+        <section className="my-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-amber-800 mb-12">
+            List of Spiritual Dham / Shakti Peeth
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {displayedMandirs.map((mandir) => (
+              <div key={mandir.sr} className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition duration-500 group">
+                <h3 className="text-2xl font-bold text-amber-800 mb-4 text-center">
+                  {mandir.name}
+                </h3>
+                <p className="text-amber-900 leading-relaxed text-center">
+                  Place: {mandir.place}
+                </p>
+                <p className="text-amber-900 leading-relaxed text-center mt-3">
+                  Purpose: {mandir.purpose}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setIsDhamsModalOpen(true)}
+              className="bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
+            >
+              View All
+            </button>
+          </div>
+        </section>
+
+        {/* Divine Wisdom */}
         <section className="my-20">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-amber-800 mb-4">
             Divine Wisdom
@@ -455,10 +488,7 @@ const YogMayaMandir: React.FC = () => {
           </p>
           <div className="space-y-8">
             {data?.wisdoms?.map((teaching: any, index: any) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition duration-300"
-              >
+              <div key={index} className="bg-white rounded-2xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition duration-300">
                 <h3 className="text-2xl md:text-3xl font-bold text-amber-800 mb-4">
                   {teaching.title}
                 </h3>
@@ -486,7 +516,7 @@ const YogMayaMandir: React.FC = () => {
 
         {/* Call to Action */}
         <section className="text-center my-8">
-          <div className="bg-linear-to-br from-orange-100 to-rose-100 rounded-3xl p-12 shadow-xl">
+          <div className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-3xl p-12 shadow-xl">
             <Book className="w-20 h-20 text-amber-700 mx-auto mb-6 animate-bounce-slow" />
             <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
               Ready to Start Your Spiritual Journey?
@@ -495,95 +525,117 @@ const YogMayaMandir: React.FC = () => {
               Join our community of seekers and discover the profound peace and wisdom
               that awaits within you. Your transformation begins today.
             </p>
-            <button className="bg-linear-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white! font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer">
+            <button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer">
               Join Our Sangha
             </button>
           </div>
         </section>
 
-        {/* New Ask Question Section */}
-        {(authData.token && (authData.token != null && authData.token != "")) && (
-          <section className="text-center my-16">
-            <div className="bg-white rounded-3xl p-12 shadow-xl border border-amber-100">
-              <MessageCircle className="w-20 h-20 text-orange-600 mx-auto mb-6 opacity-80" />
-              <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
-                Have a Spiritual Question?
-              </h2>
-              <p className="text-lg text-amber-900 mb-8 max-w-2xl mx-auto">
-                Our swamis are here to guide you. If you are seeking clarity on your path or have
-                specific questions about your practice, we are here to help.
-              </p>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white! font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
-              >
-                Ask Question
-              </button>
-            </div>
-          </section>
-        )}
+        {/* Ask Question Section */}
+        <section className="text-center my-16">
+          <div className="bg-white rounded-3xl p-12 shadow-xl border border-amber-100">
+            <MessageCircle className="w-20 h-20 text-orange-600 mx-auto mb-6 opacity-80" />
+            <h2 className="text-3xl md:text-4xl font-bold text-amber-800 mb-4">
+              Have a Spiritual Question?
+            </h2>
+            <p className="text-lg text-amber-900 mb-8 max-w-2xl mx-auto">
+              Our swamis are here to guide you. If you are seeking clarity on your path or have 
+              specific questions about your practice, we are here to help.
+            </p>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transform transition hover:scale-105 cursor-pointer"
+            >
+              Ask Question
+            </button>
+          </div>
+        </section>
       </div>
 
       {/* Ask Question Popup Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden transform transition-all">
-            {/* Modal Header */}
-            <div className="bg-linear-to-r from-amber-800 to-orange-700 p-6 flex justify-between items-center text-white">
+            <div className="bg-gradient-to-r from-amber-800 to-orange-700 p-6 flex justify-between items-center text-white">
               <h3 className="text-2xl font-bold flex items-center gap-2">
                 <Sparkles className="w-6 h-6" /> Spiritual Inquiry
               </h3>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="p-2 hover:bg-white/20 rounded-full transition cursor-pointer"
-              >
+              <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white/20 rounded-full transition cursor-pointer">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Modal Form */}
             <form onSubmit={handleSubmit} className="p-8 space-y-4 max-h-[75vh] overflow-y-auto">
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-amber-800 mb-1">Name</label>
-                  <input required name="name" value={formData.name} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Your full name" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-amber-800 mb-1">Father's Name</label>
-                  <input required name="fatherName" value={formData.fatherName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Father's name" />
-                </div>
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Name</label><input required name="name" value={formData.name} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Your full name" /></div>
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Father's Name</label><input required name="fatherName" value={formData.fatherName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Father's name" /></div>
               </div>
-
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-amber-800 mb-1">Spouse's Name</label>
-                  <input name="spouseName" value={formData.spouseName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="If applicable" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-amber-800 mb-1">Children's Names</label>
-                  <input name="childrenNames" value={formData.childrenNames} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Names of children" />
-                </div>
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Spouse's Name</label><input name="spouseName" value={formData.spouseName} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="If applicable" /></div>
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Children's Names</label><input name="childrenNames" value={formData.childrenNames} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Names of children" /></div>
               </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-amber-800 mb-1">Date & Place of Birth</label>
-                <input required name="dobPlace" value={formData.dobPlace} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="DD/MM/YYYY, City" />
+              <div className="grid md:grid-cols-2 gap-4">
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Date of Birth</label><input required name="dob" value={formData.dob} onChange={handleInputChange} type="date" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" /></div>
+                <div><label className="block text-sm font-semibold text-amber-800 mb-1">Birth Place</label><input required name="birthPlace" value={formData.birthPlace} onChange={handleInputChange} type="text" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="City, State" /></div>
               </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-amber-800 mb-1">Email</label>
-                <input required name="email" value={formData.email} onChange={handleInputChange} type="email" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="email@example.com" />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-amber-800 mb-1">Ask Question</label>
-                <textarea required name="question" value={formData.question} onChange={handleInputChange} rows={3} className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none" placeholder="Write your question here..."></textarea>
-              </div>
-
-              <button type="submit" className="w-full bg-linear-to-r from-orange-500 to-rose-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform transition hover:scale-[1.01] cursor-pointer">
+              <div><label className="block text-sm font-semibold text-amber-800 mb-1">Email</label><input required name="email" value={formData.email} onChange={handleInputChange} type="email" className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="email@example.com" /></div>
+              <div><label className="block text-sm font-semibold text-amber-800 mb-1">Ask Question</label><textarea required name="question" value={formData.question} onChange={handleInputChange} rows={3} className="w-full px-4 py-2 rounded-xl border border-amber-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none" placeholder="Write your question here..."></textarea></div>
+              <button type="submit" className="w-full bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform transition hover:scale-[1.01] cursor-pointer">
                 Submit Inquiry
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* NEW: View All Modal - Exactly like your screenshot */}
+      {isDhamsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 backdrop-blur-sm overflow-y-auto pt-10 pb-10">
+          <div className="w-full max-w-7xl bg-gradient-to-b from-maroon-800 to-maroon-900 text-white rounded-t-3xl overflow-hidden">
+            {/* Header */}
+            <div className="px-8 py-6 flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold">List of Spiritual Dham / Shakti Peeth</h1>
+                <p className="text-lg opacity-90 mt-1">Discover sacred destinations for specific life purposes</p>
+              </div>
+              <button onClick={() => { setIsDhamsModalOpen(false); setSearchTerm(''); }} className="p-3 hover:bg-white/20 rounded-full transition">
+                <X className="w-8 h-8" />
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="px-8 pb-6">
+              <div className="relative max-w-md">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by name or purpose..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-full bg-white/20 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50"
+                />
+              </div>
+            </div>
+
+            {/* Cards Grid */}
+            <div className="bg-gradient-to-b from-gray-100 to-gray-200 px-8 pb-12 pt-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredMandirs.map((mandir) => (
+                  <div key={mandir.sr} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-2xl">🕉️</span>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-900 text-lg">{mandir.name}</h3>
+                        <p className="text-sm text-gray-600 mt-1">{mandir.place}</p>
+                        <p className="text-sm font-medium text-orange-700 mt-3">{mandir.purpose}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
